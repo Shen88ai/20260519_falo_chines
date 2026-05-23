@@ -1,0 +1,538 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Bussola3D from '../components/Bussola3D.astro';
+import FormNivelamento from '../components/FormNivelamento.astro';
+import { 
+  courses, 
+  specialCourses, 
+  stefanyShen, 
+  translationService, 
+  differentials, 
+  getWhatsAppEnrollUrl, 
+  getWhatsAppQuoteUrl,
+  CONTACT_PHONE
+} from '../lib/courses-data';
+---
+
+<Layout>
+  <!-- Hero Section with Premium Visuals -->
+  <section class="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+    <!-- Starry background or gradient effects -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.05),transparent_60%)] pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(239,68,68,0.03),transparent_60%)] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left text content -->
+      <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/25 text-xs font-bold text-brand-gold tracking-widest uppercase">
+          🚀 MÉTODOS MODERNOS DE APRENDIZADO
+        </span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight text-white leading-none">
+          Domine o Mandarim com a <br class="hidden sm:inline"/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-white to-brand-jade filter drop-shadow-[0_4px_8px_rgba(251,191,36,0.2)]">
+            Bússola Hanzi 3D
+          </span>
+        </h1>
+        <p class="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans font-light">
+          Uma plataforma revolucionária que une a elegância do **Obsidian** para lições personalizadas com análise de voz em tempo real via **Web Audio API** para esculpir sua pronúncia tonal perfeita.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+          <a 
+            href="#nivelamento" 
+            class="w-full sm:w-auto px-8 py-3.5 rounded-full text-center text-xs font-extrabold bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300 transform hover:-translate-y-0.5"
+          >
+            Fazer Diagnóstico de Rota 📜
+          </a>
+          <a 
+            href="/licoes" 
+            class="w-full sm:w-auto px-6 py-3.5 rounded-full text-center text-xs font-bold bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 transition-all duration-300"
+          >
+            Explorar Lições
+          </a>
+        </div>
+
+        <!-- Micro stats -->
+        <div class="flex items-center justify-center lg:justify-start gap-8 pt-8 border-t border-white/5 text-gray-400">
+          <div class="flex flex-col">
+            <span class="font-display font-bold text-2xl text-brand-gold">4</span>
+            <span class="text-[10px] uppercase tracking-wider font-semibold">Rotas de Fluência</span>
+          </div>
+          <div class="h-8 w-[1px] bg-white/10"></div>
+          <div class="flex flex-col">
+            <span class="font-display font-bold text-2xl text-brand-jade">100%</span>
+            <span class="text-[10px] uppercase tracking-wider font-semibold">Microfone Local (Privacidade)</span>
+          </div>
+          <div class="h-8 w-[1px] bg-white/10"></div>
+          <div class="flex flex-col">
+            <span class="font-display font-bold text-2xl text-brand-purple">Obsidian</span>
+            <span class="text-[10px] uppercase tracking-wider font-semibold">Vault Customizado</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right interactive 3D scene -->
+      <div class="lg:col-span-6 flex items-center justify-center relative">
+        <Bussola3D />
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Leveling/Diagnosis Section -->
+  <section class="py-20 border-t border-white/5 bg-black/20" id="diagnostic-section">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-3xl font-display font-extrabold text-white tracking-tight">
+          Descubra Seu Caminho Pedagógico
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-400 mt-2">
+          Responda a 3 rápidas perguntas elaboradas por nosso mentor virtual para desbloquear seu pergaminho de estudos personalizado e lições exclusivas.
+        </p>
+      </div>
+
+      <FormNivelamento />
+     <!-- Ensino & Tradução Profissional / Sobre Nós Section -->
+  <section class="py-20 border-t border-white/5 bg-gradient-to-b from-black/35 to-black/20" id="sobre-nos">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Title -->
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/25 text-xs font-bold text-brand-gold tracking-widest uppercase">
+          ✨ ENSINO & TRADUÇÃO PROFISSIONAL
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
+          Conectando Você com a China e o Mundo Asiático
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-400 max-w-2xl mx-auto leading-relaxed">
+          Com mais de 20 anos de experiência internacional em educação e diplomacia linguística, oferecemos soluções completas para impulsionar sua jornada acadêmica e comercial.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+        
+        <!-- Stefany Shen Card (Sobre Nós) -->
+        <div class="lg:col-span-7 glass-panel rounded-3xl p-8 border border-white/5 relative overflow-hidden flex flex-col justify-between shadow-2xl">
+          <div class="absolute -right-12 -top-12 w-32 h-32 bg-brand-gold/5 rounded-full filter blur-2xl"></div>
+          
+          <div class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-red to-brand-gold flex items-center justify-center text-3xl border border-white/10 shadow-lg">
+                  👩‍💼
+                </div>
+                <div>
+                  <h3 class="font-display font-black text-xl text-white tracking-tight">{stefanyShen.name}</h3>
+                  <p class="text-xs text-brand-gold font-bold uppercase tracking-wider">Fundadora, Professora & Intérprete</p>
+                </div>
+              </div>
+              
+              <!-- Transcultural Flags -->
+              <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
+                <span class="text-xs text-gray-400 font-bold uppercase tracking-wider mr-1">Roteiro:</span>
+                <span class="text-lg filter drop-shadow-md" title="Nascida em Taiwan">🇹🇼</span>
+                <span class="text-xs text-gray-500">➔</span>
+                <span class="text-lg filter drop-shadow-md" title="Criada no Paraguai">🇵🇾</span>
+                <span class="text-xs text-gray-500">➔</span>
+                <span class="text-lg filter drop-shadow-md" title="Educada no Chile">🇨🇱</span>
+                <span class="text-xs text-gray-500">➔</span>
+                <span class="text-lg filter drop-shadow-md" title="Residente no Brasil">🇧🇷</span>
+              </div>
+            </div>
+            
+            <div class="space-y-4 text-sm text-gray-300 leading-relaxed font-light">
+              <p>
+                Com mais de <strong class="text-brand-gold font-semibold">20 anos de experiência</strong> no mercado de ensino de Mandarim em São Paulo e atuação internacional de destaque como intérprete e tradutora técnica, oferecemos cursos exclusivos e serviços linguísticos sob medida.
+              </p>
+              <p>
+                Nosso método exclusivo <strong class="text-brand-jade font-semibold">Right Brain Chinese</strong> combina prática intensiva, imersão na cultura e na filosofia chinesa, estimulando o hemisfério cerebral direito para garantir um aprendizado rápido, natural e extremamente eficaz.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-2 text-xs text-gray-400">
+              <span class="text-brand-gold">🎯</span>
+              <span><strong>Missão:</strong> {stefanyShen.mission}</span>
+            </div>
+            <a 
+              href={`https://wa.me/${CONTACT_PHONE}?text=${encodeURIComponent('Olá, gostaria de falar com a professora Stefany sobre os cursos e serviços.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto px-5 py-2.5 rounded-full text-center text-xs font-bold bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 transition-all"
+            >
+              Falar com Stefany 💬
+            </a>
+          </div>
+        </div>
+
+        <!-- Diferenciais Checklist (Brainstorming) -->
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2 mb-1 flex items-center gap-2">
+            <span>⚡</span> Diferenciais de Sucesso
+          </h3>
+          
+          {differentials.map((diff, index) => {
+            const icons = ['🧠', '🎯', '🌍', '💻'];
+            const titles = ['Método Exclusivo', 'Praticidade & Foco', 'Expertise Global', 'Flexibilidade Total'];
+            const colors = ['hover:border-brand-red/30', 'hover:border-brand-gold/30', 'hover:border-brand-purple/30', 'hover:border-brand-blue/30'];
+            const bgGlows = ['bg-brand-red/5', 'bg-brand-gold/5', 'bg-brand-purple/5', 'bg-brand-blue/5'];
+            
+            return (
+              <div class={`group glass-panel rounded-2xl p-5 border border-white/5 transition-all duration-300 flex items-start gap-4 hover:-translate-x-1 ${colors[index]}`}>
+                <div class={`w-10 h-10 rounded-xl ${bgGlows[index]} flex items-center justify-center text-xl shrink-0 border border-white/5 group-hover:scale-110 transition-transform`}>
+                  {icons[index]}
+                </div>
+                <div>
+                  <h4 class="font-display font-bold text-xs uppercase tracking-wider text-white mb-1">{titles[index]}</h4>
+                  <p class="text-xs text-gray-400 leading-relaxed font-light">{diff}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Cursos de Mandarim Section -->
+  <section class="py-20 border-t border-white/5 bg-black/40" id="cursos">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Title -->
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-jade/10 border border-brand-jade/25 text-xs font-bold text-brand-jade tracking-widest uppercase">
+          🎓 ACADEMIA DE IDIOMAS
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
+          Cursos de Mandarim com Objetivos Claros
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-400 max-w-xl mx-auto leading-relaxed">
+          Cursos modulares focados no método <strong class="text-brand-gold">Right Brain Chinese</strong>, combinando prática intensiva com a lógica visual dos caracteres e imersão cultural.
+        </p>
+      </div>
+
+      <!-- Obsidian Vault Graph View Mockup -->
+      <div class="glass-panel rounded-3xl p-6 border border-white/5 mb-16 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.02),transparent_70%)] pointer-events-none"></div>
+        <div class="flex items-center justify-between mb-4 border-b border-white/5 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-brand-gold text-lg">🕸️</span>
+            <div>
+              <h3 class="font-display font-bold text-xs uppercase tracking-widest text-white">Obsidian Graph View</h3>
+              <p class="text-[9px] text-gray-500 font-mono">vault-root/rotas-de-aprendizado.graph</p>
+            </div>
+          </div>
+          <span class="text-[9px] font-mono text-gray-500 bg-white/5 border border-white/10 px-2 py-0.5 rounded">
+            Interativo: Clique para rolar
+          </span>
+        </div>
+        
+        <!-- Interactive Node Connection Graph -->
+        <div class="relative w-full overflow-x-auto select-none py-4 scrollbar-none">
+          <div class="min-w-[800px] h-[220px] relative mx-auto">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <!-- Grid Background pattern -->
+              <defs>
+                <pattern id="graph-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#graph-grid)" />
+              
+              <!-- Connection Lines -->
+              <!-- Main Path -->
+              <line x1="100" y1="110" x2="250" y2="110" stroke="rgba(251, 191, 36, 0.25)" stroke-width="2" class="main-path-line" />
+              <line x1="250" y1="110" x2="400" y2="110" stroke="rgba(251, 191, 36, 0.25)" stroke-width="2" class="main-path-line" />
+              <line x1="400" y1="110" x2="550" y2="110" stroke="rgba(251, 191, 36, 0.25)" stroke-width="2" class="main-path-line" />
+              <line x1="550" y1="110" x2="700" y2="110" stroke="rgba(251, 191, 36, 0.25)" stroke-width="2" class="main-path-line" />
+              
+              <!-- Branch Lines (Specials) -->
+              <line x1="250" y1="110" x2="150" y2="40" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1.5" />
+              <line x1="250" y1="110" x2="300" y2="40" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1.5" />
+              <line x1="400" y1="110" x2="450" y2="40" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1.5" />
+              <line x1="550" y1="110" x2="600" y2="175" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1.5" />
+              
+              <!-- SVGs Nodes (Interactive Circles with text) -->
+              <!-- Main Nodes -->
+              <!-- Iniciante -->
+              <g class="graph-node cursor-pointer group" data-card-id="course-iniciante">
+                <circle cx="100" cy="110" r="16" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="2.5" class="transition-all duration-300 group-hover:r-20 group-hover:fill-brand-red/30" />
+                <text x="100" y="114" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">01</text>
+                <text x="100" y="142" text-anchor="middle" fill="#a1a1aa" font-size="9" font-family="sans-serif" font-weight="600" class="group-hover:fill-white transition-colors">Iniciante</text>
+              </g>
+
+              <!-- Básico -->
+              <g class="graph-node cursor-pointer group" data-card-id="course-basico">
+                <circle cx="250" cy="110" r="16" fill="rgba(251, 191, 36, 0.15)" stroke="#fbbf24" stroke-width="2.5" class="transition-all duration-300 group-hover:r-20 group-hover:fill-brand-gold/30" />
+                <text x="250" y="114" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">02</text>
+                <text x="250" y="142" text-anchor="middle" fill="#a1a1aa" font-size="9" font-family="sans-serif" font-weight="600" class="group-hover:fill-white transition-colors">Básico</text>
+              </g>
+
+              <!-- Intermediário -->
+              <g class="graph-node cursor-pointer group" data-card-id="course-intermediario">
+                <circle cx="400" cy="110" r="16" fill="rgba(168, 85, 247, 0.15)" stroke="#a855f7" stroke-width="2.5" class="transition-all duration-300 group-hover:r-20 group-hover:fill-brand-purple/30" />
+                <text x="400" y="114" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">03</text>
+                <text x="400" y="142" text-anchor="middle" fill="#a1a1aa" font-size="9" font-family="sans-serif" font-weight="600" class="group-hover:fill-white transition-colors">Intermediário</text>
+              </g>
+
+              <!-- Avançado -->
+              <g class="graph-node cursor-pointer group" data-card-id="course-avancado">
+                <circle cx="550" cy="110" r="16" fill="rgba(59, 130, 246, 0.15)" stroke="#3b82f6" stroke-width="2.5" class="transition-all duration-300 group-hover:r-20 group-hover:fill-brand-blue/30" />
+                <text x="550" y="114" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">04</text>
+                <text x="550" y="142" text-anchor="middle" fill="#a1a1aa" font-size="9" font-family="sans-serif" font-weight="600" class="group-hover:fill-white transition-colors">Avançado</text>
+              </g>
+
+              <!-- Conversação Comercial -->
+              <g class="graph-node cursor-pointer group" data-card-id="course-comercial">
+                <circle cx="700" cy="110" r="16" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="2.5" class="transition-all duration-300 group-hover:r-20 group-hover:fill-brand-jade/30" />
+                <text x="700" y="114" text-anchor="middle" fill="white" font-size="10" font-family="monospace" font-weight="bold">05</text>
+                <text x="700" y="142" text-anchor="middle" fill="#a1a1aa" font-size="9" font-family="sans-serif" font-weight="600" class="group-hover:fill-white transition-colors">Comercial</text>
+              </g>
+
+              <!-- Special Courses (Floating Branches) -->
+              <!-- Cultura -->
+              <g class="graph-node cursor-pointer group" data-card-id="special-0">
+                <circle cx="150" cy="40" r="10" fill="rgba(255, 255, 255, 0.05)" stroke="#9ca3af" stroke-width="1.5" class="transition-all duration-300 group-hover:fill-brand-gold/20 group-hover:stroke-brand-gold" />
+                <text x="150" y="62" text-anchor="middle" fill="#6b7280" font-size="8" font-family="sans-serif" class="group-hover:fill-white transition-colors">Cultura</text>
+              </g>
+              
+              <!-- Etiqueta -->
+              <g class="graph-node cursor-pointer group" data-card-id="special-1">
+                <circle cx="300" cy="40" r="10" fill="rgba(255, 255, 255, 0.05)" stroke="#9ca3af" stroke-width="1.5" class="transition-all duration-300 group-hover:fill-brand-gold/20 group-hover:stroke-brand-gold" />
+                <text x="300" y="62" text-anchor="middle" fill="#6b7280" font-size="8" font-family="sans-serif" class="group-hover:fill-white transition-colors">Etiqueta</text>
+              </g>
+
+              <!-- Treinamento Professores -->
+              <g class="graph-node cursor-pointer group" data-card-id="special-2">
+                <circle cx="450" cy="40" r="10" fill="rgba(255, 255, 255, 0.05)" stroke="#9ca3af" stroke-width="1.5" class="transition-all duration-300 group-hover:fill-brand-gold/20 group-hover:stroke-brand-gold" />
+                <text x="450" y="62" text-anchor="middle" fill="#6b7280" font-size="8" font-family="sans-serif" class="group-hover:fill-white transition-colors">Professores</text>
+              </g>
+
+              <!-- Corporativo -->
+              <g class="graph-node cursor-pointer group" data-card-id="special-3">
+                <circle cx="600" cy="175" r="10" fill="rgba(255, 255, 255, 0.05)" stroke="#9ca3af" stroke-width="1.5" class="transition-all duration-300 group-hover:fill-brand-gold/20 group-hover:stroke-brand-gold" />
+                <text x="600" y="196" text-anchor="middle" fill="#6b7280" font-size="8" font-family="sans-serif" class="group-hover:fill-white transition-colors">Corporativo</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Regular Courses Grid -->
+      <div class="mb-20">
+        <h3 class="text-xl font-display font-black text-white mb-8 flex items-center gap-3">
+          <span class="text-brand-gold">🧭</span> Jornada Regular de Aprendizado
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {courses.map((course) => {
+            const colors = {
+              iniciante: 'border-brand-red/20 hover:border-brand-red/50 text-brand-red shadow-brand-red/5 bg-brand-red/5',
+              basico: 'border-brand-gold/20 hover:border-brand-gold/50 text-brand-gold shadow-brand-gold/5 bg-brand-gold/5',
+              intermediario: 'border-brand-purple/20 hover:border-brand-purple/50 text-brand-purple shadow-brand-purple/5 bg-brand-purple/5',
+              avancado: 'border-brand-blue/20 hover:border-brand-blue/50 text-brand-blue shadow-brand-blue/5 bg-brand-blue/5',
+              comercial: 'border-brand-jade/20 hover:border-brand-jade/50 text-brand-jade shadow-brand-jade/5 bg-brand-jade/5',
+            }[course.id];
+            
+            const badgeBg = {
+              iniciante: 'bg-brand-red/10 border-brand-red/20 text-brand-red',
+              basico: 'bg-brand-gold/10 border-brand-gold/20 text-brand-gold',
+              intermediario: 'bg-brand-purple/10 border-brand-purple/20 text-brand-purple',
+              avancado: 'bg-brand-blue/10 border-brand-blue/20 text-brand-blue',
+              comercial: 'bg-brand-jade/10 border-brand-jade/20 text-brand-jade',
+            }[course.id];
+
+            return (
+              <div 
+                id={`course-${course.id}`}
+                class={`group glass-panel rounded-2xl p-6 border transition-all duration-500 flex flex-col justify-between hover:-translate-y-1.5 shadow-xl relative overflow-hidden ${colors}`}
+              >
+                <div class="mb-4">
+                  <div class="flex items-center justify-between mb-4 border-b border-white/5 pb-2.5">
+                    <span class={`text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded border ${badgeBg}`}>
+                      {course.id}
+                    </span>
+                    <span class="text-[10px] font-mono text-gray-400 bg-white/5 px-2.5 py-1 rounded-full border border-white/10">
+                      🕒 {course.hours}
+                    </span>
+                  </div>
+                  
+                  {/* Frontmatter YAML simulation */}
+                  <div class="bg-black/35 rounded-lg p-3 mb-4 border border-white/5 font-mono text-[10px] text-gray-400 space-y-0.5 leading-relaxed select-none">
+                    <div><span class="text-brand-gold">title:</span> {course.title}</div>
+                    <div><span class="text-brand-gold">material:</span> {course.material}</div>
+                  </div>
+
+                  <h4 class="text-lg font-display font-black text-white group-hover:text-white transition-colors leading-tight">
+                    {course.title.split(' – ').pop()}
+                  </h4>
+                  
+                  <div class="text-xs text-gray-300 mt-4 leading-relaxed font-light">
+                    <p>
+                      <strong class="text-brand-gold font-mono font-normal">[[Objetivo]]:</strong> {course.objective}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-white/5">
+                  <a 
+                    href={getWhatsAppEnrollUrl(course.title)} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block w-full text-center py-3 rounded-full bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold text-[11px] tracking-widest uppercase transition-all duration-300 shadow-md hover:shadow-lg active:translate-y-0.5 transform hover:scale-[1.02]"
+                  >
+                    Inscreva-se já 🚀
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <!-- Special Courses Grid -->
+      <div class="mb-8">
+        <h3 class="text-xl font-display font-black text-white mb-8 flex items-center gap-3">
+          <span class="text-brand-gold">📚</span> Cursos de Especialidade & Imersão Rápida
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {specialCourses.map((course, index) => {
+            const icons = ['🏮', '🍵', '🧠', '🏢'];
+            const colors = [
+              'hover:border-brand-red/35',
+              'hover:border-brand-gold/35',
+              'hover:border-brand-purple/35',
+              'hover:border-brand-blue/35'
+            ];
+            
+            return (
+              <div 
+                id={`special-${index}`}
+                class={`group glass-panel rounded-2xl p-5 border border-white/5 transition-all duration-500 flex flex-col justify-between hover:-translate-y-1 ${colors[index]}`}
+              >
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-2xl p-2 bg-white/5 rounded-xl group-hover:scale-110 transition-transform">{icons[index]}</span>
+                    <span class="text-[9px] font-mono text-gray-400 bg-white/5 px-2 py-0.5 rounded border border-white/5">⏱️ {course.hours}</span>
+                  </div>
+                  <h4 class="font-display font-bold text-sm text-white mt-4 group-hover:text-brand-gold transition-colors leading-tight">
+                    {course.title}
+                  </h4>
+                  <p class="text-xs text-gray-400 mt-2.5 leading-relaxed font-light">
+                    <strong class="text-brand-gold font-mono font-normal">[[Foco]]:</strong> {course.description}
+                  </p>
+                </div>
+                
+                <a 
+                  href={getWhatsAppEnrollUrl(course.title)} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block w-full text-center py-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-brand-gold/30 text-gray-300 font-bold text-[10px] tracking-wider uppercase transition-all mt-6"
+                >
+                  Inscreva-se já
+                </a>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Tradução & Interpretação Section -->
+  <section class="py-20 border-t border-white/5 bg-[radial-gradient(circle_at_bottom,rgba(59,130,246,0.02),transparent_50%)]" id="traducao">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Description & Core Capability (cols: 5) -->
+        <div class="lg:col-span-5 space-y-6">
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-blue/10 border border-brand-blue/25 text-xs font-bold text-brand-blue tracking-widest uppercase">
+            🌐 SERVIÇOS TÉCNICOS DE IDIOMAS
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-display font-black text-white tracking-tight leading-tight">
+            {translationService.title}
+          </h2>
+          <p class="text-sm text-gray-300 leading-relaxed font-light">
+            {translationService.types} Conexões linguísticas precisas e sem atritos para aproximar culturas, alavancar negócios e garantir o sucesso de missões internacionais.
+          </p>
+          
+          <div class="p-5 bg-white/5 border border-white/10 rounded-2xl space-y-4">
+            <h4 class="text-xs font-bold text-brand-gold uppercase tracking-wider">Idiomas de Trabalho (Fluência Profissional)</h4>
+            <div class="flex flex-wrap gap-2.5">
+              {translationService.languages.map(lang => {
+                const flags = {
+                  Mandarim: '🇨🇳',
+                  Português: '🇧🇷',
+                  Espanhol: '🇪🇸',
+                  Inglês: '🇺🇸',
+                }[lang];
+                return (
+                  <span class="px-3.5 py-1.5 bg-black/40 rounded-full text-xs font-semibold border border-white/5 text-white flex items-center gap-1.5 shadow-sm">
+                    <span>{flags}</span> {lang}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <!-- Proven Experience & CTA (cols: 7) -->
+        <div class="lg:col-span-7 space-y-8">
+          
+          <!-- Capabilities description -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-2 hover:border-brand-blue/25 transition-all duration-300">
+              <span class="text-2xl">🎙️</span>
+              <h4 class="font-display font-bold text-sm text-white">Interpretação Simultânea & Consecutiva</h4>
+              <p class="text-xs text-gray-400 leading-relaxed font-light">
+                Suporte de alta fidelidade em fóruns internacionais, auditorias industriais, rodadas de investimento e visitas presidenciais.
+              </p>
+            </div>
+            <div class="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-2 hover:border-brand-blue/25 transition-all duration-300">
+              <span class="text-2xl">📄</span>
+              <h4 class="font-display font-bold text-sm text-white">Tradução de Alta Complexidade</h4>
+              <p class="text-xs text-gray-400 leading-relaxed font-light">
+                Contratos comerciais, manuais de engenharia, especificações de importação, patentes e relatórios executivos confidenciais.
+              </p>
+            </div>
+          </div>
+
+          <!-- Client logos/proven experience -->
+          <div class="space-y-4">
+            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider pl-1">Experiência Corporativa Comprovada</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+              {translationService.clients.map(client => (
+                <div class="px-4 py-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors flex items-center justify-center text-center shadow-md select-none">
+                  <span class="text-xs text-gray-300 font-bold uppercase tracking-wider">{client}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- CTA block -->
+          <div class="p-6 bg-gradient-to-r from-brand-blue/15 via-brand-gold/5 to-black/45 border border-brand-blue/20 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-12 -bottom-12 w-24 h-24 bg-brand-blue/5 rounded-full filter blur-xl"></div>
+            <div class="space-y-1.5 text-center sm:text-left z-10">
+              <h4 class="text-sm font-extrabold text-white">Precisa de suporte especializado de tradução ou intérprete?</h4>
+              <p class="text-xs text-gray-400 leading-normal font-light">Atendimento virtual e presencial para corporações, indústrias e eventos.</p>
+            </div>
+            <a 
+              href={getWhatsAppQuoteUrl('Tradução & Interpretação')} 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-full text-center text-xs font-black bg-brand-blue hover:bg-brand-blue/90 text-white shadow-lg shadow-brand-blue/20 transition-all uppercase tracking-widest shrink-0 hover:scale-[1.02] transform"
+            >
+              Solicite Orçamento 📋
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+</Layout>

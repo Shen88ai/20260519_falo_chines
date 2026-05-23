@@ -1,0 +1,495 @@
+---
+// ToneAnalyser - A Balança de Tons Dinâmica (Web Audio API + Autocorrelation)
+---
+
+<div class="glass-panel rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto shadow-2xl relative overflow-hidden" id="tone-analyser">
+  
+  <div class="text-center mb-6">
+    <span class="text-[10px] font-bold text-brand-gold uppercase tracking-wider bg-brand-gold/10 px-3 py-1 rounded-full border border-brand-gold/20">
+      Balança de Tons (Tone Wave Scale) 🎙️
+    </span>
+    <h3 class="text-xl sm:text-2xl font-display font-extrabold text-white mt-3">
+      Treine sua Pronúncia em Tempo Real
+    </h3>
+    <p class="text-xs text-gray-400 mt-1 max-w-md mx-auto">
+      Selecione um tom, clique em "Gravar" e cante a sílaba "Ma" para comparar sua curva de voz com o tom de referência.
+    </p>
+  </div>
+
+  <!-- Tone Selector Grid -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+    <button 
+      class="tone-selector-btn px-4 py-3 rounded-xl border border-brand-red bg-brand-red/5 hover:bg-brand-red/10 text-white font-display font-bold text-xs flex flex-col items-center gap-1 transition-all cursor-pointer shadow-sm active-tone"
+      data-tone="1"
+    >
+      <span class="text-lg">mā</span>
+      <span class="text-[10px] text-brand-red/80 font-medium">1º Tom (Plano)</span>
+    </button>
+    <button 
+      class="tone-selector-btn px-4 py-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-gray-300 font-display font-bold text-xs flex flex-col items-center gap-1 transition-all cursor-pointer shadow-sm"
+      data-tone="2"
+    >
+      <span class="text-lg">má</span>
+      <span class="text-[10px] text-gray-400 font-medium">2º Tom (Ascendente)</span>
+    </button>
+    <button 
+      class="tone-selector-btn px-4 py-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-gray-300 font-display font-bold text-xs flex flex-col items-center gap-1 transition-all cursor-pointer shadow-sm"
+      data-tone="3"
+    >
+      <span class="text-lg">mǎ</span>
+      <span class="text-[10px] text-gray-400 font-medium">3º Tom (Curvo)</span>
+    </button>
+    <button 
+      class="tone-selector-btn px-4 py-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-gray-300 font-display font-bold text-xs flex flex-col items-center gap-1 transition-all cursor-pointer shadow-sm"
+      data-tone="4"
+    >
+      <span class="text-lg">mà</span>
+      <span class="text-[10px] text-gray-400 font-medium">4º Tom (Descendente)</span>
+    </button>
+  </div>
+
+  <!-- Interactive Graphic Canvas -->
+  <div class="relative w-full aspect-[2/1] bg-black/60 rounded-xl border border-white/5 overflow-hidden flex items-center justify-center">
+    <canvas id="tone-canvas" class="absolute inset-0 w-full h-full"></canvas>
+    
+    <!-- Microphone Permission Status Overlay -->
+    <div class="absolute z-10 flex flex-col items-center gap-3 text-center px-4" id="mic-status-overlay">
+      <div class="w-16 h-16 rounded-full bg-brand-gold/10 flex items-center justify-center text-2xl animate-pulse text-brand-gold border border-brand-gold/30">
+        🎙️
+      </div>
+      <div>
+        <p class="text-sm font-bold text-white">Pronto para Analisar</p>
+        <p class="text-[11px] text-gray-400 mt-0.5">Clique no botão abaixo para ativar seu microfone e iniciar.</p>
+      </div>
+    </div>
+
+    <!-- Match Score Overlay -->
+    <div class="absolute top-4 right-4 bg-black/80 border border-white/15 px-3 py-1.5 rounded-lg backdrop-blur flex items-center gap-2 hidden" id="match-score-badge">
+      <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Pontuação:</span>
+      <span class="text-sm font-extrabold text-brand-gold" id="score-text">0%</span>
+    </div>
+  </div>
+
+  <!-- Bottom Interactive Panel -->
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 border-t border-white/5 pt-5">
+    <div class="flex items-center gap-3">
+      <button 
+        class="px-6 py-3 rounded-full bg-brand-red text-white hover:bg-brand-red/90 font-extrabold text-xs tracking-wider transition-all duration-300 flex items-center gap-2 cursor-pointer shadow-md shadow-brand-red/10" 
+        id="btn-toggle-mic"
+      >
+        <span class="text-sm">🎤</span>
+        <span id="btn-mic-text">Ativar Microfone</span>
+      </button>
+      <button 
+        class="px-5 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 font-bold text-xs tracking-wider transition-all cursor-pointer hidden" 
+        id="btn-clear-pitch"
+      >
+        Limpar Curva
+      </button>
+    </div>
+
+    <!-- Live Pitch Frequency Display -->
+    <div class="flex items-center gap-4 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full bg-brand-gold"></span>
+        <span class="text-gray-400">Tom de Referência</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full bg-brand-red"></span>
+        <span class="text-gray-400">Sua Voz (<span id="live-freq-text">0Hz</span>)</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CSS style for active state in selector -->
+<style>
+  .active-tone {
+    border-color: var(--color-brand-red) !important;
+    background: rgba(239, 68, 68, 0.12) !important;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+  }
+</style>
+
+<!-- Client Side Web Audio Autocorrelation Pitch Tracking Logic -->
+<script is:inline>
+  (function initToneAnalyser() {
+    const canvas = document.getElementById('tone-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const btnToggleMic = document.getElementById('btn-toggle-mic');
+    const btnMicText = document.getElementById('btn-mic-text');
+    const btnClearPitch = document.getElementById('btn-clear-pitch');
+    const micStatusOverlay = document.getElementById('mic-status-overlay');
+    const matchScoreBadge = document.getElementById('match-score-badge');
+    const scoreText = document.getElementById('score-text');
+    const liveFreqText = document.getElementById('live-freq-text');
+    const selectorButtons = document.querySelectorAll('.tone-selector-btn');
+
+    let audioContext = null;
+    let analyserNode = null;
+    let microphoneStream = null;
+    let isRecording = false;
+    let animationFrameId = null;
+
+    let selectedTone = 1; // Default 1st tone
+    const bufferSize = 2048;
+    const timeDomainBuffer = new Float32Array(bufferSize);
+
+    // Arrays de pontos de frequência para desenhar na tela (x, y)
+    // Curva do usuário: salva as frequências registradas ao longo de uma janela de tempo
+    let userPitchPoints = [];
+    const maxPoints = 120; // Tamanho máximo da linha desenhada
+
+    // Redimensiona o canvas interno para resoluções nítidas
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Mapeia botões seletores de tons
+    selectorButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectorButtons.forEach(b => {
+          b.classList.remove('active-tone');
+          b.classList.add('border-white/5', 'bg-white/5', 'text-gray-300');
+          // Limpa cores de destaque antigas
+          const label = b.querySelector('span:nth-child(2)');
+          if (label) label.className = 'text-[10px] text-gray-400 font-medium';
+        });
+
+        btn.classList.add('active-tone');
+        btn.classList.remove('border-white/5', 'bg-white/5', 'text-gray-300');
+
+        selectedTone = parseInt(btn.dataset.tone || '1');
+        const label = btn.querySelector('span:nth-child(2)');
+
+        // Cores personalizadas dinâmicas por tom
+        if (selectedTone === 1) {
+          btn.style.borderColor = '#ef4444';
+          if (label) label.className = 'text-[10px] text-brand-red/80 font-medium';
+        } else if (selectedTone === 2) {
+          btn.style.borderColor = '#fbbf24';
+          if (label) label.className = 'text-[10px] text-brand-gold/80 font-medium';
+        } else if (selectedTone === 3) {
+          btn.style.borderColor = '#a855f7';
+          if (label) label.className = 'text-[10px] text-brand-purple/80 font-medium';
+        } else {
+          btn.style.borderColor = '#3b82f6';
+          if (label) label.className = 'text-[10px] text-brand-blue/80 font-medium';
+        }
+
+        // Reseta o gráfico para treinar o novo tom
+        clearChart();
+      });
+    });
+
+    btnToggleMic.addEventListener('click', async () => {
+      if (isRecording) {
+        stopRecording();
+      } else {
+        await startRecording();
+      }
+    });
+
+    btnClearPitch.addEventListener('click', () => {
+      clearChart();
+    });
+
+    function clearChart() {
+      userPitchPoints = [];
+      if (scoreText) scoreText.textContent = '0%';
+      if (matchScoreBadge) matchScoreBadge.classList.add('hidden');
+      if (liveFreqText) liveFreqText.textContent = '0Hz';
+    }
+
+    async function startRecording() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        microphoneStream = stream;
+
+        // Inicializa áudio
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContextClass();
+        analyserNode = audioContext.createAnalyser();
+        analyserNode.fftSize = bufferSize;
+
+        const source = audioContext.createMediaStreamSource(stream);
+        source.connect(analyserNode);
+
+        isRecording = true;
+        btnMicText.textContent = "Parar Gravação";
+        btnToggleMic.classList.remove('bg-brand-red', 'hover:bg-brand-red/90');
+        btnToggleMic.classList.add('bg-brand-gold', 'hover:bg-brand-gold-hover', 'text-dark-bg');
+        
+        if (micStatusOverlay) micStatusOverlay.classList.add('hidden');
+        if (btnClearPitch) btnClearPitch.classList.remove('hidden');
+        if (matchScoreBadge) matchScoreBadge.classList.remove('hidden');
+
+        userPitchPoints = [];
+        drawLoop();
+      } catch (err) {
+        console.error("Falha ao obter permissão de microfone:", err);
+        alert("Por favor, conceda permissão de microfone para analisar sua pronúncia dos tons.");
+      }
+    }
+
+    function stopRecording() {
+      isRecording = false;
+      btnMicText.textContent = "Gravar Pronúncia";
+      btnToggleMic.classList.add('bg-brand-red', 'hover:bg-brand-red/90');
+      btnToggleMic.classList.remove('bg-brand-gold', 'hover:bg-brand-gold-hover', 'text-dark-bg');
+
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+      if (microphoneStream) {
+        microphoneStream.getTracks().forEach(track => track.stop());
+      }
+      if (audioContext) {
+        audioContext.close();
+      }
+
+      // Calcula pontuação final de acerto
+      calculateMatchScore();
+    }
+
+    // Algoritmo de Autocorrelação de Frequência no domínio do tempo
+    // Altamente performático e preciso para frequência fundamental da voz humana (pitch fundamental)
+    function autoCorrelate(buffer, sampleRate) {
+      // 1. Verifica se há energia sonora suficiente (volume / silêncio)
+      let rms = 0;
+      for (let i = 0; i < buffer.length; i++) {
+        const val = buffer[i];
+        rms += val * val;
+      }
+      rms = Math.sqrt(rms / buffer.length);
+      if (rms < 0.015) {
+        return -1; // Silêncio
+      }
+
+      // 2. Recorta sinal para remover ruídos de borda
+      let r1 = 0, r2 = buffer.length - 1;
+      const thres = 0.2;
+      for (let i = 0; i < buffer.length / 2; i++) {
+        if (Math.abs(buffer[i]) < thres) {
+          r1 = i;
+          break;
+        }
+      }
+      for (let i = buffer.length - 1; i >= buffer.length / 2; i--) {
+        if (Math.abs(buffer[i]) < thres) {
+          r2 = i;
+          break;
+        }
+      }
+      const signal = buffer.subarray(r1, r2);
+
+      // 3. Algoritmo de Autocorrelação
+      const c = new Float32Array(signal.length);
+      for (let lag = 0; lag < signal.length; lag++) {
+        for (let i = 0; i < signal.length - lag; i++) {
+          c[lag] += signal[i] * signal[i + lag];
+        }
+      }
+
+      // Encontra o primeiro vale (valley) para evitar harmonic double peak
+      let d = 0;
+      while (d < c.length - 1 && c[d] > c[d + 1]) d++;
+
+      // Encontra o pico mais proeminente após o vale
+      let maxVal = -1;
+      let maxLag = -1;
+      for (let i = d; i < c.length; i++) {
+        if (c[i] > maxVal) {
+          maxVal = c[i];
+          maxLag = i;
+        }
+      }
+
+      // Converte o lag em frequência
+      if (maxLag > -1) {
+        const pitch = sampleRate / maxLag;
+        // Filtra para faixa vocal humana comum (60Hz a 450Hz)
+        if (pitch > 60 && pitch < 450) {
+          return pitch;
+        }
+      }
+
+      return -1;
+    }
+
+    // Desenha as grades e curvas
+    function drawLoop() {
+      if (!isRecording) return;
+
+      animationFrameId = requestAnimationFrame(drawLoop);
+
+      // Captura dados do microfone
+      analyserNode.getFloat32TimeDomainData(timeDomainBuffer);
+      const freq = autoCorrelate(timeDomainBuffer, audioContext.sampleRate);
+
+      if (freq > 0) {
+        userPitchPoints.push(freq);
+        if (userPitchPoints.length > maxPoints) {
+          userPitchPoints.shift();
+        }
+        if (liveFreqText) liveFreqText.textContent = `${Math.round(freq)}Hz`;
+      }
+
+      // Limpa e redesenha a tela
+      const w = canvas.width / window.devicePixelRatio;
+      const h = canvas.height / window.devicePixelRatio;
+      ctx.clearRect(0, 0, w, h);
+
+      drawGrid(w, h);
+      drawReferenceTone(w, h);
+      drawUserTone(w, h);
+    }
+
+    function drawGrid(w, h) {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.lineWidth = 1;
+      // Linhas horizontais representando faixas de oitava
+      for (let y = 0; y < h; y += h / 5) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+    }
+
+    // Desenha a linha de referência do tom chinês selecionado
+    function drawReferenceTone(w, h) {
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.8)'; // Golden
+      ctx.lineWidth = 4;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+
+      // Equação do tom para desenhar a curva de referência no canvas
+      for (let x = 0; x < w; x++) {
+        const t = x / w; // tempo normalizado de 0 a 1
+        let y = 0;
+
+        if (selectedTone === 1) {
+          // 1º Tom: Plano Alto (horizontal constante perto do topo)
+          y = h * 0.3;
+        } else if (selectedTone === 2) {
+          // 2º Tom: Ascendente (sobe rapidamente do meio para o topo)
+          y = h * 0.7 - t * (h * 0.45);
+        } else if (selectedTone === 3) {
+          // 3º Tom: Baixo e Curvo (desce no meio e sobe ligeiramente)
+          y = h * 0.5 + Math.sin(t * Math.PI - Math.PI / 6) * (h * 0.25);
+        } else {
+          // 4º Tom: Descendente rápido (cai violentamente do topo ao fundo)
+          y = h * 0.2 + t * (h * 0.65);
+        }
+
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+
+      ctx.stroke();
+      ctx.setLineDash([]); // Limpa dash
+    }
+
+    // Desenha a curva de voz real do usuário
+    function drawUserTone(w, h) {
+      if (userPitchPoints.length === 0) return;
+
+      ctx.strokeStyle = '#ef4444'; // Red
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+
+      userPitchPoints.forEach((freq, idx) => {
+        // Mapeia X ao longo do canvas baseado no índice do ponto
+        const x = (idx / (maxPoints - 1)) * w;
+        
+        // Normaliza Y: faixa vocal de 80Hz (base do canvas) a 300Hz (topo do canvas)
+        const minFreq = 80;
+        const maxFreq = 300;
+        const percent = (freq - minFreq) / (maxFreq - minFreq);
+        const y = h - Math.max(0.1, Math.min(0.9, percent)) * h;
+
+        if (idx === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+
+      ctx.stroke();
+    }
+
+    // Algoritmo matemático para comparar as duas curvas e dar score de acerto pedagógico
+    function calculateMatchScore() {
+      if (userPitchPoints.length < 15) {
+        if (scoreText) scoreText.textContent = '0%';
+        return;
+      }
+
+      const h = canvas.height / window.devicePixelRatio;
+      let totalDiff = 0;
+      let count = 0;
+
+      // Compara apenas a janela correspondente ao tamanho da curva gerada pelo usuário
+      userPitchPoints.forEach((freq, idx) => {
+        const t = idx / (userPitchPoints.length - 1);
+        
+        // Frequência de referência teórica ideal correspondente no tempo t
+        let refYPercent = 0;
+        if (selectedTone === 1) {
+          refYPercent = 0.7; // Plano alto
+        } else if (selectedTone === 2) {
+          refYPercent = 0.3 + t * 0.45; // Ascendente
+        } else if (selectedTone === 3) {
+          refYPercent = 0.5 - Math.sin(t * Math.PI - Math.PI / 6) * 0.25; // Curvo
+        } else {
+          refYPercent = 0.8 - t * 0.65; // Descendente
+        }
+
+        // Converte freq real para porcentagem da oitava vocal
+        const minFreq = 80;
+        const maxFreq = 300;
+        const userYPercent = (freq - minFreq) / (maxFreq - minFreq);
+
+        // Diferença absoluta
+        totalDiff += Math.abs(refYPercent - userYPercent);
+        count++;
+      });
+
+      const avgDiff = totalDiff / count;
+      
+      // Converte a diferença média em uma pontuação de 0 a 100%
+      let score = Math.round((1 - avgDiff) * 100);
+      
+      // Ajustes finos de tolerância para não desencorajar o aluno
+      score = Math.max(0, Math.min(100, score + 12)); 
+
+      if (scoreText) {
+        scoreText.textContent = `${score}%`;
+        // Modifica cor do score baseado no desempenho
+        if (score >= 80) {
+          scoreText.className = 'text-sm font-extrabold text-brand-jade';
+        } else if (score >= 50) {
+          scoreText.className = 'text-sm font-extrabold text-brand-gold';
+        } else {
+          scoreText.className = 'text-sm font-extrabold text-brand-red';
+        }
+      }
+    }
+
+    // Inicializa o canvas com a linha de referência desenhada estaticamente ao carregar
+    setTimeout(() => {
+      const w = canvas.width / window.devicePixelRatio;
+      const h = canvas.height / window.devicePixelRatio;
+      ctx.clearRect(0, 0, w, h);
+      drawGrid(w, h);
+      drawReferenceTone(w, h);
+    }, 100);
+  })();
+</script>

@@ -1,0 +1,502 @@
+---
+import { pathConfigs, pathInfo } from '../../src/data/path-mapping';
+
+// Serializa as configurações de rota para o script do cliente
+const serializedConfigs = JSON.stringify(pathConfigs);
+const serializedInfo = JSON.stringify(pathInfo);
+---
+
+<div class="advisor-card glass-panel rounded-2xl p-6 sm:p-10 max-w-4xl mx-auto shadow-2xl relative overflow-hidden" id="nivelamento">
+  
+  <!-- Subtle decorative background patterns -->
+  <div class="absolute -right-24 -bottom-24 w-64 h-64 bg-brand-gold/5 rounded-full filter blur-3xl pointer-events-none"></div>
+  <div class="absolute -left-24 -top-24 w-64 h-64 bg-brand-red/5 rounded-full filter blur-3xl pointer-events-none"></div>
+
+  <!-- Dialogue Box with Master Mentor -->
+  <div class="advisor-dialogue flex items-start gap-4 mb-8 bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 backdrop-blur">
+    <div class="advisor-avatar flex items-center justify-center text-4xl w-14 h-14 bg-gradient-to-br from-brand-red to-brand-gold rounded-full shadow-lg select-none">
+      👴
+    </div>
+    <div class="flex-1">
+      <h4 class="text-brand-gold font-display font-bold text-sm tracking-widest uppercase mb-1">Mestre da Jornada</h4>
+      <p class="advisor-speech text-gray-200 text-sm sm:text-base italic leading-relaxed" id="advisor-speech">
+        "Saudações, jovem aprendiz de chinês. Permita-me avaliar seus objetivos e desenhar o pergaminho da sua rota perfeita rumo à fluência."
+      </p>
+    </div>
+  </div>
+
+  <!-- Interactive Form -->
+  <form class="diagnosis-form space-y-8" id="diagnosis-form-el">
+    
+    <!-- STEP 1: MOTIVATION -->
+    <div class="question-step block transition-opacity duration-500" data-step="1">
+      <div class="text-center mb-6">
+        <span class="text-xs font-bold text-brand-gold uppercase tracking-wider bg-brand-gold/10 px-3 py-1 rounded-full">Etapa 1 de 3</span>
+        <h3 class="text-2xl font-display font-bold text-white mt-2">Qual a sua principal motivação para aprender Mandarim?</h3>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="motivation" value="commercial" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-red/10 rounded-lg group-hover:scale-110 transition-transform">👔</span>
+            <div>
+              <span class="block font-bold text-white text-base">Negócios & Carreira</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Networking, comércio exterior e crescimento corporativo com multinacionais chinesas.</span>
+            </div>
+          </div>
+        </label>
+        
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="motivation" value="travel" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-gold/10 rounded-lg group-hover:scale-110 transition-transform">✈️</span>
+            <div>
+              <span class="block font-bold text-white text-base">Viagem & Sobrevivência</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Sobrevivência nas ruas, pedir comida, negociar em mercados e ler placas na China.</span>
+            </div>
+          </div>
+        </label>
+
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="motivation" value="academic" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-purple/10 rounded-lg group-hover:scale-110 transition-transform">🎓</span>
+            <div>
+              <span class="block font-bold text-white text-base">Estudos & Acadêmico</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Estrutura linguística, escrita tradicional de ideogramas e certificações HSK.</span>
+            </div>
+          </div>
+        </label>
+
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="motivation" value="cultural" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-blue/10 rounded-lg group-hover:scale-110 transition-transform">🎭</span>
+            <div>
+              <span class="block font-bold text-white text-base">Cultura & Lazer (Hobbie)</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Apreciar C-dramas, música pop, caligrafia tradicional e enriquecimento cultural.</span>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- STEP 2: GOAL -->
+    <div class="question-step hidden transition-opacity duration-500" data-step="2">
+      <div class="text-center mb-6">
+        <span class="text-xs font-bold text-brand-gold uppercase tracking-wider bg-brand-gold/10 px-3 py-1 rounded-full">Etapa 2 de 3</span>
+        <h3 class="text-2xl font-display font-bold text-white mt-2">Qual é o seu foco primordial de aprendizado na V1?</h3>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="goal" value="conversation" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-blue/10 rounded-lg group-hover:scale-110 transition-transform">💬</span>
+            <div>
+              <span class="block font-bold text-white text-base">Conversação Prática</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Falar com entonação correta e compreender o mandarim falado nativo.</span>
+            </div>
+          </div>
+        </label>
+
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="goal" value="characters" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-jade/10 rounded-lg group-hover:scale-110 transition-transform">✍️</span>
+            <div>
+              <span class="block font-bold text-white text-base">Ideogramas & Leitura</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Escrever caracteres seguindo a ordem correta dos traços e decifrar radicais.</span>
+            </div>
+          </div>
+        </label>
+
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="goal" value="exam" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-purple/10 rounded-lg group-hover:scale-110 transition-transform">📜</span>
+            <div>
+              <span class="block font-bold text-white text-base">Certificação Oficial HSK</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Focar no vocabulário padronizado cobrado nos exames oficiais da China.</span>
+            </div>
+          </div>
+        </label>
+
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="goal" value="business" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-red/10 rounded-lg group-hover:scale-110 transition-transform">📊</span>
+            <div>
+              <span class="block font-bold text-white text-base">Vocabulário de Negócios</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Saudações formais, etiqueta corporativa chinesa e expressões de finanças.</span>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- STEP 3: CURRENT PROGRESS -->
+    <div class="question-step hidden transition-opacity duration-500" data-step="3">
+      <div class="text-center mb-6">
+        <span class="text-xs font-bold text-brand-gold uppercase tracking-wider bg-brand-gold/10 px-3 py-1 rounded-full">Etapa 3 de 3</span>
+        <h3 class="text-2xl font-display font-bold text-white mt-2">Qual o seu conhecimento atual de Mandarim?</h3>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="progress" value="zero" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-jade/10 rounded-lg group-hover:scale-110 transition-transform">🌱</span>
+            <div>
+              <span class="block font-bold text-white text-base">Iniciante do Absoluto Zero</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Não conheço os tons, Pinyin nem ideogramas chineses.</span>
+            </div>
+          </div>
+        </label>
+
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="progress" value="beginner" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-gold/10 rounded-lg group-hover:scale-110 transition-transform">🍃</span>
+            <div>
+              <span class="block font-bold text-white text-base">Básico Iniciado</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Conheço o básico do Pinyin e algumas expressões como "Nǐ hǎo".</span>
+            </div>
+          </div>
+        </label>
+
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="progress" value="intermediate" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-blue/10 rounded-lg group-hover:scale-110 transition-transform">🌿</span>
+            <div>
+              <span class="block font-bold text-white text-base">Intermediário</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Consigo formular sentenças simples e compreendo diálogos básicos.</span>
+            </div>
+          </div>
+        </label>
+
+        <label class="relative group cursor-pointer">
+          <input type="radio" name="progress" value="advanced" class="option-card-input sr-only" />
+          <div class="option-card-visual p-5 rounded-xl border border-white/10 bg-white/5 hover:border-brand-gold/50 transition-all duration-300 flex items-start gap-4">
+            <span class="text-3xl p-3 bg-brand-purple/10 rounded-lg group-hover:scale-110 transition-transform">🌳</span>
+            <div>
+              <span class="block font-bold text-white text-base">Avançado</span>
+              <span class="block text-xs text-gray-400 mt-1 leading-relaxed">Leio ideogramas sem auxílio de Pinyin e domino mais de 500 caracteres.</span>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="form-navigation flex items-center justify-between mt-8 border-t border-white/5 pt-6">
+      <button 
+        type="button" 
+        class="px-6 py-2.5 rounded-full text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 cursor-pointer transition-all duration-300 hidden" 
+        id="btn-prev"
+      >
+        ← Voltar
+      </button>
+      <div class="flex-grow"></div>
+      <button 
+        type="button" 
+        class="px-8 py-2.5 rounded-full text-xs font-bold bg-brand-gold text-dark-bg hover:shadow-[0_0_15px_rgba(251,191,36,0.3)] cursor-not-allowed transition-all duration-300" 
+        id="btn-next" 
+        disabled
+      >
+        Próximo →
+      </button>
+    </div>
+  </form>
+
+  <!-- RESULT REVEAL (PARCHMENT / PERGAMINHO VIRTUAL SCROLL) -->
+  <div class="result-reveal hidden mt-8" id="result-reveal">
+    <div class="parchment-scroll p-6 sm:p-10 rounded-lg max-w-3xl mx-auto shadow-2xl animate-scroll-unfold text-brown-900 border-collapse">
+      
+      <!-- Seal -->
+      <div class="flex justify-center mb-6">
+        <span class="text-5xl filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] animate-pulse">📜</span>
+      </div>
+
+      <!-- Path Header -->
+      <div class="text-center border-b-2 border-brown-300/40 pb-6 mb-6">
+        <h3 class="text-3xl font-display font-extrabold text-[#5d4037] uppercase tracking-wider" id="result-path-name">
+          Sua Rota de Aprendizado
+        </h3>
+        <p class="text-sm font-semibold text-[#8d6e63] mt-2" id="result-summary">
+          Analizando suas respostas...
+        </p>
+      </div>
+
+      <!-- Path Description -->
+      <p class="text-sm text-[#4e342e] leading-relaxed italic text-center mb-8 px-4" id="result-path-desc">
+        Aguardando cálculo da rota recomendada...
+      </p>
+
+      <!-- Checklist/Timeline checkpoints -->
+      <div class="space-y-4 max-h-[500px] overflow-y-auto pr-2 mb-8" id="result-checklist">
+        <!-- Rendered Dynamically on the Client -->
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 border-t-2 border-brown-300/40 pt-6">
+        <a 
+          href="#" 
+          class="w-full sm:w-auto px-8 py-3 rounded-full text-center text-xs font-extrabold bg-[#5d4037] hover:bg-[#4e342e] text-[#fcf4dc] shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0" 
+          id="btn-start-journey"
+        >
+          🔥 Iniciar Minha Jornada
+        </a>
+        <button 
+          type="button" 
+          class="w-full sm:w-auto px-6 py-3 rounded-full text-xs font-bold bg-transparent hover:bg-[#8d6e63]/10 text-[#5d4037] border border-[#5d4037] transition-all duration-300 cursor-pointer" 
+          id="btn-back-adjust"
+        >
+          ← Ajustar Opções
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Client-side logic for Leveling diagnostic -->
+<script is:inline define:vars={{ serializedConfigs, serializedInfo }}>
+  (function initLevelingForm() {
+    const form = document.getElementById('diagnosis-form-el');
+    if (!form) return;
+
+    // Converte os dados serializados de volta para objetos JS
+    const pathConfigs = JSON.parse(serializedConfigs);
+    const pathInfo = JSON.parse(serializedInfo);
+
+    let currentStep = 1;
+    const totalSteps = 3;
+    const answers = {
+      motivation: null,
+      goal: null,
+      progress: null
+    };
+
+    const btnNext = document.getElementById('btn-next');
+    const btnPrev = document.getElementById('btn-prev');
+    const advisorSpeech = document.getElementById('advisor-speech');
+
+    // Mapeamento dinâmico de falas do Mestre dependendo do progresso
+    const advisorSpeechList = {
+      1: "Saudações, jovem aprendiz. Permita-me avaliar seus objetivos e desenhar o pergaminho da sua rota perfeita rumo à fluência.",
+      2: "Excelente escolha! Agora, me diga: no que devemos concentrar nossos esforços imediatos nesta etapa inicial?",
+      3: "Quase lá. Por fim, preciso entender seu nível atual na língua para saber de qual degrau do templo de aprendizagem devemos partir."
+    };
+
+    // Escuta cliques nos cards de opções para marcar o input e ativar botão próximo
+    form.querySelectorAll('.question-step label').forEach(label => {
+      label.addEventListener('click', () => {
+        const input = label.querySelector('input[type="radio"]');
+        if (input) {
+          input.checked = true;
+          
+          // Adiciona efeitos visuais de seleção ativa de forma limpa
+          const stepVisuals = label.closest('.question-step').querySelectorAll('.option-card-visual');
+          stepVisuals.forEach(visual => visual.classList.remove('border-brand-gold', 'bg-brand-gold/5'));
+          
+          const currentVisual = label.querySelector('.option-card-visual');
+          if (currentVisual) {
+            currentVisual.classList.add('border-brand-gold', 'bg-brand-gold/5');
+          }
+
+          if (btnNext) {
+            btnNext.disabled = false;
+            btnNext.classList.remove('cursor-not-allowed', 'bg-brand-gold/50');
+            btnNext.classList.add('hover:bg-brand-gold-hover', 'bg-brand-gold');
+          }
+        }
+      });
+    });
+
+    btnNext?.addEventListener('click', () => {
+      const currentQuestionEl = form.querySelector(`.question-step[data-step="${currentStep}"]`);
+      const selected = currentQuestionEl?.querySelector('input[type="radio"]:checked');
+      if (!selected) return;
+
+      const key = currentStep === 1 ? 'motivation' : currentStep === 2 ? 'goal' : 'progress';
+      answers[key] = selected.value;
+
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateForm();
+      } else {
+        showResult();
+      }
+    });
+
+    btnPrev?.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateForm();
+      }
+    });
+
+    function updateForm() {
+      // Atualiza fala do Mestre
+      if (advisorSpeech) {
+        advisorSpeech.textContent = `"${advisorSpeechList[currentStep]}"`;
+      }
+
+      form.querySelectorAll('.question-step').forEach(step => {
+        const el = step;
+        if (parseInt(el.dataset.step || '0') === currentStep) {
+          el.classList.remove('hidden');
+          el.classList.add('block');
+        } else {
+          el.classList.remove('block');
+          el.classList.add('hidden');
+        }
+      });
+
+      if (btnPrev) {
+        if (currentStep === 1) {
+          btnPrev.classList.add('hidden');
+        } else {
+          btnPrev.classList.remove('hidden');
+        }
+      }
+
+      if (btnNext) {
+        btnNext.textContent = currentStep === totalSteps ? 'Revelar Minha Rota 📜' : 'Próximo →';
+        
+        // Verifica se há seleção no novo passo
+        const currentQuestionEl = form.querySelector(`.question-step[data-step="${currentStep}"]`);
+        const selected = currentQuestionEl?.querySelector('input[type="radio"]:checked');
+        
+        btnNext.disabled = !selected;
+        if (btnNext.disabled) {
+          btnNext.classList.add('cursor-not-allowed', 'bg-brand-gold/50');
+          btnNext.classList.remove('hover:bg-brand-gold-hover', 'bg-brand-gold');
+        } else {
+          btnNext.classList.remove('cursor-not-allowed', 'bg-brand-gold/50');
+          btnNext.classList.add('hover:bg-brand-gold-hover', 'bg-brand-gold');
+        }
+      }
+    }
+
+    function showResult() {
+      // Mapeamento lógico de Rota baseado na Motivação (como implementado no state-manager)
+      let path = 'D'; // Default: Entusiasta Cultural
+      if (answers.motivation === 'commercial') path = 'A';
+      else if (answers.motivation === 'travel') path = 'B';
+      else if (answers.motivation === 'academic') path = 'C';
+
+      const info = pathInfo[path] || pathInfo['D'];
+      const config = pathConfigs[path] || [];
+
+      // Salva no localStorage sob a chave correta 'falo-chines-journey'
+      try {
+        const journeyData = {
+          path: path,
+          diagnosis: answers,
+          checkpoints: {},
+          startedAt: new Date().toISOString(),
+          lastVisited: new Date().toISOString()
+        };
+        localStorage.setItem('falo-chines-journey', JSON.stringify(journeyData));
+        
+        // Dispara evento global
+        window.dispatchEvent(new CustomEvent('falo-chines:diagnosis-complete', { detail: { path } }));
+      } catch (e) {
+        console.warn("localStorage inacessível:", e);
+      }
+
+      // Oculta o formulário de diagnóstico
+      form.style.display = 'none';
+
+      // Atualiza a caixa de diálogo do Mestre
+      if (advisorSpeech) {
+        advisorSpeech.innerHTML = `<strong>"Sua Rota Predestinada foi revelada! Você seguirá a ${info.name}. Deixe-me guiar seus passos."</strong>`;
+      }
+
+      const revealEl = document.getElementById('result-reveal');
+      if (revealEl) {
+        revealEl.classList.remove('hidden');
+        
+        // Nome e Resumo do Caminho
+        const nameEl = document.getElementById('result-path-name');
+        if (nameEl) nameEl.textContent = info.name;
+
+        const summaryEl = document.getElementById('result-summary');
+        if (summaryEl) {
+          summaryEl.innerHTML = `Total de <strong>${info.checkpoints} lições chave</strong> • Tempo estimado de estudo: <strong>${info.hours} horas</strong>`;
+        }
+
+        const descEl = document.getElementById('result-path-desc');
+        if (descEl) {
+          descEl.textContent = info.description;
+        }
+
+        // Renderiza os Checkpoints da Rota do Usuário
+        const checklistEl = document.getElementById('result-checklist');
+        if (checklistEl) {
+          checklistEl.innerHTML = config.map((checkpoint, i) => {
+            // Mapeia ícones baseados no slug ou na lição
+            const itemIcons = {
+              '01-tons-primordiais': '🎵',
+              '02-pinyin-iniciais': '🎙️',
+              '03-radicais-fundamentais': '🎨',
+              '04-sintaxe-basica': '📝',
+              '05-hsk-negocios': '💼'
+            };
+            const icon = itemIcons[checkpoint.slug] || '📋';
+            
+            return `
+              <a href="/licoes/${checkpoint.slug}" class="flex items-start gap-4 p-4 rounded-xl bg-white/40 hover:bg-white/70 border border-[#8d6e63]/20 hover:border-[#5d4037] transition-all duration-300 group shadow-sm">
+                <span class="flex items-center justify-center font-display font-extrabold text-sm w-8 h-8 rounded-full bg-[#5d4037] text-[#fcf4dc] group-hover:scale-110 transition-transform">
+                  ${i + 1}
+                </span>
+                <span class="text-2xl">${icon}</span>
+                <div class="flex-1">
+                  <span class="block font-bold text-[#3e2723] text-sm sm:text-base group-hover:text-[#5d4037] transition-colors">
+                    ${checkpoint.title}
+                  </span>
+                  <span class="block text-[11px] text-[#8d6e63] font-medium mt-0.5 uppercase tracking-wide">
+                    Duração sugerida: ${checkpoint.eta} • Dificuldade: ${'⭐'.repeat(checkpoint.difficulty)}
+                  </span>
+                  <span class="block text-xs text-[#5d4037] mt-1 leading-relaxed bg-[#fcf4dc]/50 p-2 rounded border border-[#ecdba5]/50">
+                    ${checkpoint.strategy}
+                  </span>
+                </div>
+              </a>
+            `;
+          }).join('');
+        }
+
+        // Configura link de início da jornada
+        const startBtn = document.getElementById('btn-start-journey');
+        if (startBtn && config.length > 0) {
+          startBtn.href = `/licoes/${config[0].slug}`;
+        }
+
+        // Ajustar Opções (Volta para o formulário no passo 3 preservando escolhas)
+        const backBtn = document.getElementById('btn-back-adjust');
+        backBtn?.replaceWith(backBtn.cloneNode(true)); // Limpa listeners anteriores
+        const freshBackBtn = document.getElementById('btn-back-adjust');
+        
+        freshBackBtn?.addEventListener('click', () => {
+          form.style.display = 'block';
+          revealEl.classList.add('hidden');
+          
+          currentStep = totalSteps;
+          updateForm();
+
+          // Restaura os botões de rádio selecionados nos elementos
+          const motivationRadio = form.querySelector(`input[name="motivation"][value="${answers.motivation}"]`);
+          const goalRadio = form.querySelector(`input[name="goal"][value="${answers.goal}"]`);
+          const progressRadio = form.querySelector(`input[name="progress"][value="${answers.progress}"]`);
+          
+          if (motivationRadio) motivationRadio.checked = true;
+          if (goalRadio) goalRadio.checked = true;
+          if (progressRadio) progressRadio.checked = true;
+        });
+      }
+    }
+  })();
+</script>

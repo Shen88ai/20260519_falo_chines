@@ -1,0 +1,475 @@
+---
+// Bussola3D - A Bússola Hanzi 3D Interativa (Three.js + GSAP)
+---
+
+<div class="relative w-full min-h-[500px] flex flex-col items-center justify-center py-10 overflow-hidden" id="bussola-container">
+  
+  <!-- Overlay Content with Instructions -->
+  <div class="absolute top-4 z-10 text-center pointer-events-none select-none">
+    <span class="text-xs font-bold text-brand-gold uppercase tracking-widest bg-brand-gold/10 px-4 py-1.5 rounded-full border border-brand-gold/20">
+      Bússola Hanzi 3D 🧭
+    </span>
+    <h3 class="text-xl sm:text-2xl font-display font-extrabold text-white mt-3">
+      Navegue pelos 4 Pilares da Fluência
+    </h3>
+    <p class="text-xs text-gray-400 mt-1 max-w-md px-4">
+      Arraste para rotacionar no espaço 3D. Clique em um pilar para revelar seu templo de sabedoria.
+    </p>
+  </div>
+
+  <!-- Three.js Canvas -->
+  <canvas id="bussola-canvas" class="w-full max-w-2xl aspect-square cursor-grab active:cursor-grabbing outline-none z-0"></canvas>
+
+  <!-- Interactive Pillar Details Card (Overlaid and responsive) -->
+  <div class="absolute bottom-4 z-10 w-full max-w-sm px-4">
+    <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-white/10 shadow-2xl transition-all duration-500 scale-95 opacity-0 transform translate-y-4" id="pillar-details-card">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="text-3xl" id="pillar-icon">🎵</span>
+        <div>
+          <h4 class="font-display font-extrabold text-base text-white" id="pillar-title">Fase A: Fonética & Tons</h4>
+          <span class="text-[10px] uppercase font-bold text-brand-gold tracking-wider" id="pillar-phase">Pilar Fonético</span>
+        </div>
+      </div>
+      <p class="text-xs text-gray-300 leading-relaxed mb-3" id="pillar-desc">
+        Estudo intensivo dos tons primordiais do mandarim e iniciais/finais no Pinyin com analogias simplificadas em português.
+      </p>
+      <div class="flex justify-between items-center">
+        <span class="text-[10px] text-gray-400 font-medium">Recomendado para Iniciantes</span>
+        <button 
+          class="px-4 py-1.5 rounded-full bg-brand-gold hover:bg-brand-gold-hover text-dark-bg font-extrabold text-[10px] tracking-wider transition-all cursor-pointer shadow-md hover:shadow-brand-gold/20"
+          id="pillar-explore-btn"
+        >
+          Explorar Lições →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fallback Ring (Pure CSS) in case WebGL is disabled or fails -->
+  <div class="hidden flex-col items-center justify-center gap-6 py-12" id="bussola-fallback">
+    <div class="relative w-72 h-72 rounded-full border-4 border-dashed border-brand-gold/30 flex items-center justify-center animate-[spin_40s_linear_infinite]">
+      <div class="absolute top-2 text-2xl cursor-pointer hover:scale-125 transition-transform" data-fallback-pillar="A">🎵</div>
+      <div class="absolute right-2 text-2xl cursor-pointer hover:scale-125 transition-transform" data-fallback-pillar="B">🎨</div>
+      <div class="absolute bottom-2 text-2xl cursor-pointer hover:scale-125 transition-transform" data-fallback-pillar="C">📝</div>
+      <div class="absolute left-2 text-2xl cursor-pointer hover:scale-125 transition-transform" data-fallback-pillar="D">💼</div>
+      <div class="w-36 h-36 rounded-full bg-gradient-to-br from-brand-red to-brand-gold flex items-center justify-center shadow-lg">
+        <span class="text-dark-bg font-display font-black text-2xl tracking-widest">ZHONG</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Three.js + GSAP script -->
+<script>
+  import * as THREE from 'three';
+  import { gsap } from 'gsap';
+
+  (function initThreeCompass() {
+    const canvas = document.getElementById('bussola-canvas') as HTMLCanvasElement;
+    const container = document.getElementById('bussola-container');
+    const detailsCard = document.getElementById('pillar-details-card');
+    const fallback = document.getElementById('bussola-fallback');
+
+    if (!canvas) return;
+
+    // Detecção de compatibilidade WebGL
+    function isWebGLAvailable() {
+      try {
+        const c = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+      } catch (e) {
+        return false;
+      }
+    }
+
+    if (!isWebGLAvailable()) {
+      canvas.style.display = 'none';
+      if (fallback) fallback.style.display = 'flex';
+      return;
+    }
+
+    // Configurações dos Pilares
+    const pillars = [
+      {
+        id: 'A',
+        char: '音', // yīn - som
+        title: 'Fase A: Fonética & Tons',
+        icon: '🎵',
+        phase: 'Módulo Fonético',
+        desc: 'Domine a fundação melódica do Mandarim: os 4 tons fundamentais e a grade fonética do Pinyin com analogias práticas.',
+        color: 0xef4444, // Red
+        targetAngle: 0
+      },
+      {
+        id: 'B',
+        char: '字', // zì - ideograma
+        title: 'Fase B: Ideogramas & Radicais',
+        icon: '🎨',
+        phase: 'Módulo Visual',
+        desc: 'Desmonte ideogramas complexos em blocos de montar visuais (Radicais) e aprenda a ordem de escrita natural dos traços.',
+        color: 0x10b981, // Jade Green
+        targetAngle: Math.PI / 2
+      },
+      {
+        id: 'C',
+        char: '句', // jù - frase/sentença
+        title: 'Fase C: Sintaxe & Diálogo',
+        icon: '📝',
+        phase: 'Módulo Estrutural',
+        desc: 'Aprenda a construir frases completas e lógicas através do sistema SVO (Sujeito-Verbo-Objeto) e advérbios de tempo/lugar.',
+        color: 0x8b5cf6, // Purple
+        targetAngle: Math.PI
+      },
+      {
+        id: 'D',
+        char: '商', // shāng - comércio/negócios
+        title: 'Fase D: HSK & Negócios',
+        icon: '💼',
+        phase: 'Módulo Imersivo',
+        desc: 'Introdução ao Mandarim Corporativo, etiqueta social de reuniões de negócios chinesas e preparação para o exame oficial HSK.',
+        color: 0x3b82f6, // Cerulean Blue
+        targetAngle: (3 * Math.PI) / 2
+      }
+    ];
+
+    let activePillarIndex = 0;
+
+    // Configuração da Cena 3D
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0c0f16, 0.015);
+
+    // Câmera
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 5, 8);
+    camera.lookAt(0, 0, 0);
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance"
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    // Ajuste de tamanho responsivo
+    function resizeCanvas() {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Iluminação
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xffd700, 1.5, 20);
+    pointLight.position.set(0, 5, 2);
+    scene.add(pointLight);
+
+    // Criando o Disco da Bússola (Lo Pan / Hanzi Compass)
+    const compassGroup = new THREE.Group();
+    scene.add(compassGroup);
+
+    // 1. O Prato Principal (Cilindro muito fino)
+    const plateGeom = new THREE.CylinderGeometry(2.2, 2.2, 0.15, 64);
+    const plateMat = new THREE.MeshStandardMaterial({
+      color: 0x141821,
+      roughness: 0.2,
+      metalness: 0.8,
+      bumpScale: 0.05
+    });
+    const plate = new THREE.Mesh(plateGeom, plateMat);
+    compassGroup.add(plate);
+
+    // 2. Anel Externo Dourado
+    const ringGeom = new THREE.TorusGeometry(2.3, 0.08, 16, 100);
+    const ringMat = new THREE.MeshStandardMaterial({
+      color: 0xffd700,
+      metalness: 0.9,
+      roughness: 0.1
+    });
+    const ring = new THREE.Mesh(ringGeom, ringMat);
+    ring.rotation.x = Math.PI / 2;
+    compassGroup.add(ring);
+
+    // 3. Criando os Setores dos 4 Pilares
+    const pillarMeshes: THREE.Group[] = [];
+    const sectorAngle = (2 * Math.PI) / 4;
+
+    pillars.forEach((p, idx) => {
+      const pGroup = new THREE.Group();
+      
+      // Ângulo central do setor
+      const angle = idx * sectorAngle;
+      
+      // Posição no prato
+      const radius = 1.3;
+      pGroup.position.set(Math.cos(angle) * radius, 0.1, Math.sin(angle) * radius);
+
+      // Elemento visual do Pilar (Esfera flutuante menor com cor temática)
+      const orbGeom = new THREE.SphereGeometry(0.22, 32, 32);
+      const orbMat = new THREE.MeshStandardMaterial({
+        color: p.color,
+        emissive: p.color,
+        emissiveIntensity: 0.6,
+        roughness: 0.1,
+        metalness: 0.9
+      });
+      const orb = new THREE.Mesh(orbGeom, orbMat);
+      pGroup.add(orb);
+
+      // Anel decorativo menor em volta da esfera
+      const smallRingGeom = new THREE.TorusGeometry(0.35, 0.02, 8, 32);
+      const smallRingMat = new THREE.MeshBasicMaterial({ color: 0xffd700 });
+      const smallRing = new THREE.Mesh(smallRingGeom, smallRingMat);
+      smallRing.rotation.x = Math.PI / 2;
+      pGroup.add(smallRing);
+
+      // Adiciona o grupo à Bússola
+      compassGroup.add(pGroup);
+      pillarMeshes.push(pGroup);
+    });
+
+    // 4. Agulha Central da Bússola (Representação 3D estilizada)
+    const needleGeom = new THREE.ConeGeometry(0.12, 1.4, 4);
+    const needleMatRed = new THREE.MeshStandardMaterial({
+      color: 0xef4444,
+      metalness: 0.7,
+      roughness: 0.2
+    });
+    const needleMatGold = new THREE.MeshStandardMaterial({
+      color: 0xffd700,
+      metalness: 0.9,
+      roughness: 0.1
+    });
+
+    // Ponta Vermelha (Aponta para o norte/ativo)
+    const needleNorth = new THREE.Mesh(needleGeom, needleMatRed);
+    needleNorth.rotation.x = Math.PI / 2;
+    needleNorth.position.set(0, 0.12, -0.7);
+    
+    // Ponta Dourada (Oposta)
+    const needleSouth = new THREE.Mesh(needleGeom, needleMatGold);
+    needleSouth.rotation.x = -Math.PI / 2;
+    needleSouth.position.set(0, 0.12, 0.7);
+
+    const needleGroup = new THREE.Group();
+    needleGroup.add(needleNorth);
+    needleGroup.add(needleSouth);
+    compassGroup.add(needleGroup);
+
+    // Sistema de Partículas (Estrelas / Pó de Jade Dourado de fundo)
+    const particlesCount = 200;
+    const particlesGeom = new THREE.BufferGeometry();
+    const positions = new Float32Array(particlesCount * 3);
+
+    for (let i = 0; i < particlesCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 15;
+      positions[i + 1] = (Math.random() - 0.5) * 10;
+      positions[i + 2] = (Math.random() - 0.5) * 15;
+    }
+
+    particlesGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const particlesMat = new THREE.PointsMaterial({
+      color: 0xffd700,
+      size: 0.05,
+      transparent: true,
+      opacity: 0.5
+    });
+    const starField = new THREE.Points(particlesGeom, particlesMat);
+    scene.add(starField);
+
+    // Interações do Usuário (Inércia, Drag, Click e Raycasting)
+    let isDragging = false;
+    let previousMouseX = 0;
+    let targetRotationY = 0;
+    let targetTiltX = 0.5; // Inclinação padrão da bússola para visualização 3D elegante
+    let targetTiltZ = 0;
+
+    // Raycasting para detectar Cliques
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    function updateDetailsCard(index: number) {
+      if (!detailsCard) return;
+
+      const p = pillars[index];
+      const iconEl = document.getElementById('pillar-icon');
+      const titleEl = document.getElementById('pillar-title');
+      const phaseEl = document.getElementById('pillar-phase');
+      const descEl = document.getElementById('pillar-desc');
+      const exploreBtn = document.getElementById('pillar-explore-btn') as HTMLButtonElement;
+
+      if (iconEl) iconEl.textContent = p.icon;
+      if (titleEl) titleEl.textContent = p.title;
+      if (phaseEl) {
+        phaseEl.textContent = p.phase;
+        // Atualiza a cor temática do rótulo
+        phaseEl.className = 'text-[10px] uppercase font-bold tracking-wider';
+        if (p.id === 'A') phaseEl.classList.add('text-brand-red');
+        else if (p.id === 'B') phaseEl.classList.add('text-brand-jade');
+        else if (p.id === 'C') phaseEl.classList.add('text-brand-purple');
+        else phaseEl.classList.add('text-brand-blue');
+      }
+      if (descEl) descEl.textContent = p.desc;
+
+      if (exploreBtn) {
+        // Redireciona para lições Obsidian
+        exploreBtn.onclick = () => {
+          window.location.href = `/licoes#${p.id}`;
+        };
+      }
+
+      // Mostra com micro-animação
+      gsap.to(detailsCard, {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.4,
+        overwrite: 'auto'
+      });
+    }
+
+    // Inicializa o primeiro card
+    updateDetailsCard(0);
+
+    // Listeners de mouse/touch
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      previousMouseX = e.clientX;
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      // Mouse normalizado para Raycasting (-1 a 1)
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      if (isDragging) {
+        const deltaX = e.clientX - previousMouseX;
+        targetRotationY += deltaX * 0.007;
+        previousMouseX = e.clientX;
+      } else {
+        // Efeito de paralaxe sutil ao mover o mouse
+        targetTiltX = 0.5 + mouse.y * 0.15;
+        targetTiltZ = -mouse.x * 0.15;
+      }
+    });
+
+    // Touch Support
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        previousMouseX = e.touches[0].clientX;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (isDragging && e.touches.length === 1) {
+        const deltaX = e.touches[0].clientX - previousMouseX;
+        targetRotationY += deltaX * 0.007;
+        previousMouseX = e.touches[0].clientX;
+      }
+    }, { passive: true });
+
+    // Clique / Seleção de Pilar
+    canvas.addEventListener('click', (e) => {
+      if (isDragging) return;
+
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+
+      // Verifica intersecções com as esferas dos pilares
+      const clickableObjects: THREE.Object3D[] = [];
+      pillarMeshes.forEach(group => {
+        group.children.forEach(child => clickableObjects.push(child));
+      });
+
+      const intersects = raycaster.intersectObjects(clickableObjects);
+
+      if (intersects.length > 0) {
+        // Encontra qual pilar foi clicado
+        const clickedMesh = intersects[0].object;
+        const groupIndex = pillarMeshes.findIndex(group => group.children.includes(clickedMesh));
+
+        if (groupIndex !== -1 && groupIndex !== activePillarIndex) {
+          activePillarIndex = groupIndex;
+          
+          // Animação de rotação suave focado no pilar selecionado
+          // Calcula o ângulo ideal para alinhar a agulha ao pilar selecionado
+          const targetAngle = pillars[groupIndex].targetAngle;
+          
+          // Rotaciona a bússola para expor o pilar na frente
+          gsap.to(compassGroup.rotation, {
+            y: -targetAngle,
+            duration: 1.2,
+            ease: 'power3.out'
+          });
+
+          // Dispara feedback de áudio leve de clique (se houver som)
+          updateDetailsCard(groupIndex);
+
+          // Efeito de pulso rápido na esfera do pilar selecionado
+          const orb = pillarMeshes[groupIndex].children[0] as THREE.Mesh;
+          const orbMat = orb.material as THREE.MeshStandardMaterial;
+          gsap.fromTo(orbMat, { emissiveIntensity: 2 }, { emissiveIntensity: 0.6, duration: 0.8 });
+        }
+      }
+    });
+
+    // Render Loop
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const elapsedTime = clock.getElapsedTime();
+
+      // Rotação ociosa lenta (idle rotation) quando não arrastado
+      if (!isDragging) {
+        compassGroup.rotation.y += 0.0015;
+      } else {
+        // Interpolação suave para drag
+        compassGroup.rotation.y = THREE.MathUtils.lerp(compassGroup.rotation.y, targetRotationY, 0.1);
+      }
+
+      // Aplica inclinação 3D dinâmica baseada no mouse
+      compassGroup.rotation.x = THREE.MathUtils.lerp(compassGroup.rotation.x, targetTiltX, 0.1);
+      compassGroup.rotation.z = THREE.MathUtils.lerp(compassGroup.rotation.z, targetTiltZ, 0.1);
+
+      // Pequena flutuação vertical das esferas dos pilares para dar sensação de vida
+      pillarMeshes.forEach((mesh, idx) => {
+        mesh.position.y = 0.1 + Math.sin(elapsedTime * 2 + idx * 1.5) * 0.05;
+        // Rotaciona os aneizinhos dourados
+        mesh.children[1].rotation.z += 0.01;
+      });
+
+      // Animação da Agulha (vibração orgânica leve simulando campo magnético real)
+      needleGroup.rotation.y = Math.sin(elapsedTime * 15) * 0.03;
+
+      // Animação sutil de partículas
+      starField.rotation.y = elapsedTime * 0.02;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  })();
+</script>

@@ -1,0 +1,83 @@
+---
+export interface SearchItemData {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  phase: string;
+  tags: string[];
+  slug: string;
+}
+
+interface Props {
+  items: SearchItemData[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="relative hidden sm:block" data-search-container>
+  <input
+    type="text"
+    placeholder="Buscar caracteres ou lições..."
+    class="w-64 px-4 py-2 text-xs bg-white/5 border border-white/10 rounded-full focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-all placeholder:text-gray-500 text-gray-200"
+    data-search-input
+  />
+  <span class="absolute right-4 top-2.5 text-gray-500 text-xs">🔍</span>
+
+  <div
+    id="search-results"
+    class="absolute top-full mt-2 left-0 right-0 bg-dark-bg/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden hidden z-50"
+  ></div>
+</div>
+
+<div hidden id="search-data-json">{JSON.stringify(items)}</div>
+
+<script>
+  import Fuse from 'fuse.js';
+
+  const searchDataEl = document.getElementById('search-data-json');
+  const input = document.querySelector('[data-search-input]');
+  const resultsContainer = document.getElementById('search-results');
+
+  function getPhaseLabel(phase: string): string {
+    const labels: Record<string, string> = { A: 'Fonética', B: 'Hanzi', C: 'Gramática', D: 'Imersão' };
+    return labels[phase] ?? phase;
+  }
+
+  function getPhaseColor(phase: string): string {
+    const colors: Record<string, string> = { A: 'border-brand-red/30 text-brand-red', B: 'border-brand-jade/30 text-brand-jade', C: 'border-brand-purple/30 text-brand-purple', D: 'border-brand-blue/30 text-brand-blue' };
+    return colors[phase] ?? 'border-white/20 text-gray-400';
+  }
+
+  if (searchDataEl && input && resultsContainer) {
+    const fuse = new Fuse(JSON.parse(searchDataEl.textContent || '[]'), {
+      keys: [
+        { name: 'title', weight: 2 },
+        { name: 'description', weight: 1 },
+        { name: 'content', weight: 0.5 },
+        { name: 'tags', weight: 1.5 },
+      ],
+      threshold: 0.4,
+      minMatchCharLength: 1,
+    });
+
+    input.addEventListener('input', () => {
+      const query = input.value.trim();
+      const hasCJK = /[\u4e00-\u9fff\u3400-\u4dbf]/.test(query);
+      if (!query || (!hasCJK && query.length < 2)) {
+        resultsContainer.classList.add('hidden');
+        return;
+      }
+
+      const results = fuse.search(query);
+      // ...
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!(e.target as Element).closest('[data-search-container]')) {
+        resultsContainer.classList.add('hidden');
+      }
+    });
+  }
+</script>
