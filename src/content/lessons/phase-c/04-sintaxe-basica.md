@@ -8,6 +8,7 @@ icon: "📝"
 featured: false
 characters: ["学", "中", "文"]
 tags: ["gramatica", "sintaxe", "frases"]
+coverImage: "/images/lessons/phase-c-04-sintaxe-basica.png"
 ---
 
 # Sintaxe e Estrutura de Sentenças

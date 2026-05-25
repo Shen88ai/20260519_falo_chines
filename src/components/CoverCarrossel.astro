@@ -1,0 +1,238 @@
+---
+interface CarouselItem {
+  title: string;
+  coverImage: string;
+  href: string;
+  badge: string;
+}
+
+interface Props {
+  items: CarouselItem[];
+}
+
+const { items } = Astro.props;
+const hasItems = items.length > 0;
+---
+
+{hasItems && (
+  <div class="relative mb-12" id="cover-carrossel">
+    <!-- Carousel Slides -->
+    <div class="relative w-full aspect-[21/9] rounded-2xl overflow-hidden bg-dark-surface shadow-xl border border-white/5 group/carousel">
+      {items.map((item, i) => (
+        <div
+          class="carousel-slide absolute inset-0 transition-opacity duration-700 cursor-pointer"
+          class:list={{ 'opacity-100 z-10': i === 0, 'opacity-0 z-0': i !== 0 }}
+          data-index={i}
+        >
+          <img
+            src={item.coverImage}
+            alt={item.title}
+            class="w-full h-full object-cover"
+            loading={i === 0 ? 'eager' : 'lazy'}
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-brand-gold bg-brand-gold/10 px-2.5 py-1 rounded-full border border-brand-gold/20">
+              {item.badge}
+            </span>
+            <h2 class="text-lg sm:text-xl font-display font-bold text-white mt-2 line-clamp-2 drop-shadow-lg">
+              {item.title}
+            </h2>
+          </div>
+        </div>
+      ))}
+
+      <!-- Prev / Next Arrows -->
+      <button class="carrossel-prev absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-white text-2xl opacity-0 group-hover/carousel:opacity-100 transition-opacity" aria-label="Anterior">
+        ‹
+      </button>
+      <button class="carrossel-next absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-white text-2xl opacity-0 group-hover/carousel:opacity-100 transition-opacity" aria-label="Próximo">
+        ›
+      </button>
+
+      <!-- Dots -->
+      <div class="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+        {items.map((_, i) => (
+          <button
+            class="carrossel-dot w-2 h-2 rounded-full transition-all duration-300"
+            class:list={{
+              'bg-brand-gold w-4': i === 0,
+              'bg-white/40 hover:bg-white/60': i !== 0
+            }}
+            data-index={i}
+            aria-label={`Slide ${i + 1}`}
+          ></button>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+<!-- Lightbox -->
+<div
+  id="carrossel-lightbox"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+>
+  <button id="clb-close" class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl transition-colors" aria-label="Fechar">✕</button>
+  <button id="clb-prev" class="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white text-3xl transition-colors" aria-label="Anterior">‹</button>
+  <button id="clb-next" class="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white text-3xl transition-colors" aria-label="Próximo">›</button>
+  <div class="max-w-5xl max-h-[85vh] mx-4 flex flex-col items-center">
+    <img id="clb-image" class="max-w-full max-h-[75vh] rounded-2xl shadow-2xl object-contain" alt="" />
+    <div class="flex items-center justify-between w-full mt-4 px-2">
+      <a id="clb-link" href="#" class="text-xs text-brand-gold hover:text-white transition-colors font-medium truncate max-w-[60%]">
+        <span id="clb-title"></span>
+      </a>
+      <span id="clb-counter" class="text-xs text-gray-400 font-mono whitespace-nowrap ml-4"></span>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ items }}>
+(function initCoverCarrossel() {
+  if (!items.length) return;
+
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.carrossel-dot');
+  const prevBtn = document.querySelector('.carrossel-prev');
+  const nextBtn = document.querySelector('.carrossel-next');
+  const container = document.getElementById('cover-carrossel');
+
+  const lb = document.getElementById('carrossel-lightbox');
+  const lbImg = document.getElementById('clb-image');
+  const lbTitle = document.getElementById('clb-title');
+  const lbLink = document.getElementById('clb-link');
+  const lbCounter = document.getElementById('clb-counter');
+  const lbClose = document.getElementById('clb-close');
+  const lbPrev = document.getElementById('clb-prev');
+  const lbNext = document.getElementById('clb-next');
+
+  let current = 0;
+  let autoTimer = null;
+  let lbCurrent = 0;
+
+  function goTo(index) {
+    slides.forEach((el, i) => {
+      el.classList.toggle('opacity-100', i === index);
+      el.classList.toggle('opacity-0', i !== index);
+      el.classList.toggle('z-10', i === index);
+      el.classList.toggle('z-0', i !== index);
+    });
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('bg-brand-gold', i === index);
+      dot.classList.toggle('w-4', i === index);
+      dot.classList.toggle('bg-white/40', i !== index);
+      dot.classList.toggle('w-2', i !== index);
+    });
+    current = index;
+  }
+
+  function next() {
+    goTo((current + 1) % items.length);
+  }
+
+  function prev() {
+    goTo((current - 1 + items.length) % items.length);
+  }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(next, 5000);
+  }
+
+  function stopAuto() {
+    if (autoTimer) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+  }
+
+  // Arrow clicks
+  if (prevBtn) prevBtn.addEventListener('click', function (e) { e.stopPropagation(); stopAuto(); prev(); startAuto(); });
+  if (nextBtn) nextBtn.addEventListener('click', function (e) { e.stopPropagation(); stopAuto(); next(); startAuto(); });
+
+  // Dot clicks
+  dots.forEach(dot => {
+    dot.addEventListener('click', function (e) {
+      e.stopPropagation();
+      stopAuto();
+      goTo(parseInt(this.getAttribute('data-index')));
+      startAuto();
+    });
+  });
+
+  // Pause on hover
+  if (container) {
+    container.addEventListener('mouseenter', stopAuto);
+    container.addEventListener('mouseleave', startAuto);
+  }
+
+  // Click slide → open lightbox
+  slides.forEach(slide => {
+    slide.addEventListener('click', function () {
+      const idx = parseInt(this.getAttribute('data-index'));
+      openLightbox(idx);
+    });
+  });
+
+  function openLightbox(index) {
+    lbCurrent = index;
+    const data = items[index];
+    if (!data) return;
+
+    if (lbImg) { lbImg.setAttribute('src', data.coverImage); lbImg.setAttribute('alt', data.title); }
+    if (lbTitle) lbTitle.textContent = data.title;
+    if (lbLink) { lbLink.setAttribute('href', data.href); lbLink.classList.toggle('hidden', !data.href); }
+    if (lbCounter) lbCounter.textContent = (index + 1) + ' / ' + items.length;
+
+    if (lb) {
+      lb.classList.remove('opacity-0', 'pointer-events-none');
+      lb.classList.add('opacity-100', 'pointer-events-auto');
+    }
+    document.body.style.overflow = 'hidden';
+    stopAuto();
+  }
+
+  function closeLightbox() {
+    if (lb) {
+      lb.classList.remove('opacity-100', 'pointer-events-auto');
+      lb.classList.add('opacity-0', 'pointer-events-none');
+    }
+    document.body.style.overflow = '';
+    startAuto();
+  }
+
+  function lbPrevFn() {
+    lbCurrent = (lbCurrent - 1 + items.length) % items.length;
+    const data = items[lbCurrent];
+    if (lbImg) lbImg.setAttribute('src', data.coverImage);
+    if (lbTitle) lbTitle.textContent = data.title;
+    if (lbLink) lbLink.setAttribute('href', data.href);
+    if (lbCounter) lbCounter.textContent = (lbCurrent + 1) + ' / ' + items.length;
+  }
+
+  function lbNextFn() {
+    lbCurrent = (lbCurrent + 1) % items.length;
+    const data = items[lbCurrent];
+    if (lbImg) lbImg.setAttribute('src', data.coverImage);
+    if (lbTitle) lbTitle.textContent = data.title;
+    if (lbLink) lbLink.setAttribute('href', data.href);
+    if (lbCounter) lbCounter.textContent = (lbCurrent + 1) + ' / ' + items.length;
+  }
+
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lbPrev) lbPrev.addEventListener('click', function (e) { e.stopPropagation(); lbPrevFn(); });
+  if (lbNext) lbNext.addEventListener('click', function (e) { e.stopPropagation(); lbNextFn(); });
+  if (lb) lb.addEventListener('click', function (e) { if (e.target === this) closeLightbox(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (lb && lb.classList.contains('pointer-events-auto')) {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') lbPrevFn();
+      if (e.key === 'ArrowRight') lbNextFn();
+    }
+  });
+
+  // Start auto-play
+  startAuto();
+})();
+</script>

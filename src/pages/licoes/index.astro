@@ -1,8 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import CoverCarrossel from '../../components/CoverCarrossel.astro';
 
-// Busca todas as lições do cofre Obsidian na build
+// Busca todas as lições
 const allLessons = await getCollection('lessons');
 
 const getSlug = (id: string) => id.split('/').pop()?.replace('.md', '') || id;
@@ -16,6 +17,15 @@ const sortedLessons = allLessons.sort((a, b) => {
 });
 
 // Agrupa as lições por fase para exibição estruturada
+const carouselItems = sortedLessons
+  .filter(l => l.data.coverImage)
+  .map(l => ({
+    title: l.data.title,
+    coverImage: l.data.coverImage!,
+    href: `/licoes/${getSlug(l.id)}`,
+    badge: `Fase ${l.data.phase}`
+  }));
+
 const phases = {
   A: {
     title: 'Fase A: Fonética & Tons (Pinyin)',
@@ -44,7 +54,7 @@ const phases = {
 };
 ---
 
-<Layout title="Cofre de Lições Obsidian 📚 - Falo Chinês" description="Navegue pelas lições criadas e organizadas diretamente do Obsidian Vault para o seu navegador.">
+<Layout title="Cofre de Lições 📚 - Falo Chinês" description="Navegue pelas lições organizadas por fase pedagógica — da fonética à imersão cultural.">
   <div class="py-12 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.02),transparent_40%)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
@@ -54,12 +64,15 @@ const phases = {
           Cofre de Aprendizado 📚
         </span>
         <h1 class="text-3xl sm:text-4xl font-display font-black text-white mt-4">
-          Lições do Obsidian Vault
+          Lições
         </h1>
         <p class="text-xs sm:text-sm text-gray-400 mt-2">
           Nossas matérias são escritas em Markdown e estruturadas em fases pedagógicas lógicas, garantindo um aprendizado sequencial escalável.
         </p>
       </div>
+
+      <!-- Cover Carrossel -->
+      {carouselItems.length > 1 && <CoverCarrossel items={carouselItems} />}
 
       <!-- Phase Sections -->
       <div class="space-y-16">
@@ -83,44 +96,54 @@ const phases = {
             <!-- Lessons Grid -->
             {phase.lessons.length === 0 ? (
               <div class="glass-panel rounded-2xl p-8 text-center text-xs text-gray-500 border border-dashed border-white/5">
-                Nenhuma lição adicionada nesta fase ainda. Adicione novos arquivos .md na pasta `src/content/lessons/` pelo Obsidian para vê-los aqui!
+                Nenhuma lição adicionada nesta fase ainda. Novas lições aparecerão aqui assim que publicadas.
               </div>
             ) : (
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {phase.lessons.map(lesson => (
                   <a 
                     href={`/licoes/${getSlug(lesson.id)}`} 
-                    class="group glass-panel rounded-2xl p-5 border border-white/5 hover:border-brand-gold/25 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 shadow-md"
+                    class="group glass-panel rounded-2xl border border-white/5 hover:border-brand-gold/25 transition-all duration-300 flex flex-col hover:-translate-y-1 shadow-md overflow-hidden"
                   >
-                    <div>
-                      <!-- Card Header -->
-                      <div class="flex items-center justify-between mb-4">
-                        <span class="text-3xl p-2 bg-white/5 rounded-xl group-hover:scale-110 transition-transform">
-                          {lesson.data.icon}
-                        </span>
-                        {lesson.data.featured && (
-                          <span class="text-[9px] font-bold uppercase tracking-wider text-brand-gold bg-brand-gold/10 px-2.5 py-0.5 rounded-full border border-brand-gold/20">
-                            Destaque ⭐
+                    {lesson.data.coverImage && (
+                      <img 
+                        src={lesson.data.coverImage} 
+                        alt="" 
+                        class="w-full aspect-[16/9] object-cover bg-dark-surface"
+                        loading="lazy"
+                      />
+                    )}
+                    <div class="p-5 flex flex-col justify-between flex-1">
+                      <div>
+                        <!-- Card Header -->
+                        <div class="flex items-center justify-between mb-4">
+                          <span class="text-3xl p-2 bg-white/5 rounded-xl group-hover:scale-110 transition-transform">
+                            {lesson.data.icon}
                           </span>
-                        )}
+                          {lesson.data.featured && (
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-brand-gold bg-brand-gold/10 px-2.5 py-0.5 rounded-full border border-brand-gold/20">
+                              Destaque ⭐
+                            </span>
+                          )}
+                        </div>
+
+                        <!-- Card Title & Desc -->
+                        <h3 class="font-display font-bold text-base text-white group-hover:text-brand-gold transition-colors line-clamp-1">
+                          {lesson.data.title}
+                        </h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">
+                          {lesson.data.description}
+                        </p>
                       </div>
 
-                      <!-- Card Title & Desc -->
-                      <h3 class="font-display font-bold text-base text-white group-hover:text-brand-gold transition-colors line-clamp-1">
-                        {lesson.data.title}
-                      </h3>
-                      <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">
-                        {lesson.data.description}
-                      </p>
-                    </div>
-
-                    <!-- Card Footer: Tags -->
-                    <div class="mt-6 pt-4 border-t border-white/5 flex flex-wrap gap-1.5">
-                      {lesson.data.tags.slice(0, 3).map(tag => (
-                        <span class="text-[9px] text-gray-400 bg-white/5 px-2 py-0.5 rounded">
-                          #{tag}
-                        </span>
-                      ))}
+                      <!-- Card Footer: Tags -->
+                      <div class="mt-6 pt-4 border-t border-white/5 flex flex-wrap gap-1.5">
+                        {lesson.data.tags.slice(0, 3).map(tag => (
+                          <span class="text-[9px] text-gray-400 bg-white/5 px-2 py-0.5 rounded">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </a>
                 ))}

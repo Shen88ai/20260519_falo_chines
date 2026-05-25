@@ -1,6 +1,6 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { lessonSchema } from './lib/schemas';
+import { lessonSchema, blogPostSchema } from './lib/schemas';
 
 // Define a coleção de lições integradas ao Obsidian
 const lessons = defineCollection({
@@ -8,4 +8,10 @@ const lessons = defineCollection({
   schema: lessonSchema
 });
 
-export const collections = { lessons };
+// Define a coleção de posts do blog
+const blog = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/blog' }),
+  schema: blogPostSchema
+});
+
+export const collections = { lessons, blog };

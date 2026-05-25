@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createSearchIndex, searchItems, type SearchItem } from '../src/lib/search';
+import { createSearchIndex, searchItems, renderSearchResults, type SearchItem } from '../src/lib/search';
 
 describe('Módulo de Busca Global (Fuse.js)', () => {
 
@@ -101,5 +101,40 @@ describe('Módulo de Busca Global (Fuse.js)', () => {
     const results = searchItems(fuse, '水');
     expect(results.length).toBeGreaterThanOrEqual(1);
     expect(results[0].slug).toBe('03-radicais-fundamentais');
+  });
+
+  it('deve buscar também em itens sem fase (ex: blog posts)', () => {
+    const items: SearchItem[] = [
+      {
+        id: 'blog/reflexao',
+        title: 'Reflexão sobre Aprender Chinês',
+        description: 'Um texto sobre a jornada pessoal de aprendizado.',
+        content: 'Aprender chinês é uma jornada de autoconhecimento.',
+        phase: '',
+        tags: ['reflexao', 'cultura'],
+        slug: 'reflexao',
+      },
+    ];
+    const fuse = createSearchIndex(items);
+    const results = searchItems(fuse, 'jornada');
+    expect(results.length).toBeGreaterThanOrEqual(1);
+    expect(results[0].slug).toBe('reflexao');
+  });
+
+  it('deve renderizar resultados de busca como HTML', () => {
+    const fuse = createSearchIndex(mockLessons);
+    const results = searchItems(fuse, 'tons');
+    const getPhaseLabel = (p: string) => {
+      const labels: Record<string, string> = { A: 'Fonética', B: 'Hanzi', C: 'Gramática', D: 'Imersão' };
+      return labels[p] ?? p;
+    };
+    const getPhaseColor = (p: string) => {
+      const colors: Record<string, string> = { A: 'border-brand-red/30 text-brand-red', B: 'border-brand-jade/30 text-brand-jade', C: 'border-brand-purple/30 text-brand-purple', D: 'border-brand-blue/30 text-brand-blue' };
+      return colors[p] ?? 'border-white/20 text-gray-400';
+    };
+    const html = renderSearchResults(results, getPhaseLabel, getPhaseColor);
+    expect(html).toContain('01-tons-primordiais');
+    expect(html).toContain('Os Quatro Tons Primordiais');
+    expect(html).toContain('Fonética');
   });
 });

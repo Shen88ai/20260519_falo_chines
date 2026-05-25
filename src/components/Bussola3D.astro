@@ -2,10 +2,10 @@
 // Bussola3D - A Bússola Hanzi 3D Interativa (Three.js + GSAP)
 ---
 
-<div class="relative w-full min-h-[500px] flex flex-col items-center justify-center py-10 overflow-hidden" id="bussola-container">
+<div class="relative w-full flex flex-col items-center py-10 overflow-visible" id="bussola-container">
   
   <!-- Overlay Content with Instructions -->
-  <div class="absolute top-4 z-10 text-center pointer-events-none select-none">
+  <div class="text-center pointer-events-none select-none pb-6">
     <span class="text-xs font-bold text-brand-gold uppercase tracking-widest bg-brand-gold/10 px-4 py-1.5 rounded-full border border-brand-gold/20">
       Bússola Hanzi 3D 🧭
     </span>
@@ -20,8 +20,8 @@
   <!-- Three.js Canvas -->
   <canvas id="bussola-canvas" class="w-full max-w-2xl aspect-square cursor-grab active:cursor-grabbing outline-none z-0"></canvas>
 
-  <!-- Interactive Pillar Details Card (Overlaid and responsive) -->
-  <div class="absolute bottom-4 z-10 w-full max-w-sm px-4">
+  <!-- Interactive Pillar Details Card -->
+  <div class="w-full max-w-sm px-4 mt-8">
     <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-white/10 shadow-2xl transition-all duration-500 scale-95 opacity-0 transform translate-y-4" id="pillar-details-card">
       <div class="flex items-center gap-3 mb-2">
         <span class="text-3xl" id="pillar-icon">🎵</span>

@@ -8,6 +8,7 @@ icon: "🎙️"
 featured: false
 characters: ["中", "国"]
 tags: ["pinyin", "pronuncia", "iniciante"]
+coverImage: "/images/lessons/phase-a-02-pinyin-iniciais.png"
 ---
 
 # Iniciais e Finais do Pinyin

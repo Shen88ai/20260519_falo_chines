@@ -1,0 +1,101 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => {
+    const slug = post.id.replace('.md', '') || post.id;
+    return {
+      params: { slug },
+      props: { post }
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout 
+  title={`${post.data.title} 🖊️ - Falo Chinês`}
+  description={post.data.description}
+>
+  <div class="py-10 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.02),transparent_45%)]">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Breadcrumbs -->
+      <div class="mb-6">
+        <a href="/blog" class="text-xs text-gray-400 hover:text-brand-gold transition-colors">
+          ← Voltar para o Blog
+        </a>
+      </div>
+
+      <!-- Cover Image -->
+      {post.data.coverImage && (
+        <div class="mb-8 -mx-4 sm:-mx-6 lg:-mx-8">
+          <img 
+            src={post.data.coverImage} 
+            alt="" 
+            class="w-full aspect-[21/9] object-cover rounded-xl sm:rounded-2xl bg-dark-surface shadow-xl"
+            loading="eager"
+          />
+        </div>
+      )}
+
+      <!-- Post Header -->
+      <header class="mb-10 border-b border-white/5 pb-8">
+        <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+          <time datetime={post.data.date}>
+            {new Date(post.data.date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
+          </time>
+          {post.data.readingTime && (
+            <>
+              <span>·</span>
+              <span>{post.data.readingTime} min de leitura</span>
+            </>
+          )}
+        </div>
+
+        <h1 class="text-2xl sm:text-3xl font-display font-black text-white leading-tight">
+          {post.data.title}
+        </h1>
+        <p class="text-sm text-gray-400 mt-3 leading-relaxed">
+          {post.data.description}
+        </p>
+
+        <div class="flex items-center gap-3 mt-4">
+          <span class="text-xs text-gray-500">Por {post.data.author}</span>
+          {post.data.tags.length > 0 && (
+            <div class="flex flex-wrap gap-1.5">
+              {post.data.tags.map(tag => (
+                <span class="text-[9px] text-gray-400 bg-white/5 px-2 py-0.5 rounded">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </header>
+
+      <!-- Post Content -->
+      <article class="glass-panel rounded-2xl p-6 sm:p-10 border border-white/5 shadow-2xl relative">
+        <div class="absolute top-0 left-0 right-0 h-1.5 rounded-t-2xl bg-gradient-to-r from-brand-gold to-brand-red"></div>
+        <div class="prose prose-invert max-w-none text-gray-300 font-sans leading-relaxed text-sm sm:text-base space-y-6">
+          <Content />
+        </div>
+      </article>
+
+      <!-- Footer Navigation -->
+      <div class="mt-10 text-center">
+        <a 
+          href="/blog" 
+          class="inline-flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-brand-gold transition-colors"
+        >
+          ← Ver todos os posts
+        </a>
+      </div>
+
+    </div>
+  </div>
+</Layout>

@@ -8,6 +8,7 @@ icon: "👩‍👦"
 featured: true
 characters: ["妈", "学", "国", "文"]
 tags: ["fluencia", "metodo", "input", "imersao"]
+coverImage: "/images/lessons/phase-d-06-mae-chinesa-fluencia.png"
 ---
 
 # O Método da "Mãe Chinesa" e o Segredo do Input

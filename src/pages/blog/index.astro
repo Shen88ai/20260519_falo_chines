@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import CoverCarrossel from '../../components/CoverCarrossel.astro';
+
+const allPosts = await getCollection('blog');
+
+const sortedPosts = allPosts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+const getSlug = (id: string) => id.replace('.md', '') || id;
+
+const carouselItems = sortedPosts
+  .filter(p => p.data.coverImage)
+  .map(p => ({
+    title: p.data.title,
+    coverImage: p.data.coverImage!,
+    href: `/blog/${getSlug(p.id)}`,
+    badge: 'Blog'
+  }));
+---
+
+<Layout title="Blog 🖊️ - Falo Chinês" description="Artigos, reflexões e dicas sobre aprendizado de mandarim e cultura chinesa.">
+  <div class="py-12 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.02),transparent_40%)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Page Header -->
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-xs font-bold text-brand-gold uppercase tracking-widest bg-brand-gold/10 px-3 py-1.5 rounded-full border border-brand-gold/20">
+          Blog 🖊️
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-display font-black text-white mt-4">
+          Reflexões & Histórias
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-400 mt-2">
+          Artigos sobre a jornada de aprender mandarim, cultura chinesa e o método "Falo Chinês".
+        </p>
+      </div>
+
+      <!-- Cover Carrossel -->
+      {carouselItems.length > 0 && <CoverCarrossel items={carouselItems} />}
+
+      <!-- Posts Grid -->
+      {sortedPosts.length === 0 ? (
+        <div class="glass-panel rounded-2xl p-12 text-center border border-dashed border-white/5">
+          <span class="text-5xl block mb-4">📝</span>
+          <p class="text-sm text-gray-400">Nenhum post publicado ainda. Volte em breve!</p>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sortedPosts.map(post => (
+            <a 
+              href={`/blog/${getSlug(post.id)}`}
+              class="group glass-panel rounded-2xl border border-white/5 hover:border-brand-gold/25 transition-all duration-300 flex flex-col hover:-translate-y-1 shadow-md overflow-hidden"
+            >
+              {post.data.coverImage && (
+                <img 
+                  src={post.data.coverImage} 
+                  alt="" 
+                  class="w-full aspect-[16/9] object-cover bg-dark-surface"
+                  loading="lazy"
+                />
+              )}
+              <div class="p-6 flex flex-col justify-between flex-1">
+                <div>
+                  <!-- Date -->
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                    {new Date(post.data.date).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </span>
+
+                  <!-- Title -->
+                  <h2 class="font-display font-bold text-base text-white mt-2 group-hover:text-brand-gold transition-colors line-clamp-2">
+                    {post.data.title}
+                  </h2>
+                  <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-3">
+                    {post.data.description}
+                  </p>
+                </div>
+
+                <!-- Footer: Author & Tags -->
+                <div class="mt-6 pt-4 border-t border-white/5 space-y-3">
+                  {post.data.tags.length > 0 && (
+                    <div class="flex flex-wrap gap-1.5">
+                      {post.data.tags.slice(0, 4).map(tag => (
+                        <span class="text-[9px] text-gray-400 bg-white/5 px-2 py-0.5 rounded">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div class="text-[10px] text-gray-500">
+                    Por {post.data.author}
+                    {post.data.readingTime && ` · ${post.data.readingTime} min de leitura`}
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+
+    </div>
+  </div>
+</Layout>

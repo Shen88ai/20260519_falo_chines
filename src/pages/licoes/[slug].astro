@@ -32,6 +32,18 @@ const serializedDictionary = JSON.stringify(dictionary);
   <div class="py-10 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.02),transparent_45%)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
+      <!-- Cover Image -->
+      {lesson.data.coverImage && (
+        <div class="mb-8 -mx-4 sm:-mx-6 lg:-mx-8">
+          <img 
+            src={lesson.data.coverImage} 
+            alt="" 
+            class="w-full aspect-[21/9] object-cover rounded-xl sm:rounded-2xl bg-dark-surface shadow-xl"
+            loading="eager"
+          />
+        </div>
+      )}
+
       <!-- Lesson Header (Breadcrumbs and Metadata) -->
       <div class="mb-8 border-b border-white/5 pb-6">
         <div class="flex items-center gap-2 text-xs text-gray-400 mb-3">
@@ -94,7 +106,7 @@ const serializedDictionary = JSON.stringify(dictionary);
         <!-- MAIN CONTENT: Lesson Body (cols: 9) -->
         <article class="lg:col-span-9 space-y-10">
           
-          <!-- Obsidian Markdown Content -->
+          <!-- Markdown Content -->
           <div class="glass-panel rounded-2xl p-6 sm:p-10 border border-white/5 shadow-2xl relative">
             <!-- Glowing accent border on active phase -->
             <div class={`absolute top-0 left-0 right-0 h-1.5 rounded-t-2xl bg-gradient-to-r ${

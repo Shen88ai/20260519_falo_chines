@@ -8,6 +8,7 @@ icon: "🎨"
 featured: true
 characters: ["文", "国", "学"]
 tags: ["hanzi", "radicais", "escrita"]
+coverImage: "/images/lessons/phase-b-03-radicais-fundamentais.png"
 ---
 
 # Radicais e a Estrutura dos Ideogramas (Hanzi)

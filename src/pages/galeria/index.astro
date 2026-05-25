@@ -1,0 +1,296 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const allPosts = await getCollection('blog');
+const allLessons = await getCollection('lessons');
+
+interface GalleryItem {
+  title: string;
+  coverImage: string;
+  href: string;
+  badge: string;
+  filter: string;
+}
+
+const blogItems: GalleryItem[] = allPosts
+  .filter(p => p.data.coverImage)
+  .map(p => ({
+    title: p.data.title,
+    coverImage: p.data.coverImage!,
+    href: `/blog/${p.id.replace('.md', '')}`,
+    badge: 'Blog',
+    filter: 'blog'
+  }));
+
+const lessonItems: GalleryItem[] = allLessons
+  .filter(l => l.data.coverImage)
+  .map(l => ({
+    title: l.data.title,
+    coverImage: l.data.coverImage!,
+    href: `/licoes/${l.id.split('/').pop()?.replace('.md', '') || l.id}`,
+    badge: `Fase ${l.data.phase}`,
+    filter: l.data.phase.toLowerCase()
+  }));
+
+const allItems: GalleryItem[] = [...blogItems, ...lessonItems];
+const totalCount = allItems.length;
+---
+
+<Layout title="Galeria de Capas 🖼️ - Falo Chinês" description="Explore todas as capas dos artigos e lições do Falo Chinês.">
+  <div class="py-12 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.02),transparent_40%)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Page Header -->
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold text-brand-gold uppercase tracking-widest bg-brand-gold/10 px-3 py-1.5 rounded-full border border-brand-gold/20">
+          🖼️ Galeria de Capas
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-display font-black text-white mt-4">
+          Nossa Jornada Visual
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-400 mt-2">
+          {totalCount} capas — clique para explorar em tela cheia
+        </p>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="flex flex-wrap justify-center gap-2 mb-10" id="filter-bar">
+        <button data-filter="all" class="filter-btn active text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition-all duration-300 border-brand-gold/40 bg-brand-gold/10 text-brand-gold hover:bg-brand-gold/20">
+          Todas
+        </button>
+        <button data-filter="blog" class="filter-btn text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition-all duration-300 border-white/10 bg-white/5 text-gray-300 hover:border-brand-gold/40 hover:text-brand-gold">
+          Blog
+        </button>
+        <button data-filter="a" class="filter-btn text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition-all duration-300 border-white/10 bg-white/5 text-gray-300 hover:border-brand-red/40 hover:text-brand-red">
+          Fase A
+        </button>
+        <button data-filter="b" class="filter-btn text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition-all duration-300 border-white/10 bg-white/5 text-gray-300 hover:border-brand-jade/40 hover:text-brand-jade">
+          Fase B
+        </button>
+        <button data-filter="c" class="filter-btn text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition-all duration-300 border-white/10 bg-white/5 text-gray-300 hover:border-brand-purple/40 hover:text-brand-purple">
+          Fase C
+        </button>
+        <button data-filter="d" class="filter-btn text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition-all duration-300 border-white/10 bg-white/5 text-gray-300 hover:border-brand-blue/40 hover:text-brand-blue">
+          Fase D
+        </button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="gallery-grid">
+        {allItems.map((item, i) => (
+          <button
+            data-index={i}
+            data-filter={item.filter}
+            class="gallery-card group relative rounded-2xl overflow-hidden border border-white/5 hover:border-brand-gold/30 hover:-translate-y-1 transition-all duration-300 bg-dark-surface shadow-md cursor-pointer text-left"
+          >
+            <img
+              src={item.coverImage}
+              alt={item.title}
+              class="w-full aspect-[16/9] object-cover bg-dark-surface group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded-full border border-brand-gold/20">
+                {item.badge}
+              </span>
+              <h3 class="text-xs font-display font-bold text-white mt-1.5 line-clamp-2">
+                {item.title}
+              </h3>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <!-- Empty State -->
+      <div id="gallery-empty" class="hidden glass-panel rounded-2xl p-12 text-center border border-dashed border-white/5 mt-8">
+        <span class="text-5xl block mb-4">🔍</span>
+        <p class="text-sm text-gray-400">Nenhuma capa encontrada para este filtro.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+  >
+    <button id="lb-close" class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl transition-colors" aria-label="Fechar">
+      ✕
+    </button>
+
+    <button id="lb-prev" class="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white text-3xl transition-colors" aria-label="Anterior">
+      ‹
+    </button>
+
+    <button id="lb-next" class="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white text-3xl transition-colors" aria-label="Próximo">
+      ›
+    </button>
+
+    <div class="max-w-5xl max-h-[85vh] mx-4 flex flex-col items-center">
+      <img
+        id="lb-image"
+        class="max-w-full max-h-[75vh] rounded-2xl shadow-2xl object-contain"
+        alt=""
+      />
+      <div class="flex items-center justify-between w-full mt-4 px-2">
+        <a id="lb-link" href="#" class="text-xs text-brand-gold hover:text-white transition-colors font-medium truncate max-w-[60%]">
+          <span id="lb-title"></span>
+        </a>
+        <span id="lb-counter" class="text-xs text-gray-400 font-mono whitespace-nowrap ml-4"></span>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script define:vars={{ allItems }}>
+(function initGallery() {
+  const items = document.querySelectorAll('.gallery-card');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const lightbox = document.getElementById('lightbox');
+  const lbImage = document.getElementById('lb-image');
+  const lbTitle = document.getElementById('lb-title');
+  const lbLink = document.getElementById('lb-link');
+  const lbCounter = document.getElementById('lb-counter');
+  const lbClose = document.getElementById('lb-close');
+  const lbPrev = document.getElementById('lb-prev');
+  const lbNext = document.getElementById('lb-next');
+  const emptyState = document.getElementById('gallery-empty');
+
+  if (!items.length) return;
+
+  // Map item index to data
+  const itemsData = allItems;
+
+  let currentIndex = 0;
+  let filteredIndices = Array.from({ length: items.length }, (_, i) => i);
+
+  function getFilteredIndices() {
+    const activeBtn = document.querySelector('.filter-btn.active');
+    const activeFilter = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
+    const result = [];
+    items.forEach((item, i) => {
+      const filter = item.getAttribute('data-filter');
+      if (activeFilter === 'all' || filter === activeFilter) {
+        result.push(i);
+      }
+    });
+    return result;
+  }
+
+  function applyFilter() {
+    const activeBtn = document.querySelector('.filter-btn.active');
+    const activeFilter = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
+    let visibleCount = 0;
+
+    items.forEach(item => {
+      const filter = item.getAttribute('data-filter');
+      const match = activeFilter === 'all' || filter === activeFilter;
+      item.classList.toggle('hidden', !match);
+      if (match) visibleCount++;
+    });
+
+    if (emptyState) {
+      emptyState.classList.toggle('hidden', visibleCount > 0);
+    }
+
+    filteredIndices = getFilteredIndices();
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function () {
+      filterBtns.forEach(b => {
+        b.classList.remove('active', 'bg-brand-gold/10', 'text-brand-gold', 'border-brand-gold/40');
+        b.classList.add('bg-white/5', 'text-gray-300', 'border-white/10');
+      });
+      this.classList.remove('bg-white/5', 'text-gray-300', 'border-white/10');
+      this.classList.add('active', 'bg-brand-gold/10', 'text-brand-gold', 'border-brand-gold/40');
+      applyFilter();
+    });
+  });
+
+  function openLightbox(indexInFiltered) {
+    const idx = filteredIndices[indexInFiltered];
+    if (idx === undefined) return;
+
+    const data = itemsData[idx];
+    if (!data) return;
+
+    currentIndex = indexInFiltered;
+
+    if (lbImage) {
+      lbImage.setAttribute('src', data.coverImage);
+      lbImage.setAttribute('alt', data.title);
+    }
+    if (lbTitle) lbTitle.textContent = data.title;
+    if (lbLink) {
+      lbLink.setAttribute('href', data.href);
+      lbLink.classList.toggle('hidden', !data.href);
+    }
+    if (lbCounter) {
+      lbCounter.textContent = (indexInFiltered + 1) + ' / ' + filteredIndices.length;
+    }
+
+    if (lightbox) {
+      lightbox.classList.remove('opacity-0', 'pointer-events-none');
+      lightbox.classList.add('opacity-100', 'pointer-events-auto');
+    }
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (lightbox) {
+      lightbox.classList.remove('opacity-100', 'pointer-events-auto');
+      lightbox.classList.add('opacity-0', 'pointer-events-none');
+    }
+    document.body.style.overflow = '';
+  }
+
+  function prevImage() {
+    if (filteredIndices.length === 0) return;
+    const newIndex = (currentIndex - 1 + filteredIndices.length) % filteredIndices.length;
+    openLightbox(newIndex);
+  }
+
+  function nextImage() {
+    if (filteredIndices.length === 0) return;
+    const newIndex = (currentIndex + 1) % filteredIndices.length;
+    openLightbox(newIndex);
+  }
+
+  // Click handlers for gallery cards
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => {
+      filteredIndices = getFilteredIndices();
+      const idxInFiltered = filteredIndices.indexOf(i);
+      if (idxInFiltered !== -1) {
+        openLightbox(idxInFiltered);
+      }
+    });
+  });
+
+  // Lightbox controls
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lbPrev) lbPrev.addEventListener('click', prevImage);
+  if (lbNext) lbNext.addEventListener('click', nextImage);
+
+  if (lightbox) {
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === this) closeLightbox();
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (lightbox && lightbox.classList.contains('pointer-events-auto')) {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevImage();
+      if (e.key === 'ArrowRight') nextImage();
+    }
+  });
+
+  // Initialize
+  applyFilter();
+})();
+</script>

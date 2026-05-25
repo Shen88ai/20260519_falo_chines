@@ -8,6 +8,7 @@ icon: "💼"
 featured: true
 characters: ["商", "业", "中", "文"]
 tags: ["negocios", "hsk", "cultura"]
+coverImage: "/images/lessons/phase-d-05-hsk-negocios.png"
 ---
 
 # Etiqueta de Negócios e o HSK

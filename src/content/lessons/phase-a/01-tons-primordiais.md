@@ -8,6 +8,7 @@ icon: "🎵"
 featured: true
 characters: ["妈", "麻", "马", "骂"]
 tags: ["pinyin", "tons", "iniciante"]
+coverImage: "/images/lessons/phase-a-01-tons-primordiais.png"
 ---
 
 # Os Quatro Tons Primordiais do Mandarim

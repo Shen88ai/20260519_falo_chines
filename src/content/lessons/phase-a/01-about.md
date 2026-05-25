@@ -6,6 +6,7 @@ phaseLabel: "Fase A: Fonética & Tons"
 order: 1
 icon: "info-circle"
 featured: false
+coverImage: "/images/lessons/phase-a-01-about.png"
 ---
 
 # Sobre nós

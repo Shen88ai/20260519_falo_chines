@@ -36,3 +36,91 @@ Instructions
 - All analysis completed: src/components/, src/pages/, src/layouts/, src/styles/, src/Resource/, and tests/ directories have been examined and documented.
 
 ---
+
+## Cover Image Pipeline
+
+Cada post do blog e lição tem uma **cover image** temática. O sistema cobre automaticamente: exibição nos cards de listagem, banner hero na página individual, e galeria com lightbox.
+
+### Onde as Imagens Ficam
+
+| Tipo | Diretório | Exemplo |
+|------|-----------|---------|
+| Blog | `public/images/blog/` | `public/images/blog/alma-do-mandarim.png` |
+| Lições | `public/images/lessons/` | `public/images/lessons/phase-a-01-tons-primordiais.png` |
+
+### Frontmatter
+
+**Blog** (`src/content/blog/*.md`):
+```yaml
+coverImage: "/images/blog/{slug}.png"
+```
+
+**Lições** (`src/content/lessons/**/*.md`): o schema em `src/lib/schemas.ts` já inclui `coverImage: z.string().optional()`. Adicionar no frontmatter:
+```yaml
+coverImage: "/images/lessons/{slug}.png"
+```
+
+Slug = nome do arquivo sem `.md` (ex: `phase-a-01-tons-primordiais`).
+
+### Onde a Cover Image Aparece
+
+1. **Listagem de Blog** (`/blog`) — thumbnail 16:9 no topo do card
+2. **Listagem de Lições** (`/licoes`) — thumbnail 16:9 no topo do card, agrupado por fase
+3. **Post individual** (`/blog/{slug}`) — banner hero 21:9 entre breadcrumbs e título
+4. **Lição individual** (`/licoes/{slug}`) — banner hero 21:9 entre breadcrumbs e título
+5. **Galeria** (`/galeria`) — grid responsivo com lightbox fullscreen e filtros (Blog / Fase A-D)
+
+### Galeria de Capas (`/galeria`)
+
+Página automática: coleta todos os posts com `coverImage` preenchido. Oferece:
+- Grid responsivo (1-4 colunas) com hover revelando badge e título
+- Filtros por categoria: Todas, Blog, Fase A, B, C, D
+- Lightbox fullscreen: imagem em tela cheia, navegação ←/→, contador (3/9), link para o post
+- Atalhos de teclado: `Esc` fecha, `←`/`→` navega
+
+**Nova postagem aparecerá automaticamente** na galeria — basta ter `coverImage` no frontmatter.
+
+### Guia Rápido: Adicionar Cover Image a um Novo Post
+
+1. **Gerar imagem** com IA. Especificações:
+   - Aspect ratio: 16:9 (`--ar 16:9` no Midjourney)
+   - Estilo: matte painting cinematográfico, atmosfera noturna, ponto focal iluminado
+   - Cor de destaque conforme a fase (ver tabela abaixo)
+   - Versão Midjourney: `--style raw --v 6.1 --s 250`
+
+2. **Salvar** em `public/images/blog/{slug}.png` ou `public/images/lessons/{slug}.png`
+
+3. **Adicionar** `coverImage: "/images/{blog|lessons}/{slug}.png"` ao frontmatter do `.md`
+
+### Fases & Paleta de Cores
+
+| Fase | Cor Hex | Uso na Imagem |
+|------|---------|---------------|
+| Blog | Dourado `#EAB308` | Aurora, luz divina, pergaminhos dourados |
+| Fase A | Vermelho `#B91C1C` | Névoa, pôr-do-sol, lanternas |
+| Fase B | Jade `#2D8A6E` | Vegetação, jade, tinta verde |
+| Fase C | Roxo `#7C3AED` | Céu crepuscular, tinta roxa |
+| Fase D | Azul `#2563EB` | Céu noturno, tinta azul |
+
+### Prompt Template por Tipo de Post
+
+**Blog (reflexão/cultural):** Cenário contemplativo — montanhas, névoa, pergaminhos, luz dourada rompendo a névoa. Tom poético e convidativo.
+
+**Lição de Fonética (Fase A):** Elementos sonoros visíveis — instrumentos musicais, ondas sonoras, notas se transformando em caracteres. Tons vermelhos.
+
+**Lição de Ideogramas (Fase B):** Desconstrução visual — puzzle de caracteres, lupa, mesa de detetive, blocos de montar. Tons verdes/jade.
+
+**Lição de Gramática (Fase C):** Diagramas e ordens — pergaminhos com fórmulas de sintaxe, ábaco, caracteres se alinhando. Tons roxos.
+
+**Lição de HSK/Imersão (Fase D):** Contexto profissional ou íntimo — sala de reunião, cozinha da mãe, quarto infantil. Tons azuis.
+
+### Prompts Existentes (Referência)
+
+Arquivos em `src/Resource/prompts/`:
+- `blog/alma-do-mandarim.md`
+- `lessons/phase-a-01-about.md`, `phase-a-01-tons-primordiais.md`, etc. (1 por lição)
+
+Cada arquivo contém: prompt descritivo longo, variante curta para Midjourney, e parâmetros técnicos.
+
+### Referência
+Design doc: `docs/superpowers/specs/2026-05-25-ai-cover-images-design.md`

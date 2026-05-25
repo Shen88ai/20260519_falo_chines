@@ -7,27 +7,48 @@ const allLessonModules = Object.entries(
   import.meta.glob('../content/lessons/**/*.md', { eager: true })
 );
 
-const searchItems: SearchItemData[] = allLessonModules.map(([path, mod]) => {
-  const m = mod as any;
-  const id = path.split('/src/content/lessons/').pop() ?? path;
-  const slug = id.replace('.md', '').split('/').pop() ?? id;
-  const content = typeof m.rawContent === 'function'
-    ? m.rawContent()
-    : m.rawContent
-      ? m.rawContent
-      : m.default
-        ? typeof m.default === 'string' ? m.default : ''
+const allBlogModules = Object.entries(
+  import.meta.glob('../content/blog/**/*.md', { eager: true })
+);
+
+function extractContent(mod: any): string {
+  return typeof mod.rawContent === 'function'
+    ? mod.rawContent()
+    : mod.rawContent
+      ? mod.rawContent
+      : mod.default
+        ? typeof mod.default === 'string' ? mod.default : ''
         : '';
-  return {
-    id,
-    title: m.frontmatter?.title ?? '',
-    description: m.frontmatter?.description ?? '',
-    content,
-    phase: m.frontmatter?.phase ?? '',
-    tags: m.frontmatter?.tags ?? [],
-    slug,
-  };
-});
+}
+
+const searchItems: SearchItemData[] = [
+  ...allLessonModules.map(([path, mod]) => {
+    const id = path.split('/src/content/lessons/').pop() ?? path;
+    const slug = id.replace('.md', '').split('/').pop() ?? id;
+    return {
+      id,
+      title: mod.frontmatter?.title ?? '',
+      description: mod.frontmatter?.description ?? '',
+      content: extractContent(mod),
+      phase: mod.frontmatter?.phase ?? '',
+      tags: mod.frontmatter?.tags ?? [],
+      slug,
+    };
+  }),
+  ...allBlogModules.map(([path, mod]) => {
+    const id = path.split('/src/content/blog/').pop() ?? path;
+    const slug = id.replace('.md', '') ?? id;
+    return {
+      id,
+      title: mod.frontmatter?.title ?? '',
+      description: mod.frontmatter?.description ?? '',
+      content: extractContent(mod),
+      phase: '',
+      tags: mod.frontmatter?.tags ?? [],
+      slug,
+    };
+  })
+];
 
 interface Props {
   title?: string;
@@ -88,7 +109,13 @@ const {
             Nivelamento
           </a>
           <a href="/licoes" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-            Lições Obsidian
+            Lições
+          </a>
+          <a href="/blog" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
+            Blog
+          </a>
+          <a href="/galeria" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
+            Galeria
           </a>
         </nav>
 
@@ -126,13 +153,14 @@ const {
         <!-- Links -->
         <div class="flex gap-6 text-xs text-gray-400">
           <a href="/licoes" class="hover:text-brand-gold transition-colors">Lições</a>
+          <a href="/galeria" class="hover:text-brand-gold transition-colors">Galeria</a>
           <a href="/#nivelamento" class="hover:text-brand-gold transition-colors">Diagnóstico</a>
           <a href="https://zhongwen.com" target="_blank" rel="noopener noreferrer" class="hover:text-brand-gold transition-colors">Zhongwen.com ↗</a>
         </div>
 
         <div class="text-[10px] text-gray-500 text-right">
           Desenvolvido com carinho para estudantes lusófonos. <br/>
-          Integração nativa com Obsidian Markdown Vault.
+           Conteúdo criado com carinho para estudantes lusófonos.
         </div>
       </div>
     </footer>

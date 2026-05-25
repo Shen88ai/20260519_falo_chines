@@ -8,6 +8,7 @@ icon: "🎈"
 featured: true
 characters: ["学", "文", "小", "儿"]
 tags: ["psicologia", "fluencia", "inteligencia-artificial", "crianca-interior"]
+coverImage: "/images/lessons/phase-d-07-crianca-interior-fluencia.png"
 ---
 
 # A Psicologia da Fluência — Volte a Ter Cinco Anos de Idade
