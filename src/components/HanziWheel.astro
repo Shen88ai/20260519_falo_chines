@@ -1,0 +1,180 @@
+---
+import '../styles/hanzi-wheel.css';
+import { categories } from '../lib/hanzi-wheel/config';
+---
+
+<div class="hanzi-wheel-wrapper" id="hanzi-wheel-root">
+  <canvas class="hanzi-wheel-canvas" id="hanzi-wheel-canvas"></canvas>
+
+  <div class="hw-tooltip-mouse" id="hw-tooltip-mouse" style="display:none;">
+    <span class="hw-tooltip-char" id="hw-tooltip-char"></span>
+    <span class="hw-tooltip-pinyin" id="hw-tooltip-pinyin"></span>
+    <span class="hw-tooltip-meaning" id="hw-tooltip-meaning"></span>
+  </div>
+
+  <div class="hw-detail-panel" id="hw-detail-panel" style="display:none;">
+    <button class="hw-detail-close" id="hw-detail-close">&times;</button>
+    <div class="hw-detail-char" id="hw-detail-char"></div>
+    <div class="hw-detail-pinyin" id="hw-detail-pinyin">
+      <span id="hw-detail-pinyin-text"></span>
+      <button class="hw-detail-audio" id="hw-detail-audio">🔊</button>
+    </div>
+    <div class="hw-detail-tags" id="hw-detail-tags"></div>
+    <div class="hw-detail-radical" id="hw-detail-radical"></div>
+    <div class="hw-detail-strokes" id="hw-detail-strokes"></div>
+    <div class="hw-detail-mnemonic" id="hw-detail-mnemonic"></div>
+    <div class="hw-detail-lesson" id="hw-detail-lesson">
+      <a href="#" id="hw-lesson-link">Ver na lição →</a>
+    </div>
+  </div>
+
+  <div class="hw-footer">
+    <div class="hw-tabs">
+      {categories.map(cat => (
+        <button class="hw-tab" data-category={cat.id}>
+          {cat.icon} {cat.label}
+        </button>
+      ))}
+    </div>
+    <div class="hw-dots" id="hw-dots"></div>
+  </div>
+</div>
+
+<script>
+  import { initScene, disposeScene } from '../lib/hanzi-wheel/scene-manager';
+  import { stateManager } from '../lib/hanzi-wheel/state-manager';
+  import { buildGroups } from '../lib/hanzi-wheel/config';
+  import { getCharInfo } from '../lib/hanzi-wheel/character-utils';
+
+  const canvas = document.getElementById('hanzi-wheel-canvas') as HTMLCanvasElement;
+  const tooltip = document.getElementById('hw-tooltip-mouse')!;
+  const tooltipChar = document.getElementById('hw-tooltip-char')!;
+  const tooltipPinyin = document.getElementById('hw-tooltip-pinyin')!;
+  const tooltipMeaning = document.getElementById('hw-tooltip-meaning')!;
+  const detailPanel = document.getElementById('hw-detail-panel')!;
+  const detailClose = document.getElementById('hw-detail-close')!;
+  const detailChar = document.getElementById('hw-detail-char')!;
+  const detailPinyinText = document.getElementById('hw-detail-pinyin-text')!;
+  const detailAudio = document.getElementById('hw-detail-audio') as HTMLButtonElement;
+  const detailTags = document.getElementById('hw-detail-tags')!;
+  const detailRadical = document.getElementById('hw-detail-radical')!;
+  const detailStrokes = document.getElementById('hw-detail-strokes')!;
+  const detailMnemonic = document.getElementById('hw-detail-mnemonic')!;
+  const lessonLink = document.getElementById('hw-lesson-link') as HTMLAnchorElement;
+  const tabs = document.querySelectorAll('.hw-tab');
+  const dotsContainer = document.getElementById('hw-dots')!;
+
+  function getActiveCategory(): string {
+    return document.querySelector('.hw-tab.active')?.getAttribute('data-category') || 'fase';
+  }
+
+  function updateDots(category: string): void {
+    const groups = buildGroups(category as any);
+    const currentGroup = stateManager.getData().currentGroup;
+    dotsContainer.innerHTML = groups.map(g => `
+      <button class="hw-dot ${g.id === currentGroup ? 'active' : ''}" data-group="${g.id}"></button>
+    `).join('');
+    dotsContainer.querySelectorAll('.hw-dot').forEach(btn => {
+      btn.addEventListener('click', () => {
+        stateManager.switchGroup(btn.getAttribute('data-group')!);
+      });
+    });
+  }
+
+  function showTooltip(char: string, x: number, y: number): void {
+    const info = getCharInfo(char);
+    if (!info) return;
+    tooltipChar.textContent = char;
+    tooltipPinyin.textContent = info.pinyin;
+    tooltipMeaning.textContent = info.portuguese;
+    tooltip.style.left = `${x + 16}px`;
+    tooltip.style.top = `${y - 10}px`;
+    tooltip.style.display = 'flex';
+  }
+
+  function hideTooltip(): void {
+    tooltip.style.display = 'none';
+  }
+
+  function showDetail(char: string): void {
+    const info = getCharInfo(char);
+    if (!info) return;
+    detailChar.textContent = char;
+    detailPinyinText.textContent = `${info.pinyin} — ${info.portuguese}`;
+    detailTags.innerHTML = `<span class="hw-tag">${info.fase}</span><span class="hw-tag">${info.topic}</span><span class="hw-tag">${info.radical}</span>`;
+    detailRadical.textContent = `Radical: ${info.radical}`;
+    detailStrokes.textContent = `Traços: ${info.strokeCount}`;
+    detailMnemonic.textContent = info.mnemonica || '';
+    if (info.audioFilename) {
+      detailAudio.style.display = 'inline-block';
+      detailAudio.onclick = () => {
+        const audio = new Audio(`/audio/${info.audioFilename}`);
+        audio.play();
+      };
+    } else {
+      detailAudio.style.display = 'none';
+    }
+    const fase = info.fase;
+    lessonLink.href = `/licoes#fase-${fase}`;
+    detailPanel.classList.add('active');
+    detailPanel.style.display = 'block';
+  }
+
+  function hideDetail(): void {
+    detailPanel.classList.remove('active');
+    detailPanel.style.display = 'none';
+  }
+
+  detailClose.addEventListener('click', () => {
+    stateManager.closeDetail();
+    hideDetail();
+  });
+
+  window.addEventListener('hanzi-wheel:character-hover', ((e: CustomEvent) => {
+    const { character } = e.detail;
+    if (character) showTooltip(character, e.detail.mouseX || 0, e.detail.mouseY || 0);
+    else hideTooltip();
+  }) as EventListener);
+
+  window.addEventListener('hanzi-wheel:character-click', ((e: CustomEvent) => {
+    const { character } = e.detail;
+    if (character) showDetail(character);
+    hideTooltip();
+  }) as EventListener);
+
+  window.addEventListener('hanzi-wheel:close-detail', hideDetail);
+
+  window.addEventListener('hanzi-wheel:category-change', ((e: CustomEvent) => {
+    const { category } = e.detail;
+    tabs.forEach(t => {
+      t.classList.toggle('active', t.getAttribute('data-category') === category);
+    });
+    updateDots(category);
+  }) as EventListener);
+
+  window.addEventListener('hanzi-wheel:group-change', ((_e: CustomEvent) => {
+    updateDots(getActiveCategory());
+  }) as EventListener);
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const category = tab.getAttribute('data-category')!;
+      stateManager.switchCategory(category as any);
+    });
+  });
+
+  const firstTab = tabs[0];
+  if (firstTab) {
+    firstTab.classList.add('active');
+    updateDots('fase');
+  }
+
+  if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => initScene(canvas));
+    } else {
+      initScene(canvas);
+    }
+    window.addEventListener('beforeunload', disposeScene);
+  }
+</script>
