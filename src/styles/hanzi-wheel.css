@@ -1,0 +1,231 @@
+.hanzi-wheel-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hanzi-wheel-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: pointer;
+}
+
+/* Tooltip */
+.hw-tooltip-mouse {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.hw-tooltip-char {
+  font-size: 24px;
+  font-family: 'Noto Serif SC', serif;
+  color: #D4A843;
+}
+
+.hw-tooltip-pinyin {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hw-tooltip-meaning {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Detail panel */
+.hw-detail-panel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 220px;
+  background: rgba(15, 15, 20, 0.95);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px 16px;
+  z-index: 20;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+}
+
+.hw-detail-panel.active {
+  transform: translateX(0);
+}
+
+.hw-detail-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.hw-detail-char {
+  font-size: 42px;
+  font-family: 'Noto Serif SC', serif;
+  color: #D4A843;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.hw-detail-pinyin {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hw-detail-audio {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.hw-detail-audio:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hw-detail-tags {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.hw-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hw-detail-radical,
+.hw-detail-strokes {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 4px;
+}
+
+.hw-detail-mnemonic {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.hw-detail-lesson {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.hw-detail-lesson a {
+  color: #3B82F6;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.hw-detail-lesson a:hover {
+  text-decoration: underline;
+}
+
+/* Footer: tabs + dots */
+.hw-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+}
+
+.hw-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.hw-tab {
+  padding: 4px 10px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.hw-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hw-tab.active {
+  background: rgba(212, 168, 67, 0.15);
+  border-color: #D4A843;
+  color: #D4A843;
+}
+
+.hw-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.hw-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s;
+}
+
+.hw-dot.active {
+  background: #D4A843;
+  transform: scale(1.3);
+}
+
+.hw-dot:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
