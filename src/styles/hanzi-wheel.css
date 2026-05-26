@@ -299,28 +299,40 @@
     border-radius: 50%;
   }
 
+  .hw-footer {
+    gap: 8px;
+    padding: 8px 4px 12px;
+  }
+
   .hw-tabs {
     flex-wrap: wrap;
     justify-content: center;
+    gap: 6px;
   }
 
   .hw-tab {
-    font-size: 10px;
-    padding: 3px 8px;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    min-height: 44px;
   }
 
   .hw-dots-row {
-    gap: 4px;
+    gap: 8px;
   }
 
   .hw-nav-btn {
-    width: 18px;
-    height: 18px;
-    font-size: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    border-radius: 50%;
+    min-width: 32px;
   }
 
   .hw-dot {
-    width: 5px;
-    height: 5px;
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    min-height: 10px;
   }
 }
