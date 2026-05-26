@@ -2,8 +2,25 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ToneAnalyser from '../../components/ToneAnalyser.astro';
+import SocialProofBadge from '../../components/SocialProofBadge.astro';
 import { dictionary } from '../../data/dictionary';
+import { socialProof } from '../../data/social-proof-data';
 import { getZhongwenLink } from '../../lib/dictionary-utils';
+import ComunidadeCard from '../../components/ComunidadeCard.astro';
+
+// Build lesson lookup for client-side teaser generation
+const allLessons = await getCollection('lessons');
+const lessonLookup: Record<string, { title: string; characters: string[]; phaseLabel: string; tags: string[]; description: string }> = {};
+for (const l of allLessons) {
+  const slug = l.id.split('/').pop()?.replace('.md', '') || l.id;
+  lessonLookup[slug] = {
+    title: l.data.title,
+    characters: l.data.characters ?? [],
+    phaseLabel: l.data.phaseLabel,
+    tags: l.data.tags ?? [],
+    description: l.data.description,
+  };
+}
 
 // Gera caminhos estáticos para todas as lições na compilação do Astro
 export async function getStaticPaths() {
@@ -21,8 +38,24 @@ export async function getStaticPaths() {
 const { lesson } = Astro.props;
 const { Content } = await render(lesson);
 
+const flatSlug = lesson.id.split('/').pop()?.replace('.md', '') || lesson.id;
+
 // Serializa o dicionário e utilitários para scripts do cliente
 const serializedDictionary = JSON.stringify(dictionary);
+const serializedLessonLookup = JSON.stringify(lessonLookup);
+
+// Ordered lesson list for prev/next navigation
+const allLessonSlugs = (await getCollection('lessons'))
+  .filter(l => (l.id.split('/').pop()?.replace('.md', '') || l.id) !== '01-about')
+  .sort((a, b) => (a.data.order || 99) - (b.data.order || 99))
+  .map(l => ({
+    slug: l.id.split('/').pop()?.replace('.md', '') || l.id,
+    title: l.data.title,
+    icon: l.data.icon,
+  }));
+const currentIdx = allLessonSlugs.findIndex(l => l.slug === flatSlug);
+const prevLesson = currentIdx > 0 ? allLessonSlugs[currentIdx - 1] : null;
+const nextLesson = currentIdx < allLessonSlugs.length - 1 ? allLessonSlugs[currentIdx + 1] : null;
 ---
 
 <Layout 
@@ -50,6 +83,12 @@ const serializedDictionary = JSON.stringify(dictionary);
           <a href="/licoes" class="hover:text-brand-gold transition-colors">Lições</a>
           <span>/</span>
           <span class="text-brand-gold font-medium">{lesson.data.phaseLabel}</span>
+        </div>
+        <div class="mb-4">
+          <SocialProofBadge
+            students={socialProof.lessons[flatSlug]?.students ?? 0}
+            phase={lesson.data.phase}
+          />
         </div>
 
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -131,6 +170,83 @@ const serializedDictionary = JSON.stringify(dictionary);
             <ToneAnalyser />
           </div>
 
+          <!-- PREV / NEXT LESSON NAVIGATION -->
+          {(prevLesson || nextLesson) && (
+            <div class="flex items-stretch justify-between gap-4 pt-2">
+              {prevLesson ? (
+                <a
+                  href={`/licoes/${prevLesson.slug}`}
+                  class="flex-1 flex items-center gap-3 glass-panel rounded-xl px-5 py-4 border border-white/5 hover:border-brand-gold/30 transition-all duration-300 group"
+                >
+                  <span class="text-2xl shrink-0">{prevLesson.icon}</span>
+                  <div class="text-left min-w-0">
+                    <span class="block text-[9px] uppercase font-bold text-gray-500 tracking-wider">← Anterior</span>
+                    <span class="block text-sm font-bold text-white group-hover:text-brand-gold transition-colors truncate">{prevLesson.title}</span>
+                  </div>
+                </a>
+              ) : (
+                <div class="flex-1" />
+              )}
+
+              {nextLesson ? (
+                <a
+                  href={`/licoes/${nextLesson.slug}`}
+                  class="flex-1 flex items-center gap-3 glass-panel rounded-xl px-5 py-4 border border-white/5 hover:border-brand-gold/30 transition-all duration-300 group justify-end text-right"
+                >
+                  <div class="text-right min-w-0">
+                    <span class="block text-[9px] uppercase font-bold text-gray-500 tracking-wider">Próxima →</span>
+                    <span class="block text-sm font-bold text-white group-hover:text-brand-gold transition-colors truncate">{nextLesson.title}</span>
+                  </div>
+                  <span class="text-2xl shrink-0">{nextLesson.icon}</span>
+                </a>
+              ) : (
+                <div class="flex-1" />
+              )}
+            </div>
+          )}
+
+          <!-- SUA VEZ: Community Engagement CTAs -->
+          <div class="glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-2xl">
+            <div class="flex items-center gap-3 mb-5">
+              <span class="text-xl">🤝</span>
+              <h3 class="text-lg font-display font-extrabold text-white">Sua Vez!</h3>
+              <span class="text-[10px] text-gray-500 font-medium">Contribua com a comunidade</span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+              <ComunidadeCard
+                icon="🗣️"
+                title="Peça uma Situação"
+                description="Tem uma situação do dia a dia que você não sabe como expressar em chinês?"
+                href="/comunidade#situacoes"
+                cta="Pedir"
+              />
+              <ComunidadeCard
+                icon="🔍"
+                title="Registre Dificuldade"
+                description="Algum caractere desta lição te travou? Marque aqui para ajudar outros alunos."
+                href="/comunidade#dificuldades"
+                cta="Registrar"
+              />
+              <ComunidadeCard
+                icon="🧠"
+                title="Compartilhe um Macete"
+                description="Tem um jeito criativo de memorizar um caractere? Compartilhe com a turma!"
+                href="/comunidade#macetes"
+                cta="Enviar"
+              />
+            </div>
+
+            <div class="mt-5 pt-4 border-t border-white/5 text-center">
+              <a
+                href="/comunidade"
+                class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-brand-gold hover:text-white transition-colors"
+              >
+                📊 Ver comunidade completa →
+              </a>
+            </div>
+          </div>
+
         </article>
 
       </div>
@@ -149,6 +265,10 @@ const serializedDictionary = JSON.stringify(dictionary);
         <div>
           <span class="block text-sm font-display font-black text-brand-gold" id="popup-pinyin">zhōng</span>
           <span class="block text-[9px] uppercase font-bold text-gray-400 tracking-wider">Pronúncia Pinyin</span>
+          <div id="popup-traditional-container" class="hidden mt-1">
+            <span class="block text-[9px] uppercase font-bold text-brand-gold/70 tracking-wider">Tradicional:</span>
+            <span class="block text-lg font-serif-zh font-bold text-white" id="popup-traditional"></span>
+          </div>
         </div>
       </div>
       <span class="text-[9px] font-extrabold text-gray-500 uppercase bg-white/5 px-2 py-0.5 rounded" id="popup-strokes">4 traços</span>
@@ -184,14 +304,67 @@ const serializedDictionary = JSON.stringify(dictionary);
           Zhongwen.com ↗
         </a>
       </div>
+      <div class="pt-3 border-t border-white/5 mt-3">
+        <button id="popup-difficulty-btn" class="text-[10px] font-bold text-gray-400 hover:text-brand-gold transition-colors flex items-center gap-1">
+          😓 Tive dificuldade com este caractere
+        </button>
+        <div id="popup-difficulty-options" class="hidden mt-2 space-y-1">
+          <p class="text-[9px] uppercase font-bold text-gray-500 tracking-wider mb-1">Qual tipo?</p>
+          <div class="flex flex-wrap gap-1.5" id="popup-difficulty-types">
+            <button class="diff-btn text-[10px] px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/5 transition-colors" data-type="tone">Tom / Pronúncia</button>
+            <button class="diff-btn text-[10px] px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/5 transition-colors" data-type="strokes">Ordem dos traços</button>
+            <button class="diff-btn text-[10px] px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/5 transition-colors" data-type="meaning">Significado</button>
+            <button class="diff-btn text-[10px] px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/5 transition-colors" data-type="radical">Memorizar radical</button>
+            <button class="diff-btn text-[10px] px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/5 transition-colors" data-type="other">Outro</button>
+          </div>
+          <p id="popup-difficulty-feedback" class="text-[10px] text-brand-jade hidden mt-1">✓ Registrado!</p>
+        </div>
+        <span id="popup-difficulty-heat" class="text-[10px] text-gray-500 hidden mt-1 block"></span>
+      </div>
     </div>
   </div>
 </Layout>
 
 <!-- Glossary Hover & Linkage Scripts -->
-<script is:inline define:vars={{ serializedDictionary }}>
+<script is:inline define:vars={{ serializedDictionary, serializedLessonLookup, flatSlug }}>
+  // Comunidade storage for inline use
+  var comunidadeStorage = (function() {
+    function read(k) { try { return JSON.parse(localStorage.getItem(k) || '[]') } catch(e) { return [] } }
+    function write(k, d) { localStorage.setItem(k, JSON.stringify(d)) }
+    function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8) }
+    return {
+      addDifficulty: function(c, t, ls) { var list = read('falo-chines-difficulties'); list.push({ character: c, type: t, lessonSlug: ls, timestamp: Date.now() }); write('falo-chines-difficulties', list); },
+      getDifficulties: function() { return read('falo-chines-difficulties') },
+      addMnemonic: function(c, text, author) { var list = read('falo-chines-mnemonics'); list.push({ id: uid(), character: c, text: text, author: author, votes: 0, timestamp: Date.now() }); write('falo-chines-mnemonics', list); return list[list.length - 1]; },
+      getMnemonics: function() { return read('falo-chines-mnemonics') },
+      getMnemonicsByChar: function(c) { return read('falo-chines-mnemonics').filter(function(m) { return m.character === c }) },
+      voteMnemonic: function(id) { var list = read('falo-chines-mnemonics'); var idx = list.findIndex(function(m) { return m.id === id }); if (idx === -1) return null; list[idx].votes++; write('falo-chines-mnemonics', list); return list[idx]; },
+      addSituation: function(title, desc, tags) { var list = read('falo-chines-situations'); var s = { id: uid(), title: title, description: desc, tags: tags, votes: 1, status: 'pendente', author: 'Anônimo', timestamp: Date.now() }; list.push(s); write('falo-chines-situations', list); return s; },
+    };
+  })();
+  var __currentChar = '';
+  window.__currentLessonSlug = flatSlug;
+
+  // Simplified→Traditional map for popup display
+  var simplifiedToTraditional = {
+    '国':'國','学':'學','妈':'媽','马':'馬','语':'語','书':'書','师':'師','爱':'愛','乐':'樂',
+    '旧':'舊','临':'臨','刘':'劉','斋':'齋','园':'園','图':'圖','孙':'孫','尘':'塵','头':'頭',
+    '个':'個','从':'從','们':'們','体':'體','战':'戰','戏':'戲','吗':'嗎','时':'時','云':'雲',
+    '灯':'燈','烧':'燒','烟':'煙','岁':'歲','岛':'島','银':'銀','铁':'鐵','铜':'銅','针':'針',
+    '说':'說','话':'話','请':'請','谢':'謝','带':'帶','药':'藥','丰':'豐','觅':'覓','业':'業',
+    '东':'東','长':'長','门':'門','风':'風','见':'見','贝':'貝','车':'車','万':'萬','龙':'龍','骂':'罵','儿':'兒'
+  };
+  function getCharDisplay(char) {
+    var t = simplifiedToTraditional[char];
+    return t ? char + ' (' + t + ')' : char;
+  }
+  function getTraditional(char) {
+    return simplifiedToTraditional[char] || '';
+  }
+
   (function initGlossaryAndSidebar() {
     const dict = JSON.parse(serializedDictionary);
+    const lessonLookup = JSON.parse(serializedLessonLookup);
     const body = document.getElementById('lesson-body-el');
     const popup = document.getElementById('glossary-popup');
 
@@ -268,11 +441,24 @@ const serializedDictionary = JSON.stringify(dictionary);
         const entry = dict[char];
         if (!entry) return;
 
-        if (popupChar) popupChar.textContent = entry.character;
+        __currentChar = char;
+        resetDifficultyUI();
+
+        if (popupChar) popupChar.textContent = getCharDisplay(entry.character);
         if (popupPinyin) popupPinyin.textContent = entry.pinyin;
         if (popupStrokes) popupStrokes.textContent = `${entry.strokeCount} traços`;
         if (popupPortuguese) popupPortuguese.textContent = entry.portuguese;
         if (popupRadical) popupRadical.textContent = entry.radical;
+
+        var popupTraditional = document.getElementById('popup-traditional');
+        var popupTraditionalContainer = document.getElementById('popup-traditional-container');
+        var trad = getTraditional(entry.character);
+        if (trad && popupTraditional && popupTraditionalContainer) {
+          popupTraditional.textContent = trad;
+          popupTraditionalContainer.classList.remove('hidden');
+        } else if (popupTraditionalContainer) {
+          popupTraditionalContainer.classList.add('hidden');
+        }
         
         if (entry.mnemonica) {
           if (popupMnemonica) popupMnemonica.textContent = entry.mnemonica;
@@ -331,6 +517,44 @@ const serializedDictionary = JSON.stringify(dictionary);
       }, 300);
     }
 
+    // --- Difficulty tracking ---
+    var difficultyBtn = document.getElementById('popup-difficulty-btn');
+    var difficultyOptions = document.getElementById('popup-difficulty-options');
+    var difficultyFeedback = document.getElementById('popup-difficulty-feedback');
+    var difficultyHeat = document.getElementById('popup-difficulty-heat');
+
+    function resetDifficultyUI() {
+      if (difficultyOptions) difficultyOptions.classList.add('hidden');
+      if (difficultyFeedback) difficultyFeedback.classList.add('hidden');
+    }
+
+    if (difficultyBtn) {
+      difficultyBtn.addEventListener('click', function() {
+        if (difficultyOptions) difficultyOptions.classList.toggle('hidden');
+      });
+    }
+
+    document.querySelectorAll('#popup-difficulty-types .diff-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var type = this.getAttribute('data-type');
+        if (!__currentChar) return;
+        try {
+          comunidadeStorage.addDifficulty(__currentChar, type, window.__currentLessonSlug || '');
+          if (difficultyOptions) difficultyOptions.classList.add('hidden');
+          if (difficultyFeedback) {
+            difficultyFeedback.classList.remove('hidden');
+            setTimeout(function() { difficultyFeedback.classList.add('hidden'); }, 2000);
+          }
+          var all = comunidadeStorage.getDifficulties();
+          var count = all.filter(function(d) { return d.character === __currentChar; }).length;
+          if (difficultyHeat && count > 1) {
+            difficultyHeat.textContent = '\uD83D\uDD25 ' + count + ' alunos registraram dificuldade';
+            difficultyHeat.classList.remove('hidden');
+          }
+        } catch(e) { console.warn('Falha ao salvar dificuldade:', e); }
+      });
+    });
+
     // --- PARTE 2: CARREGAMENTO DO MINIMAP DA JORNADA ---
     const sidebarMinimap = document.getElementById('sidebar-minimap');
     if (!sidebarMinimap) return;
@@ -380,45 +604,115 @@ const serializedDictionary = JSON.stringify(dictionary);
           D: '🎭 Rota do Entusiasta'
         };
 
+        // Inline teaser generator for client-side use
+        function generateTeaser(slug) {
+          const lesson = lessonLookup[slug];
+          if (!lesson) return '🔒 Próxima lição';
+          const templates = [];
+          if (lesson.characters && lesson.characters.length > 0) {
+            const c = lesson.characters[Math.floor(Math.random() * lesson.characters.length)];
+            templates.push(`🔒 O segredo do caractere ${c}`);
+          }
+          if (lesson.tags && lesson.tags.length > 0) {
+            const tag = lesson.tags[Math.floor(Math.random() * lesson.tags.length)];
+            templates.push(`🔒 Domine os ${tag} como um nativo`);
+          }
+          const topic = (lesson.phaseLabel || '').split(' & ')[0];
+          if (topic) templates.push(`🔒 O erro que todo brasileiro comete em ${topic.toLowerCase()}`);
+          templates.push(`🔒 Próxima parada: ${(lesson.title || '').split(':')[0]}`);
+          return templates[Math.floor(Math.random() * templates.length)];
+        }
+
         const currentSlug = window.location.pathname.split('/').pop() || '';
         const checkpoints = pathRoutes[journey.path] || [];
         const pathName = currentPathInfo[journey.path] || 'Sua Jornada';
+        const currentIdx = checkpoints.findIndex(x => x.slug === currentSlug);
+        const completedCount = currentIdx > 0 ? currentIdx : 0;
+        const remainingCount = checkpoints.length - currentIdx - 1;
 
         let checkpointHtml = `
           <div class="text-[10px] font-bold uppercase tracking-wider text-brand-gold bg-brand-gold/10 px-3 py-1.5 rounded-lg border border-brand-gold/20 mb-3 text-center">
             ${pathName}
           </div>
-          <div class="relative pl-4 space-y-4 border-l border-white/10 ml-2 mt-2">
+          <div class="relative pl-4 border-l border-white/10 ml-2 mt-2">
         `;
 
-        checkpoints.forEach((cp, i) => {
-          const isCurrent = cp.slug === currentSlug;
-          const currentIdx = checkpoints.findIndex(x => x.slug === currentSlug);
-          const isCompleted = currentIdx !== -1 && i < currentIdx;
-
-          const dotColorClass = isCurrent 
-            ? 'bg-brand-gold ring-4 ring-brand-gold/20 border-white' 
-            : (isCompleted ? 'bg-brand-jade border-brand-jade' : 'bg-dark-card border-white/20');
-            
-          const titleColorClass = isCurrent 
-            ? 'text-white font-extrabold' 
-            : (isCompleted ? 'text-gray-400 line-through' : 'text-gray-400');
-
+        // Past checkpoints: collapsed into summary
+        if (completedCount > 0) {
           checkpointHtml += `
-            <div class="relative flex items-center gap-3">
-              <!-- Point Timeline Marker -->
-              <span class="absolute -left-[21px] w-3 h-3 rounded-full border-2 ${dotColorClass} transition-all duration-300"></span>
-              
-              <!-- Checkpoint Link -->
-              <a href="/licoes/${cp.slug}" class="text-xs transition-colors hover:text-brand-gold ${titleColorClass}">
-                ${cp.title} ${isCompleted ? '✓' : ''}
+            <div class="relative pb-2">
+              <span class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 bg-brand-jade border-brand-jade"></span>
+              <button id="toggle-past-checkpoints" class="text-xs text-gray-500 hover:text-brand-gold transition-colors flex items-center gap-1">
+                <span>✓ ${completedCount} ${completedCount === 1 ? 'concluída' : 'concluídas'}</span>
+                <span id="toggle-past-arrow" class="text-[10px]">▶</span>
+              </button>
+              <div id="past-checkpoints" class="hidden mt-2 space-y-2 pl-2 border-l border-white/5 ml-2">
+          `;
+          for (let i = 0; i < currentIdx; i++) {
+            const cp = checkpoints[i];
+            checkpointHtml += `
+              <div class="relative flex items-center gap-2">
+                <span class="absolute -left-[17px] w-2 h-2 rounded-full bg-brand-jade/60"></span>
+                <a href="/licoes/${cp.slug}" class="text-[11px] text-gray-500 hover:text-brand-gold transition-colors line-through">
+                  ${cp.title} ✓
+                </a>
+              </div>
+            `;
+          }
+          checkpointHtml += `</div></div>`;
+        }
+
+        // Current checkpoint
+        const currentCp = checkpoints[currentIdx];
+        if (currentCp) {
+          checkpointHtml += `
+            <div class="relative flex items-center gap-3 py-3">
+              <span class="absolute -left-[21px] w-3 h-3 rounded-full border-2 bg-brand-gold ring-4 ring-brand-gold/20 border-white"></span>
+              <span class="text-xs text-white font-extrabold">${currentCp.title}</span>
+              <span class="text-[9px] text-brand-gold font-bold uppercase">● Agora</span>
+            </div>
+          `;
+        }
+
+        // Next checkpoint: locked with teaser (only if not on the last one)
+        const nextIdx = currentIdx >= 0 ? currentIdx + 1 : 0;
+        if (nextIdx < checkpoints.length) {
+          const nextCp = checkpoints[nextIdx];
+          const teaser = generateTeaser(nextCp.slug);
+          checkpointHtml += `
+            <div class="relative flex items-center gap-3 py-3 opacity-60">
+              <span class="absolute -left-[21px] w-3 h-3 rounded-full border-2 bg-dark-card border-white/20"></span>
+              <a href="/licoes/${nextCp.slug}" class="text-xs text-gray-400 hover:text-brand-gold transition-colors">
+                ${teaser}
               </a>
             </div>
           `;
-        });
+        }
+
+        // Remaining count hint
+        if (remainingCount > 1) {
+          checkpointHtml += `
+            <div class="relative flex items-center gap-3 py-2">
+              <span class="absolute -left-[21px] w-3 h-3 rounded-full border-2 border-dashed border-white/10"></span>
+              <span class="text-[10px] text-gray-500">+${remainingCount} ${remainingCount === 1 ? 'passo' : 'passos'} pela frente</span>
+            </div>
+          `;
+        }
 
         checkpointHtml += `</div>`;
         sidebarMinimap.innerHTML = checkpointHtml;
+
+        // Toggle past checkpoints
+        const toggleBtn = document.getElementById('toggle-past-checkpoints');
+        const pastList = document.getElementById('past-checkpoints');
+        const toggleArrow = document.getElementById('toggle-past-arrow');
+        if (toggleBtn && pastList) {
+          toggleBtn.addEventListener('click', () => {
+            const isHidden = pastList.classList.contains('hidden');
+            pastList.classList.toggle('hidden');
+            if (toggleArrow) toggleArrow.textContent = isHidden ? '▼' : '▶';
+          });
+        }
       }
     } catch (e) {
       console.warn("Falha ao desenhar minimap da jornada:", e);

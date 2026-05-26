@@ -23,6 +23,13 @@ import { categories } from '../lib/hanzi-wheel/config';
     <div class="hw-detail-radical" id="hw-detail-radical"></div>
     <div class="hw-detail-strokes" id="hw-detail-strokes"></div>
     <div class="hw-detail-mnemonic" id="hw-detail-mnemonic"></div>
+    <button class="hw-difficulty-btn" id="hw-difficulty-btn" style="margin-top:8px;font-size:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#aaa;padding:6px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s;">😓 Tive dificuldade</button>
+    <div id="hw-difficulty-options" style="display:none;margin-top:6px;display:none;flex-wrap:wrap;gap:4px;">
+      <button class="hw-diff-opt" data-type="tone" style="font-size:9px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#aaa;cursor:pointer;">Tom</button>
+      <button class="hw-diff-opt" data-type="strokes" style="font-size:9px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#aaa;cursor:pointer;">Traços</button>
+      <button class="hw-diff-opt" data-type="meaning" style="font-size:9px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#aaa;cursor:pointer;">Significado</button>
+      <button class="hw-diff-opt" data-type="radical" style="font-size:9px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#aaa;cursor:pointer;">Radical</button>
+    </div>
     <div class="hw-detail-lesson" id="hw-detail-lesson">
       <a href="#" id="hw-lesson-link">Ver na lição →</a>
     </div>
@@ -49,6 +56,7 @@ import { categories } from '../lib/hanzi-wheel/config';
   import { stateManager } from '../lib/hanzi-wheel/state-manager';
   import { buildGroups } from '../lib/hanzi-wheel/config';
   import { getCharInfo } from '../lib/hanzi-wheel/character-utils';
+  import { getCharDisplay } from '../lib/char-converter';
 
   const canvas = document.getElementById('hanzi-wheel-canvas') as HTMLCanvasElement;
   const tooltip = document.getElementById('hw-tooltip-mouse')!;
@@ -65,6 +73,10 @@ import { categories } from '../lib/hanzi-wheel/config';
   const detailStrokes = document.getElementById('hw-detail-strokes')!;
   const detailMnemonic = document.getElementById('hw-detail-mnemonic')!;
   const lessonLink = document.getElementById('hw-lesson-link') as HTMLAnchorElement;
+  const hwDifficultyBtn = document.getElementById('hw-difficulty-btn')!;
+  const hwDifficultyOptions = document.getElementById('hw-difficulty-options')!;
+  let hwCurrentChar = '';
+
   const tabs = document.querySelectorAll('.hw-tab');
   const dotsContainer = document.getElementById('hw-dots')!;
   const navPrev = document.getElementById('hw-nav-prev')!;
@@ -90,7 +102,7 @@ import { categories } from '../lib/hanzi-wheel/config';
   function showTooltip(char: string, x: number, y: number): void {
     const info = getCharInfo(char);
     if (!info) return;
-    tooltipChar.textContent = char;
+    tooltipChar.textContent = getCharDisplay(char);
     tooltipPinyin.textContent = info.pinyin;
     tooltipMeaning.textContent = info.portuguese;
     tooltip.style.left = `${x + 16}px`;
@@ -105,7 +117,8 @@ import { categories } from '../lib/hanzi-wheel/config';
   function showDetail(char: string): void {
     const info = getCharInfo(char);
     if (!info) return;
-    detailChar.textContent = char;
+    hwCurrentChar = char;
+    detailChar.textContent = getCharDisplay(char);
     detailPinyinText.textContent = `${info.pinyin} — ${info.portuguese}`;
     detailTags.innerHTML = `<span class="hw-tag">${info.fase}</span><span class="hw-tag">${info.topic}</span><span class="hw-tag">${info.radical}</span>`;
     detailRadical.textContent = `Radical: ${info.radical}`;
@@ -134,6 +147,24 @@ import { categories } from '../lib/hanzi-wheel/config';
   detailClose.addEventListener('click', () => {
     stateManager.closeDetail();
     hideDetail();
+  });
+
+  if (hwDifficultyBtn) {
+    hwDifficultyBtn.addEventListener('click', () => {
+      hwDifficultyOptions.style.display = hwDifficultyOptions.style.display === 'none' ? 'flex' : 'none';
+    });
+  }
+
+  document.querySelectorAll('.hw-diff-opt').forEach(btn => {
+    btn.addEventListener('click', function(this: HTMLElement) {
+      if (!hwCurrentChar) return;
+      const type = this.getAttribute('data-type') as string;
+      import('../lib/comunidade-storage').then(mod => {
+        mod.addDifficulty(hwCurrentChar, type as any, 'hanzi-wheel');
+        this.textContent = '✓ ' + this.textContent;
+        setTimeout(() => { hwDifficultyOptions.style.display = 'none'; }, 500);
+      }).catch(e => console.warn(e));
+    });
   });
 
   window.addEventListener('hanzi-wheel:character-hover', ((e: CustomEvent) => {
