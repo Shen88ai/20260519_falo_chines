@@ -236,7 +236,9 @@
 
 .hw-dots {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
+  justify-content: center;
 }
 
 .hw-dot {
