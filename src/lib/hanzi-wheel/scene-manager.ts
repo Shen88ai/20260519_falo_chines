@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import type { DeviceTier } from './types';
 import { detectDeviceTier } from './device-tier';
 import { initWheelCore, updateCenterSprite, animateWheel } from './wheel-core';
+import { initGalaxyCloud, animateGalaxyCloud } from './galaxy-cloud';
 import {
   createOrbitingCharacters,
   updateOrbitPositions,
@@ -11,7 +12,7 @@ import {
   clearOrbitingCharacters,
 } from './orbiting-chars';
 import { stateManager } from './state-manager';
-import { categoryColors } from './config';
+import { buildGroups, categoryColors } from './config';
 
 let scene: THREE.Scene;
 let camera: THREE.PerspectiveCamera;
@@ -47,6 +48,7 @@ export async function initScene(canvas: HTMLCanvasElement): Promise<void> {
   scene.add(wheelGroup);
 
   initWheelCore(wheelGroup, deviceTier);
+  scene.add(initGalaxyCloud());
 
   raycaster = new THREE.Raycaster();
   mouse = new THREE.Vector2();
@@ -69,9 +71,10 @@ function loadCurrentGroup(): void {
   const color = categoryColors[data.currentCategory];
   clearOrbitingCharacters(wheelGroup);
   createOrbitingCharacters(wheelGroup, data.orbitingCharacters, color);
-  if (data.centerCharacter) {
-    updateCenterSprite(data.centerCharacter, color);
-  }
+  const groups = buildGroups(data.currentCategory);
+  const group = groups.find(g => g.id === data.currentGroup);
+  const label = group?.label || data.orbitingCharacters[0] || '';
+  updateCenterSprite(label, color);
 }
 
 function onCategoryChange(e: CustomEvent): void {
@@ -139,6 +142,7 @@ function startRenderLoop(): void {
     if (stateManager.getState() !== 'detail') {
       updateOrbitPositions(0.016);
       animateWheel(time * 0.001);
+      animateGalaxyCloud(time * 0.001);
     }
 
     renderer.render(scene, camera);

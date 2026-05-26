@@ -124,3 +124,92 @@ Cada arquivo contém: prompt descritivo longo, variante curta para Midjourney, e
 
 ### Referência
 Design doc: `docs/superpowers/specs/2026-05-25-ai-cover-images-design.md`
+
+---
+
+## Hanzi Wheel 3D Interactive Component
+
+Componente Three.js na homepage (`/`) que exibe caracteres chineses orbitando em 3D. Funciona como navegador visual do dicionário.
+
+### Arquitetura
+
+| Arquivo | Função |
+|---------|--------|
+| `src/components/HanziWheel.astro` | Container HTML + canvas + footer (tabs, dots, prev/next) |
+| `src/styles/hanzi-wheel.css` | Estilos do footer, tabs, dots, tooltip, painel de detalhes |
+| `src/lib/hanzi-wheel/scene-manager.ts` | Inicializa cena Three.js, câmera, render loop, raycasting |
+| `src/lib/hanzi-wheel/wheel-core.ts` | Anel externo (gradiente arco-íris), sprite central com efeito "breath" |
+| `src/lib/hanzi-wheel/orbiting-chars.ts` | Sprites orbitantes — suporta **órbita dupla** (>10 chars) |
+| `src/lib/hanzi-wheel/galaxy-cloud.ts` | Fundo com 800 partículas estilo nebulosa (cores da paleta neon) |
+| `src/lib/hanzi-wheel/state-manager.ts` | Estado global: categoria, grupo, hover, seleção |
+| `src/lib/hanzi-wheel/config.ts` | Categorias (Tom/Radical/Tópico/Nível) e `buildGroups()` |
+| `src/lib/hanzi-wheel/types.ts` | Tipos TypeScript (`WheelCategory`, `WheelGroup`, etc.) |
+| `src/lib/hanzi-wheel/character-utils.ts` | Helper para buscar info de caractere no dicionário |
+| `src/lib/hanzi-wheel/device-tier.ts` | Detecta capacidade do dispositivo (high/medium/low) |
+
+### Navegação
+
+- **Tabs** no footer alternam entre: Tom, Radical, Tópico, Nível
+- **Dots** abaixo das tabs representam subgrupos (ex: Fase A, B, C, D)
+- **Botões ◀ ▶** nas laterais dos dots navegam entre grupos (wrapping)
+- Clicar num caractere em órbita abre painel de detalhes (pinyin, tradução, radical, strokes, mnemônico)
+
+### Órbitas Duplas
+
+Grupos com mais de **10 caracteres** são automaticamente divididos em duas órbitas:
+- Órbita interna: raio 1.4, scale 0.32 (caracteres pares)
+- Órbita externa: raio 2.15, scale 0.38 (caracteres ímpares)
+- Pequeno offset em Z para evitar sobreposição
+
+### Efeitos Visuais
+
+- **Anel externo**: 48 segmentos com gradiente HSL (arco-íris), opacidade 0.35
+- **Caractere central**: pulsa suavemente (scale 0.43–0.67, opacity 0.4–1.0) com `sin(time * 0.002)`
+- **Galaxy cloud**: 800 partículas distribuídas em disco, cores da paleta neon (platina #E8E4D9, ouro #D4A843, amarelo #E5FF00, verde #00FF87, azul #7DD3FC), drift animado, blending aditivo
+
+## Dicionário de Caracteres
+
+`src/data/dictionary.ts` armazena todos os caracteres com metadados. Atualmente **150 entradas**, 29 radicais com **5 caracteres cada**.
+
+### Interface
+
+```typescript
+export interface DictionaryEntry {
+  character: string;    // O caractere chinês
+  pinyin: string;       // Pinyin com acentos de tom
+  portuguese: string;   // Tradução em português
+  radical: string;      // Radical do caractere
+  strokeCount: number;  // Número de traços
+  mnemonica?: string;   // Mnemônico opcional
+  audioFilename?: string; // Arquivo de áudio opcional
+  fase: 'A' | 'B' | 'C' | 'D';  // Fase do currículo
+  topic: string;        // Tópico semântico (ex: familia, cultura, negocios)
+}
+```
+
+### Como Adicionar Novo Caractere
+
+1. Adicionar ao objeto `dictionary` em `src/data/dictionary.ts`
+2. Usar o caractere como chave (ex: `'新': { ... }`)
+3. Preencher todos os campos obrigatórios
+4. Associar a um radical já existente para aparecer no grupo correto
+5. Escolher `fase` e `topic` apropriados
+6. O Hanzi Wheel e demais páginas consomem estes dados automaticamente
+7. Rodar `npm run build` para verificar
+
+### Tópicos Disponíveis
+
+`cultura`, `educacao`, `familia`, `descricao`, `social`, `corpo`, `natureza`, `tempo`, `direcao`, `numeros`, `negocios`, `gramatica`, `comida`, `objetos`, `emocao`, `acao`
+
+### Fases
+
+| Fase | Foco | Exemplos |
+|------|------|----------|
+| A | Fonética, tons, básico | 中, 你, 我, 好, 大, 小 |
+| B | Ideogramas, radicais | 商, 水, 火, 金, 山, 月 |
+| C | Gramática, sintaxe | 心, 语, 老, 师, 书 |
+| D | HSK, imersão, cultura | 爱, 家, 花, 乐, 安 |
+
+## Sistema de Lições
+
+`src/content/lessons/` contém lições em Markdown com frontmatter validado por Zod (`src/lib/schemas.ts`). Cada lição pertence a uma fase (A-D) e segue schema com campos como `title`, `description`, `phase`, `coverImage`, etc.

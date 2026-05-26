@@ -36,7 +36,11 @@ import { categories } from '../lib/hanzi-wheel/config';
         </button>
       ))}
     </div>
-    <div class="hw-dots" id="hw-dots"></div>
+    <div class="hw-dots-row">
+      <button class="hw-nav-btn" id="hw-nav-prev" aria-label="Anterior">◀</button>
+      <div class="hw-dots" id="hw-dots"></div>
+      <button class="hw-nav-btn" id="hw-nav-next" aria-label="Próximo">▶</button>
+    </div>
   </div>
 </div>
 
@@ -63,6 +67,8 @@ import { categories } from '../lib/hanzi-wheel/config';
   const lessonLink = document.getElementById('hw-lesson-link') as HTMLAnchorElement;
   const tabs = document.querySelectorAll('.hw-tab');
   const dotsContainer = document.getElementById('hw-dots')!;
+  const navPrev = document.getElementById('hw-nav-prev')!;
+  const navNext = document.getElementById('hw-nav-next')!;
 
   function getActiveCategory(): string {
     return document.querySelector('.hw-tab.active')?.getAttribute('data-category') || 'fase';
@@ -162,6 +168,19 @@ import { categories } from '../lib/hanzi-wheel/config';
       stateManager.switchCategory(category as any);
     });
   });
+
+  function navigateGroup(dir: number): void {
+    const category = getActiveCategory();
+    const groups = buildGroups(category as any);
+    const currentGroup = stateManager.getData().currentGroup;
+    const idx = groups.findIndex(g => g.id === currentGroup);
+    if (idx === -1) return;
+    const next = (idx + dir + groups.length) % groups.length;
+    stateManager.switchGroup(groups[next].id);
+  }
+
+  navPrev.addEventListener('click', () => navigateGroup(-1));
+  navNext.addEventListener('click', () => navigateGroup(1));
 
   const firstTab = tabs[0];
   if (firstTab) {
