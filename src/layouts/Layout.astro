@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import SearchBar from '../components/SearchBar.astro';
+import StreakDisplay from '../components/StreakDisplay.astro';
 import type { SearchItemData } from '../components/SearchBar.astro';
 
 const allLessonModules = Object.entries(
@@ -120,7 +121,8 @@ const {
         </nav>
 
         <!-- Right Utilities: Global Search & CTA -->
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
+          <StreakDisplay />
           <SearchBar items={searchItems} />
 
           <!-- Diagnostic CTA -->
@@ -185,5 +187,46 @@ const {
         Falar com Mãe Chinesa 💬
       </span>
     </a>
+  <script>
+    import { getStreak, hasReachedMilestone } from '../lib/streak-manager';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const streak = getStreak();
+      const milestones = [90, 60, 30, 21, 14, 7, 3];
+      for (const m of milestones) {
+        if (streak.currentStreak === m && hasReachedMilestone(m)) {
+          const el = document.createElement('div');
+          el.innerHTML = `<div id="milestone-celebration" class="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+            <div class="text-center animate-bounce-in">
+              <div class="text-6xl mb-3">🎉</div>
+              <div class="bg-gray-900/90 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-xl border border-amber-500/20">
+                <p class="text-2xl font-bold text-amber-400">${m} dias seguidos!</p>
+                <p class="text-sm text-amber-500/80 mt-1">${
+                  m === 3 ? 'Já é um hábito!' :
+                  m === 7 ? 'Uma semana inteira!' :
+                  m === 14 ? 'Duas semanas de dedicação!' :
+                  m === 21 ? '21 dias — o hábito está formado!' :
+                  m === 30 ? 'Um mês de chinês!' :
+                  m === 60 ? 'Dois meses impressionantes!' :
+                  m === 90 ? 'Três meses — você é um guerreiro!' :
+                  'Incrível!'
+                }</p>
+              </div>
+            </div>
+          </div>`;
+          document.body.appendChild(el.firstElementChild);
+          setTimeout(() => {
+            const cel = document.getElementById('milestone-celebration');
+            if (cel) {
+              cel.style.transition = 'opacity 0.5s';
+              cel.style.opacity = '0';
+              setTimeout(() => cel.remove(), 500);
+            }
+          }, 2500);
+          break;
+        }
+      }
+    });
+  </script>
   </body>
 </html>

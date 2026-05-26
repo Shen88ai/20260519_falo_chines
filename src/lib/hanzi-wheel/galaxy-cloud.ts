@@ -61,7 +61,7 @@ export function initGalaxyCloud(): THREE.Group {
     size: 0.04,
     map: texture,
     transparent: true,
-    opacity: 0.6,
+    opacity: 0.85,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
     vertexColors: true,

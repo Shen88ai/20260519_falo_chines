@@ -433,40 +433,51 @@ const serializedInfo = JSON.stringify(pathInfo);
           descEl.textContent = info.description;
         }
 
-        // Renderiza os Checkpoints da Rota do Usuário
+        // Renderiza os Checkpoints — mostra apenas o primeiro + teasers dos próximos
         const checklistEl = document.getElementById('result-checklist');
         if (checklistEl) {
-          checklistEl.innerHTML = config.map((checkpoint, i) => {
-            // Mapeia ícones baseados no slug ou na lição
-            const itemIcons = {
-              '01-tons-primordiais': '🎵',
-              '02-pinyin-iniciais': '🎙️',
-              '03-radicais-fundamentais': '🎨',
-              '04-sintaxe-basica': '📝',
-              '05-hsk-negocios': '💼'
-            };
-            const icon = itemIcons[checkpoint.slug] || '📋';
-            
-            return `
-              <a href="/licoes/${checkpoint.slug}" class="flex items-start gap-4 p-4 rounded-xl bg-white/40 hover:bg-white/70 border border-[#8d6e63]/20 hover:border-[#5d4037] transition-all duration-300 group shadow-sm">
-                <span class="flex items-center justify-center font-display font-extrabold text-sm w-8 h-8 rounded-full bg-[#5d4037] text-[#fcf4dc] group-hover:scale-110 transition-transform">
-                  ${i + 1}
-                </span>
-                <span class="text-2xl">${icon}</span>
-                <div class="flex-1">
-                  <span class="block font-bold text-[#3e2723] text-sm sm:text-base group-hover:text-[#5d4037] transition-colors">
-                    ${checkpoint.title}
-                  </span>
-                  <span class="block text-[11px] text-[#8d6e63] font-medium mt-0.5 uppercase tracking-wide">
-                    Duração sugerida: ${checkpoint.eta} • Dificuldade: ${'⭐'.repeat(checkpoint.difficulty)}
-                  </span>
-                  <span class="block text-xs text-[#5d4037] mt-1 leading-relaxed bg-[#fcf4dc]/50 p-2 rounded border border-[#ecdba5]/50">
-                    ${checkpoint.strategy}
-                  </span>
+          // Primeiro checkpoint: destaque "Iniciar aqui"
+          const first = config[0];
+          const restCount = config.length - 1;
+
+          const teasers = [
+            '🎯 Descubra seu próximo passo ao concluir esta lição',
+            '🔓 Desbloqueie a próxima etapa da sua jornada',
+            '🗺️ O caminho se revela passo a passo',
+            '⛰️ Cada degrau te leva mais perto da fluência',
+          ];
+          const randomTeaser = teasers[Math.floor(Math.random() * teasers.length)];
+
+          let html = `
+            <div class="space-y-3">
+              <div class="p-4 rounded-xl bg-[#5d4037] text-[#fcf4dc] border-2 border-[#8d6e63] shadow-lg">
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="flex items-center justify-center font-display font-extrabold text-sm w-8 h-8 rounded-full bg-[#fcf4dc] text-[#5d4037]">1</span>
+                  <span class="text-lg">🎯</span>
+                  <span class="font-bold text-sm">PRIMEIRA PARADA</span>
                 </div>
-              </a>
+                <a href="/licoes/${first.slug}" class="block font-bold text-base text-[#fcf4dc] hover:text-white hover:underline mt-1">
+                  ${first.title}
+                </a>
+                <p class="text-xs text-[#d7ccc8] mt-1">${first.eta} • ${'⭐'.repeat(first.difficulty)}</p>
+                <p class="text-xs text-[#bcaaa4] mt-2 italic bg-black/20 p-2 rounded">${first.strategy}</p>
+              </div>
+          `;
+
+          if (restCount > 0) {
+            html += `
+              <div class="p-4 rounded-xl bg-white/30 border border-dashed border-[#8d6e63]/40">
+                <div class="flex items-center gap-2 text-[#5d4037]/60">
+                  <span>🔒</span>
+                  <span class="text-sm font-semibold">${restCount} ${restCount === 1 ? 'próximo passo' : 'próximos passos'} bloqueados</span>
+                </div>
+                <p class="text-xs text-[#8d6e63]/60 mt-1 italic ml-7">${randomTeaser}</p>
+              </div>
             `;
-          }).join('');
+          }
+
+          html += `</div>`;
+          checklistEl.innerHTML = html;
         }
 
         // Configura link de início da jornada

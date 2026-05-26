@@ -40,9 +40,9 @@ Para estes sons, posicione a ponta da língua **atrás dos dentes inferiores**:
 
 ## 🧭 Exemplo Prático: "China"
 
-A palavra para China em Mandarim é **中国** (`Zhōngguó`).
+A palavra para China em Mandarim é **中国 (中國)** (`Zhōngguó`).
 *   **`Zhōng`** (中): Começa com a retroflexa `zh` (língua para trás) no 1º tom (plano alto).
-*   **`guó`** (国): Começa com `g` (que soa como o nosso "g" em "gato") no 2º tom (pergunta ascendente).
+*   **`guó`** (国/國): Começa com `g` (que soa como o nosso "g" em "gato") no 2º tom (pergunta ascendente).
 
 Tente pronunciar lentamente: **Zhōng - guó**.
 Se você dominar essas posições de língua, sua pronúncia soará extremamente natural e clara para os nativos!

@@ -25,7 +25,7 @@ Para facilitar o aprendizado de falantes de português, podemos mapear os quatro
 
 ### 1º Tom (Tonalidade Alta e Plana) — `mā` (Mãe / 妈)
 *   **Como soa**: É como cantar uma nota musical alta e mantê-la estável. Imagine que você está no consultório do médico e ele pede para você dizer **"Aaaah"**.
-*   **Exemplo**: 妈 (`mā`) significa **Mãe**.
+*   **Exemplo**: 妈 (媽 / `mā`) significa **Mãe**.
 
 ### 2º Tom (Tonalidade Ascendente) — `má` (Cânhamo / 麻)
 *   **Como soa**: É como fazer uma pergunta surpresa no português. Imagine dizer **"O quê?"** ou **"Hein?"**. A voz começa no meio e sobe rapidamente.
@@ -33,11 +33,11 @@ Para facilitar o aprendizado de falantes de português, podemos mapear os quatro
 
 ### 3º Tom (Tonalidade Baixa e Curva) — `mǎ` (Cavalo / 马)
 *   **Como soa**: É o tom mais desafiador. Ele desce profundamente e depois sobe ligeiramente. Soa como o som de dúvida ou desconfiança que fazemos: **"Huum..."** ou a confirmação de que entendemos algo: **"Aah..."** de forma arrastada.
-*   **Exemplo**: 马 (`mǎ`) significa **Cavalo**.
+*   **Exemplo**: 马 (馬 / `mǎ`) significa **Cavalo**.
 
 ### 4º Tom (Tonalidade Descendente e Rápida) — `mà` (Xingar / 骂)
 *   **Como soa**: É um tom curto, forte e cortante. Soa como dar uma ordem assertiva ou uma interjeição de raiva no português: **"Não!"** ou **"Para!"**.
-*   **Exemplo**: 骂 (`mà`) significa **Xingar**.
+*   **Exemplo**: 骂 (罵 / `mà`) significa **Xingar**.
 
 ---
 

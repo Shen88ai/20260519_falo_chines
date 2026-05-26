@@ -24,7 +24,7 @@ Os verbos nunca mudam. A gramática chinesa é incrivelmente lógica e se baseia
 Assim como no português, a estrutura padrão de uma frase afirmativa simples é **SVO**:
 
 *   **Sujeito**: 我 (`wǒ` - Eu)
-*   **Verbo**: 学 (`xué` - Estudar)
+*   **Verbo**: 学 (學 / `xué` - Estudar)
 *   **Objeto**: 中文 (`zhōngwén` - Língua Chinesa)
 
 Frase completa: **我学中文** (`Wǒ xué zhōngwén`) — *Eu estudo chinês.*
@@ -45,7 +45,7 @@ $$\text{Sujeito} + \text{Tempo} + \text{Lugar} + \text{Verbo} + \text{Objeto}$$
     *   **我** (Sujeito - Eu)
     *   **今天** (Tempo - Hoje - `jīntiān`)
     *   **在图书馆** (Lugar - Na biblioteca - `zài túshūguǎn`)
-    *   **学** (Verbo - Estudar - `xué`)
+    *   **学 (學)** (Verbo - Estudar - `xué`)
     *   **中文** (Objeto - Chinês - `zhōngwén`)
 
 Sentença: **我今天在图书馆学中文。**

@@ -157,15 +157,29 @@ Componente Three.js na homepage (`/`) que exibe caracteres chineses orbitando em
 ### Órbitas Duplas
 
 Grupos com mais de **10 caracteres** são automaticamente divididos em duas órbitas:
-- Órbita interna: raio 1.4, scale 0.32 (caracteres pares)
-- Órbita externa: raio 2.15, scale 0.38 (caracteres ímpares)
+- Órbita interna: raio 1.5, scale 0.5 (caracteres pares)
+- Órbita externa: raio 2.4, scale 0.6 (caracteres ímpares)
+- Single orbit (< 10 chars): raio 2.0, scale 0.65
 - Pequeno offset em Z para evitar sobreposição
 
 ### Efeitos Visuais
 
-- **Anel externo**: 48 segmentos com gradiente HSL (arco-íris), opacidade 0.35
-- **Caractere central**: pulsa suavemente (scale 0.43–0.67, opacity 0.4–1.0) com `sin(time * 0.002)`
-- **Galaxy cloud**: 800 partículas distribuídas em disco, cores da paleta neon (platina #E8E4D9, ouro #D4A843, amarelo #E5FF00, verde #00FF87, azul #7DD3FC), drift animado, blending aditivo
+- **Anel externo**: 48 segmentos com gradiente HSL (arco-íris), opacidade 0.7
+- **Caractere central**: scale 0.8, pulsa suavemente (0.7–0.9), opacity 0.8–1.0
+- **Galaxy cloud**: 800 partículas distribuídas em disco, cores da paleta neon, opacidade 0.85, blending aditivo
+- **Fundo**: renderizador usa `setClearColor(0x0a0a14, 1)` — fundo opaco escuro para contraste com sprites brilhantes
+- **Sprites** usam `preserveDrawingBuffer: true` (útil para debug/screenshots)
+- **Text shadow**: branco semi-transparente (`rgba(255,255,255,0.4–0.5)`) em vez de sombra colorida — mais contraste contra fundo escuro
+- **Font**: sprites orbitantes usam `sans-serif` como fallback (em vez de `serif`) para melhor renderização de CJK
+
+### Visibilidade & Debug
+
+- Se o canvas Three.js aparecer vazio, verificar:
+  1. **Câmera**: `getCameraZ()` ajusta z baseado na altura do canvas — em viewports menores (< 600px), câmera recua (z = 2.8 × 600 / h), o que reduz tamanho aparente dos sprites. Em h=352px, z=4.77.
+  2. **Opacidades**: anel 0.2, linhas 0.7, partículas 0.85, sprites 0.7–1.0. Todos os materiais são `transparent: true`.
+  3. **Renderização**: `readPixels()` confirma que o conteúdo WebGL é renderizado, mas `toDataURL()` retorna vazio (5.5KB PNG) — usar `page.screenshot()` do Playwright para captura visual.
+  4. **Sprite text**: caracteres são desenhados em canvas 2D de 64×64 com fonte 40px. Verificar se a fonte (Noto Serif CJK, SimSun) está disponível — fallback para sans-serif.
+  5. **`preserveDrawingBuffer: true`** é necessário para `readPixels()` funcionar fora do ciclo de renderização.
 
 ## Dicionário de Caracteres
 
@@ -213,3 +227,41 @@ export interface DictionaryEntry {
 ## Sistema de Lições
 
 `src/content/lessons/` contém lições em Markdown com frontmatter validado por Zod (`src/lib/schemas.ts`). Cada lição pertence a uma fase (A-D) e segue schema com campos como `title`, `description`, `phase`, `coverImage`, etc.
+
+---
+
+## Comunidade — Engajamento Coletivo
+
+Sistema auto-contido (zero dependências externas) para alunos submeterem e visualizarem conteúdo da comunidade. Disponível em `/comunidade` e integrado nas páginas de blog e lições.
+
+### Fluxo de Dados
+
+1. **Seed data** em `src/data/comunidade-data.json` é carregada na primeira visita (5 registros de exemplo por categoria)
+2. **Submissões inline**: formulários na própria página salvam diretamente no `localStorage` do navegador
+3. **Merge automático**: o client-side mescla dados estáticos + localStorage e renderiza
+4. **Persistência**: os dados ficam apenas no navegador do usuário — sem backend, sem build script
+
+### Categorias
+
+| Categoria | Descrição | Formulário |
+|-----------|-----------|------------|
+| Situações | Pedidos de situações do dia a dia para praticar chinês | Inline na página `/comunidade#situacoes` |
+| Dificuldades | Caracteres que os alunos acham difíceis (registrado por clique em "Tive dificuldade" nas lições / HanziWheel) | Botão inline nos popups de caractere |
+| Macetes | Mnemônicos compartilhados | Inline na página `/comunidade#macetes` |
+| Comentários | Opiniões sobre posts e lições | Inline nas páginas de blog, lições, e `/comunidade#comentarios` |
+
+### Páginas com Formulários
+
+- `/comunidade` — 4 abas, cada uma com formulário inline próprio (Situações, Macetes, Comentários)
+- `/blog/[slug]` — formulário de comentário específico do post
+- `/licoes/[slug]` — formulário de comentário específico da lição
+
+### Arquivos Relevantes
+
+| Arquivo | Função |
+|---------|--------|
+| `src/pages/comunidade.astro` | Hub page com 4 abas + formulários inline |
+| `src/components/ComunidadeCard.astro` | CTA card reutilizável |
+| `src/lib/comunidade-storage.ts` | localStorage CRUD + tipos compartilhados |
+| `src/data/comunidade-data.json` | Seed data estático (5 registros por categoria) |
+| `tests/comunidade-storage.test.ts` | 71 testes unitários |

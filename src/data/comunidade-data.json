@@ -1,0 +1,296 @@
+{
+  "situacoes": [
+    {
+      "id": "",
+      "title": "Pedir comida",
+      "description": "Peça comida em chinês no restaurante. Pratique frases como 我要这个 e 多少钱?",
+      "tags": [
+        "comida",
+        "restaurante"
+      ],
+      "votes": 5,
+      "status": "publicado",
+      "author": "Maria",
+      "lessonSlug": "05-hsk-negocios",
+      "timestamp": 1779800400000
+    },
+    {
+      "id": "",
+      "title": "Comprar passagem",
+      "description": "Compre passagem de metrô em chinês. Aprenda a dizer 一张票 para comprar bilhetes.",
+      "tags": [
+        "transporte",
+        "metrô"
+      ],
+      "votes": 3,
+      "status": "publicado",
+      "author": "João",
+      "lessonSlug": "02-pinyin-iniciais",
+      "timestamp": 1779804000000
+    },
+    {
+      "id": "",
+      "title": "Fazer check-in",
+      "description": "Faça check-in no hotel em chinês. Use frases como 我有预订 para informar reserva.",
+      "tags": [
+        "viagem",
+        "hotel"
+      ],
+      "votes": 4,
+      "status": "publicado",
+      "author": "Ana",
+      "lessonSlug": "",
+      "timestamp": 1779807600000
+    },
+    {
+      "id": "",
+      "title": "Ir ao mercado",
+      "description": "Compre frutas no mercado local. Pratique perguntar 这个多少钱? e negociar preços.",
+      "tags": [
+        "compras",
+        "mercado"
+      ],
+      "votes": 2,
+      "status": "pendente",
+      "author": "Carlos",
+      "lessonSlug": "",
+      "timestamp": 1779811200000
+    },
+    {
+      "id": "",
+      "title": "Consultar médico",
+      "description": "Marque consulta médica em chinês. Aprenda vocabulário como 头痛 e 发烧.",
+      "tags": [
+        "saúde",
+        "médico"
+      ],
+      "votes": 1,
+      "status": "em andamento",
+      "author": "Luísa",
+      "lessonSlug": "",
+      "timestamp": 1779814800000
+    },
+    {
+      "id": "",
+      "title": "Como peço comida vegetariana em Beijing?",
+      "description": "Vou viajar para Beijing e como evitar carne sem passar fome",
+      "tags": ["restaurante", "viagem"],
+      "votes": 12,
+      "status": "publicado",
+      "author": "Ana",
+      "lessonSlug": "",
+      "timestamp": 1779811200000
+    },
+    {
+      "id": "",
+      "title": "O que falar quando encontro um amigo chinês pela primeira vez?",
+      "description": "Quais saudações e perguntas são educadas no primeiro encontro?",
+      "tags": ["social", "saudação"],
+      "votes": 9,
+      "status": "publicado",
+      "author": "Carlos",
+      "lessonSlug": "",
+      "timestamp": 1779807600000
+    },
+    {
+      "id": "",
+      "title": "Como negocio preço no mercado de rua?",
+      "description": "Barganhar é comum na China, mas nunca sei as palavras certas",
+      "tags": ["compras", "negócios"],
+      "votes": 7,
+      "status": "em andamento",
+      "author": "Maria",
+      "lessonSlug": "",
+      "timestamp": 1779804000000
+    },
+    {
+      "id": "",
+      "title": "O que dizer se me atrasar para uma reunião?",
+      "description": "No trânsito de SP fico preso e preciso me desculpar profissionalmente",
+      "tags": ["trabalho", "desculpa"],
+      "votes": 5,
+      "status": "pendente",
+      "author": "João",
+      "lessonSlug": "",
+      "timestamp": 1779800400000
+    },
+    {
+      "id": "",
+      "title": "Como elogiar a comida da minha sogra chinesa?",
+      "description": "Minha sogra é chinesa e cozinha muito, quero elogiar sem parecer superficial",
+      "tags": ["social", "cultura"],
+      "votes": 4,
+      "status": "pendente",
+      "author": "Ling",
+      "lessonSlug": "",
+      "timestamp": 1779796800000
+    }
+  ],
+  "dificuldades": [
+    {
+      "character": "了",
+      "type": "meaning",
+      "lessonSlug": "licao-1",
+      "timestamp": 1779800400000
+    },
+    {
+      "character": "是",
+      "type": "tone",
+      "lessonSlug": "licao-1",
+      "timestamp": 1779802200000
+    },
+    {
+      "character": "的",
+      "type": "strokes",
+      "lessonSlug": "licao-2",
+      "timestamp": 1779804000000
+    },
+    {
+      "character": "我",
+      "type": "radical",
+      "lessonSlug": "licao-1",
+      "timestamp": 1779805800000
+    },
+    {
+      "character": "不",
+      "type": "tone",
+      "lessonSlug": "licao-2",
+      "timestamp": 1779807600000
+    },
+    {
+      "character": "学",
+      "type": "tone",
+      "lessonSlug": "04-sintaxe-basica",
+      "timestamp": 1779796800000
+    },
+    {
+      "character": "国",
+      "type": "strokes",
+      "lessonSlug": "03-radicais-fundamentais",
+      "timestamp": 1779793200000
+    },
+    {
+      "character": "妈",
+      "type": "tone",
+      "lessonSlug": "01-tons-primordiais",
+      "timestamp": 1779789600000
+    },
+    {
+      "character": "马",
+      "type": "tone",
+      "lessonSlug": "01-tons-primordiais",
+      "timestamp": 1779786000000
+    },
+    {
+      "character": "爱",
+      "type": "radical",
+      "lessonSlug": "03-radicais-fundamentais",
+      "timestamp": 1779782400000
+    }
+  ],
+  "macetes": [
+    {
+      "id": "",
+      "character": "休",
+      "text": "Parece uma pessoa (亻) descansando ao lado de uma árvore (木)",
+      "author": "Maria",
+      "votes": 8,
+      "timestamp": 1779800400000
+    },
+    {
+      "id": "",
+      "character": "好",
+      "text": "Uma mulher (女) e um filho (子) juntos = algo bom",
+      "author": "João",
+      "votes": 12,
+      "timestamp": 1779802200000
+    },
+    {
+      "id": "",
+      "character": "家",
+      "text": "Um teto (宀) sobre um porco (豕) = lar",
+      "author": "Ana",
+      "votes": 6,
+      "timestamp": 1779804000000
+    },
+    {
+      "id": "",
+      "character": "学",
+      "text": "Criança (子) sob um telhado aprendendo = estudar.  Lembre-se: aprender exige um teto!",
+      "author": "Carlos",
+      "votes": 4,
+      "timestamp": 1779805800000
+    },
+    {
+      "id": "",
+      "character": "明",
+      "text": "Sol (日) + lua (月) = brilhante.  Os dois astros juntos iluminam!",
+      "author": "Luísa",
+      "votes": 10,
+      "timestamp": 1779807600000
+    },
+    {
+      "id": "",
+      "character": "妈",
+      "text": "Mãe (女) trabalha como cavalo (马) — dois empregos!",
+      "author": "Pedro",
+      "votes": 15,
+      "timestamp": 1779782400000
+    },
+    {
+      "id": "",
+      "character": "安",
+      "text": "Mulher (女) em casa (宀) = paz e tranquilidade",
+      "author": "Julia",
+      "votes": 6,
+      "timestamp": 1779768000000
+    }
+  ],
+  "comentarios": [
+    {
+      "id": "",
+      "postSlug": "alma-do-mandarim",
+      "lessonSlug": "",
+      "author": "Pedro",
+      "text": "Nossa, nunca tinha pensado que aprender chinês mexe tanto com a identidade da gente.",
+      "approved": true,
+      "timestamp": 1779627600000
+    },
+    {
+      "id": "",
+      "postSlug": "alma-do-mandarim",
+      "lessonSlug": "",
+      "author": "Sofia",
+      "text": "A parte dos 7% me marcou muito. Realmente o que importa vai além das palavras.",
+      "approved": true,
+      "timestamp": 1779634800000
+    },
+    {
+      "id": "",
+      "postSlug": "",
+      "lessonSlug": "01-tons-primordiais",
+      "author": "Lucas",
+      "text": "Os tons são realmente difíceis! Tem alguma dica para praticar o segundo tom?",
+      "approved": true,
+      "timestamp": 1779710400000
+    },
+    {
+      "id": "",
+      "postSlug": "",
+      "lessonSlug": "04-sintaxe-basica",
+      "author": "Julia",
+      "text": "Finalmente entendi a diferença entre 把 e 被. Ótima explicação!",
+      "approved": false,
+      "timestamp": 1779728400000
+    },
+    {
+      "id": "",
+      "postSlug": "alma-do-mandarim",
+      "lessonSlug": "",
+      "author": "Tiago",
+      "text": "Esse post me deu ânimo para continuar. Obrigado, Mãe Chinesa!",
+      "approved": true,
+      "timestamp": 1779793200000
+    }
+  ]
+}

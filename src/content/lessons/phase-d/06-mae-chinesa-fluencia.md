@@ -33,7 +33,7 @@ Se você duvida, faça uma viagem mental até a China. Nas ruas de Pequim ou Xan
 
 Elas nunca assistiram a uma aula formal de gramática. Nunca decoraram regras de sintaxe. Nunca sequer ouviram falar do exame HSK.
 
-Como, então, elas aprenderam? A resposta é extremamente simples: **desde o primeiro dia de vida, elas têm uma 妈 (mãe) falando mandarim com elas, sem parar, todos os dias.**
+Como, então, elas aprenderam? A resposta é extremamente simples: **desde o primeiro dia de vida, elas têm uma 妈 (媽, mãe) falando mandarim com elas, sem parar, todos os dias.**
 
 Uma 妈 repete as palavras com paciência infinita, sílaba por sílaba:
 

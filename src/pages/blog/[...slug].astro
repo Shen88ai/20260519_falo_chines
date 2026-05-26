@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import comunidadeData from '../../data/comunidade-data.json';
+
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -15,6 +17,11 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const flatSlug = post.id.replace('.md', '') || post.id;
+const relatedComments = (comunidadeData.comentarios || [])
+  .filter(c => c.postSlug === flatSlug && c.approved !== false)
+  .sort((a, b) => b.timestamp - a.timestamp);
 ---
 
 <Layout 
@@ -86,6 +93,51 @@ const { Content } = await render(post);
         </div>
       </article>
 
+      <!-- Comments Section -->
+      <div class="mt-12 glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="text-xl">💬</span>
+          <h3 class="text-lg font-display font-extrabold text-white">Comentários</h3>
+          <span class="text-[10px] text-gray-500 font-medium">{relatedComments.length} {relatedComments.length === 1 ? 'comentário' : 'comentários'}</span>
+        </div>
+
+        {relatedComments.length > 0 && (
+        <div class="space-y-4 mb-8">
+          {relatedComments.map(c => (
+            <div class="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+              <div class="w-8 h-8 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center text-sm font-bold shrink-0">
+                {c.author.charAt(0).toUpperCase()}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="text-xs font-bold text-white">{c.author}</span>
+                  <span class="text-[9px] text-gray-500">{new Date(c.timestamp).toLocaleDateString('pt-BR')}</span>
+                </div>
+                <p class="text-sm text-gray-300">“{c.text}”</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        )}
+
+        {relatedComments.length === 0 && (
+        <p class="text-gray-500 text-sm text-center py-8 border border-dashed border-white/5 rounded-xl mb-8">
+          Nenhum comentário ainda. Seja o primeiro!
+        </p>
+        )}
+
+        <!-- Quick Comment Form (localStorage) -->
+        <div class="border-t border-white/5 pt-6" id="blog-comment-form">
+          <p class="text-xs text-gray-400 mb-3">Deixe seu comentário:</p>
+          <input id="blog-comment-author" type="text" placeholder="Seu nome" class="w-full mb-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors" />
+          <textarea id="blog-comment-text" rows="3" placeholder="Escreva seu comentário..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors resize-none"></textarea>
+          <div class="flex items-center justify-between mt-3">
+            <button id="blog-comment-submit" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-brand-gold/20 text-brand-gold hover:bg-brand-gold/30 border border-brand-gold/30 transition-all">Enviar</button>
+          </div>
+          <p id="blog-comment-feedback" class="text-[11px] text-brand-jade mt-2 hidden">✓ Comentário salvo! Aparecerá após moderação.</p>
+        </div>
+      </div>
+
       <!-- Footer Navigation -->
       <div class="mt-10 text-center">
         <a 
@@ -99,3 +151,27 @@ const { Content } = await render(post);
     </div>
   </div>
 </Layout>
+
+<script is:inline define:vars={{ flatSlug }}>
+  document.getElementById('blog-comment-submit')?.addEventListener('click', function() {
+    const author = document.getElementById('blog-comment-author').value.trim() || 'Anônimo';
+    const text = document.getElementById('blog-comment-text').value.trim();
+    if (!text) return;
+    try {
+      const list = JSON.parse(localStorage.getItem('falo-chines-comments') || '[]');
+      list.push({
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+        postSlug: flatSlug,
+        lessonSlug: '',
+        author: author,
+        text: text,
+        approved: false,
+        timestamp: Date.now()
+      });
+      localStorage.setItem('falo-chines-comments', JSON.stringify(list));
+      document.getElementById('blog-comment-text').value = '';
+      document.getElementById('blog-comment-feedback').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('blog-comment-feedback').classList.add('hidden'); }, 3000);
+    } catch(e) { console.warn('Falha ao salvar comentário:', e); }
+  });
+</script>

@@ -33,16 +33,16 @@ Existem 214 radicais tradicionais, mas dominando apenas 10 ou 15 deles, você j�
 
 ### 3. O Radical de Fronteira/Cerca: 囗 (`wéi`)
 *   **Significado**: Indica confinamento, limites geográficos ou cercas.
-*   **Exemplos**: 国 (`guó` - país), 园 (`yuán` - jardim), 回 (`huí` - retornar).
+*   **Exemplos**: 国 (國 / `guó` - país), 园 (`yuán` - jardim), 回 (`huí` - retornar).
 
 ---
 
-## 🔍 Anatomia de um Caractere: 国 (`guó` - País)
+## 🔍 Anatomia de um Caractere: 国 (國 / `guó` - País)
 
 Vamos desmontar o caractere de "país/estado":
 1.  **Fronteira Externa (囗)**: Representa as fronteiras geográficas ou muralhas de defesa da nação.
 2.  **Conteúdo Interno (玉)**: Representa o **Jade**, a pedra mais preciosa e símbolo de riqueza e soberania na China antiga.
 
-> **💡 Mnemônica de Ouro**: Um país (国) é um território onde a riqueza mais preciosa (Jade) é protegida em segurança por grandes fronteiras.
+> **💡 Mnemônica de Ouro**: Um país (国/國) é um território onde a riqueza mais preciosa (Jade) é protegida em segurança por grandes fronteiras.
 
 Ao compreender esses componentes, você passa a enxergar ideogramas como belos quebra-cabeças visuais ao invés de meros desenhos!

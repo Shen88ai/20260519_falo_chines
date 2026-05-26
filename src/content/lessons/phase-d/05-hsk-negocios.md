@@ -13,7 +13,7 @@ coverImage: "/images/lessons/phase-d-05-hsk-negocios.png"
 
 # Etiqueta de Negócios e o HSK
 
-Falar mandarim comercial (**商业中文** - `shāngyè zhōngwén`) vai muito além do vocabulário. Na China, a cultura de negócios é profundamente influenciada por conceitos de respeito, hierarquia e relacionamentos pessoais.
+Falar mandarim comercial (**商业中文 / 商業中文** - `shāngyè zhōngwén`) vai muito além do vocabulário. Na China, a cultura de negócios é profundamente influenciada por conceitos de respeito, hierarquia e relacionamentos pessoais.
 
 ---
 

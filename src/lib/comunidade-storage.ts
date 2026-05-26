@@ -22,6 +22,17 @@ export interface Situation {
   votes: number;
   status: 'pendente' | 'em andamento' | 'publicado';
   author: string;
+  lessonSlug: string;
+  timestamp: number;
+}
+
+export interface Comment {
+  id: string;
+  postSlug: string;
+  lessonSlug: string;
+  author: string;
+  text: string;
+  approved: boolean;
   timestamp: number;
 }
 
@@ -29,6 +40,7 @@ const KEYS = {
   difficulties: 'falo-chines-difficulties',
   mnemonics: 'falo-chines-mnemonics',
   situations: 'falo-chines-situations',
+  comments: 'falo-chines-comments',
 } as const;
 
 function read<T>(key: string): T[] {
@@ -108,14 +120,38 @@ export function voteSituation(id: string): Situation | null {
   return list[idx];
 }
 
+export function getComments(): Comment[] {
+  return read<Comment>(KEYS.comments);
+}
+
+export function getCommentsByPost(postSlug: string): Comment[] {
+  return getComments().filter(c => c.postSlug === postSlug);
+}
+
+export function getCommentsByLesson(lessonSlug: string): Comment[] {
+  return getComments().filter(c => c.lessonSlug === lessonSlug);
+}
+
+export function addComment(postSlug: string, lessonSlug: string, text: string, author?: string): Comment {
+  const list = getComments();
+  const c: Comment = {
+    id: uid(), postSlug, lessonSlug,
+    text, author: author || 'Anônimo',
+    approved: false, timestamp: Date.now(),
+  };
+  list.push(c);
+  write(KEYS.comments, list);
+  return c;
+}
+
 const SEED_FLAG_KEY = 'falo-chines-seeded';
 
 const SEED_SITUATIONS: Array<Omit<Situation, 'id' | 'timestamp'>> = [
-  { title: 'Como peço comida vegetariana em Beijing?', description: 'Vou viajar para Beijing e como evitar carne sem passar fome', tags: ['restaurante', 'viagem'], votes: 12, status: 'publicado', author: 'Ana' },
-  { title: 'O que falar quando encontro um amigo chinês pela primeira vez?', description: 'Quais saudações e perguntas são educadas no primeiro encontro?', tags: ['social', 'saudação'], votes: 9, status: 'publicado', author: 'Carlos' },
-  { title: 'Como negocio preço no mercado de rua?', description: 'Barganhar é comum na China, mas nunca sei as palavras certas', tags: ['compras', 'negócios'], votes: 7, status: 'em andamento', author: 'Maria' },
-  { title: 'O que dizer se me atrasar para uma reunião?', description: 'No trânsito de SP fico preso e preciso me desculpar profissionalmente', tags: ['trabalho', 'desculpa'], votes: 5, status: 'pendente', author: 'João' },
-  { title: 'Como elogiar a comida da minha sogra chinesa?', description: 'Minha sogra é chinesa e cozinha muito, quero elogiar sem parecer superficial', tags: ['social', 'cultura'], votes: 4, status: 'pendente', author: 'Ling' },
+  { title: 'Como peço comida vegetariana em Beijing?', description: 'Vou viajar para Beijing e como evitar carne sem passar fome', tags: ['restaurante', 'viagem'], votes: 12, status: 'publicado', author: 'Ana', lessonSlug: '' },
+  { title: 'O que falar quando encontro um amigo chinês pela primeira vez?', description: 'Quais saudações e perguntas são educadas no primeiro encontro?', tags: ['social', 'saudação'], votes: 9, status: 'publicado', author: 'Carlos', lessonSlug: '' },
+  { title: 'Como negocio preço no mercado de rua?', description: 'Barganhar é comum na China, mas nunca sei as palavras certas', tags: ['compras', 'negócios'], votes: 7, status: 'em andamento', author: 'Maria', lessonSlug: '' },
+  { title: 'O que dizer se me atrasar para uma reunião?', description: 'No trânsito de SP fico preso e preciso me desculpar profissionalmente', tags: ['trabalho', 'desculpa'], votes: 5, status: 'pendente', author: 'João', lessonSlug: '' },
+  { title: 'Como elogiar a comida da minha sogra chinesa?', description: 'Minha sogra é chinesa e cozinha muito, quero elogiar sem parecer superficial', tags: ['social', 'cultura'], votes: 4, status: 'pendente', author: 'Ling', lessonSlug: '' },
 ];
 
 const SEED_MNEMONICS: Array<Omit<Mnemonic, 'id' | 'timestamp'>> = [
@@ -124,6 +160,14 @@ const SEED_MNEMONICS: Array<Omit<Mnemonic, 'id' | 'timestamp'>> = [
   { character: '休', text: 'Pessoa (亻) encostada na árvore (木) = descansar', author: 'Lucas', votes: 8 },
   { character: '安', text: 'Mulher (女) em casa (宀) = paz e tranquilidade', author: 'Julia', votes: 6 },
   { character: '家', text: 'Porco (豕) debaixo do teto (宀) = lar', author: 'Tiago', votes: 5 },
+];
+
+const SEED_COMMENTS: Array<Omit<Comment, 'id' | 'timestamp'>> = [
+  { postSlug: 'alma-do-mandarim', lessonSlug: '', author: 'Pedro', text: 'Nossa, nunca tinha pensado que aprender chinês mexe tanto com a identidade da gente.', approved: true },
+  { postSlug: 'alma-do-mandarim', lessonSlug: '', author: 'Sofia', text: 'A parte dos 7% me marcou muito. Realmente o que importa vai além das palavras.', approved: true },
+  { postSlug: '', lessonSlug: '01-tons-primordiais', author: 'Lucas', text: 'Os tons são realmente difíceis! Tem alguma dica para praticar o segundo tom?', approved: true },
+  { postSlug: '', lessonSlug: '04-sintaxe-basica', author: 'Julia', text: 'Finalmente entendi a diferença entre 把 e 被. Ótima explicação!', approved: false },
+  { postSlug: 'alma-do-mandarim', lessonSlug: '', author: 'Tiago', text: 'Esse post me deu ânimo para continuar. Obrigado, Mãe Chinesa!', approved: true },
 ];
 
 const SEED_DIFFICULTIES: DifficultyReport[] = [
@@ -163,5 +207,6 @@ export function seedInitialData(): void {
   write(KEYS.situations, SEED_SITUATIONS.map((s, i) => ({ ...s, id: uid(), timestamp: now - i * 86400000 })));
   write(KEYS.mnemonics, SEED_MNEMONICS.map((m, i) => ({ ...m, id: uid(), timestamp: now - i * 86400000 })));
   write(KEYS.difficulties, SEED_DIFFICULTIES);
+  write(KEYS.comments, SEED_COMMENTS.map((c, i) => ({ ...c, id: uid(), timestamp: now - i * 3600000 })));
   localStorage.setItem(SEED_FLAG_KEY, '1');
 }

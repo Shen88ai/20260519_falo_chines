@@ -1,0 +1,50 @@
+---
+---
+
+<div id="streak-display" class="relative hidden md:flex items-center">
+  <button id="streak-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-amber-500/10 border border-amber-500/20 text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/30 transition-all duration-300 cursor-pointer" aria-label="Ver streak de dias">
+    <span class="text-sm">🔥</span>
+    <span id="streak-count" class="tabular-nums">...</span>
+  </button>
+  <div id="streak-tooltip" class="absolute top-full right-0 mt-2 bg-gray-900 border border-amber-500/20 rounded-xl shadow-2xl p-3.5 text-xs min-w-52 hidden z-50 pointer-events-none">
+    <p class="font-semibold text-amber-400 mb-1.5">🔥 Streak de dias</p>
+    <p id="streak-days-text" class="text-gray-400 mb-1"></p>
+    <p id="next-milestone-text" class="text-amber-500/80"></p>
+  </div>
+</div>
+
+<script>
+  import { getStreak, recordVisit, getNextMilestone } from '../lib/streak-manager';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const data = recordVisit();
+    const countEl = document.getElementById('streak-count');
+    const tooltip = document.getElementById('streak-tooltip');
+    const btn = document.getElementById('streak-btn');
+    const daysText = document.getElementById('streak-days-text');
+    const nextMilestone = document.getElementById('next-milestone-text');
+
+    if (countEl) {
+      countEl.textContent = data.currentStreak > 0 ? `${data.currentStreak}d` : 'Comece hoje!';
+    }
+
+    if (btn && tooltip) {
+      btn.addEventListener('mouseenter', () => {
+        tooltip.classList.remove('hidden');
+        const current = getStreak();
+        if (daysText) {
+          daysText.textContent = `📅 Total: ${current.totalDays} dias · Melhor: ${current.longestStreak} dias`;
+        }
+        const next = getNextMilestone();
+        if (nextMilestone) {
+          nextMilestone.textContent = next
+            ? `🎯 Próximo marco: ${next} dias`
+            : '🏆 Todos os marcos alcançados!';
+        }
+      });
+      btn.addEventListener('mouseleave', () => {
+        tooltip.classList.add('hidden');
+      });
+    }
+  });
+</script>

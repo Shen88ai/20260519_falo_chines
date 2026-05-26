@@ -48,7 +48,9 @@ export async function initScene(canvas: HTMLCanvasElement): Promise<void> {
     canvas,
     antialias: deviceTier !== 'medium',
     alpha: true,
+    preserveDrawingBuffer: true,
   });
+  renderer.setClearColor(0x0a0a14, 1);
   renderer.setSize(canvas.clientWidth, canvas.clientHeight);
   renderer.setPixelRatio(Math.min(deviceTier === 'high' ? 2 : 1, window.devicePixelRatio));
 

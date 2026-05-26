@@ -23,7 +23,7 @@ De acordo com estudos da psicologia cognitiva, a razão pela qual os adultos enc
 
 ## O Segredo de Aprender Sem Filtros
 
-Quando um **儿** (filho / criança) aprende a falar, ele não começa duvidando de si mesmo. Ele não fica pensando:
+Quando um **儿 (兒)** (filho / criança) aprende a falar, ele não começa duvidando de si mesmo. Ele não fica pensando:
 * *"Será que a minha pronúncia está correta?"*
 * *"Vão rir de mim se eu disser isso?"*
 * *"E se eu errar a palavra?"*

@@ -12,7 +12,7 @@ export function initWheelCore(parent: THREE.Group, deviceTier: DeviceTier): void
   const ringMat = new THREE.MeshBasicMaterial({
     color: 0x888888,
     transparent: true,
-    opacity: 0.05,
+    opacity: 0.2,
     side: THREE.DoubleSide,
   });
   const ring = new THREE.Mesh(ringGeo, ringMat);
@@ -32,7 +32,7 @@ export function initWheelCore(parent: THREE.Group, deviceTier: DeviceTier): void
     geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
     const hue = i / segments;
     const color = new THREE.Color().setHSL(hue, 1, 0.5);
-    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.35 });
+    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.7 });
     const seg = new THREE.Line(geo, mat);
     centerGroup.add(seg);
   }
@@ -47,7 +47,7 @@ export function initWheelCore(parent: THREE.Group, deviceTier: DeviceTier): void
   texture.needsUpdate = true;
   const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
   centerSprite = new THREE.Sprite(spriteMat);
-  centerSprite.scale.set(0.6, 0.6, 1);
+  centerSprite.scale.set(0.8, 0.8, 1);
   centerSprite.position.z = 0.1;
   centerGroup.add(centerSprite);
 
@@ -65,8 +65,8 @@ export function updateCenterSprite(label: string, color: string): void {
   ctx.font = `bold ${fontSize}px "Noto Serif SC", "SimSun", sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.shadowColor = `${color}88`;
-  ctx.shadowBlur = 24;
+  ctx.shadowColor = 'rgba(255,255,255,0.4)';
+  ctx.shadowBlur = 12;
   ctx.fillStyle = color;
   ctx.fillText(label, 64, 64);
   const texture = new THREE.CanvasTexture(canvas);
@@ -77,10 +77,10 @@ export function updateCenterSprite(label: string, color: string): void {
 export function animateWheel(time: number): void {
   centerGroup.rotation.z += 0.001;
   if (centerSprite) {
-    const breath = 0.55 + Math.sin(time * 0.002) * 0.12;
+    const breath = 0.8 + Math.sin(time * 0.002) * 0.1;
     centerSprite.scale.set(breath, breath, 1);
     centerSprite.material.rotation += 0.003;
-    (centerSprite.material as THREE.SpriteMaterial).opacity = 0.7 + Math.sin(time * 0.002) * 0.3;
+    (centerSprite.material as THREE.SpriteMaterial).opacity = 0.9 + Math.sin(time * 0.002) * 0.1;
   }
 }
 

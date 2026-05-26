@@ -9,6 +9,10 @@ import {
   getSituations,
   addSituation,
   voteSituation,
+  getComments,
+  addComment,
+  getCommentsByPost,
+  getCommentsByLesson,
   seedInitialData,
 } from '../src/lib/comunidade-storage';
 
@@ -88,6 +92,41 @@ describe('comunidade-storage', () => {
     const s = addSituation('Título', 'Desc', []);
     voteSituation(s.id);
     expect(voteSituation(s.id)?.votes).toBe(3);
+  });
+
+  it('getComments returns empty array initially', () => {
+    expect(getComments()).toEqual([]);
+  });
+
+  it('addComment stores a comment with approved false', () => {
+    const c = addComment('alma-do-mandarim', '', 'Ótimo post!', 'Pedro');
+    expect(c.postSlug).toBe('alma-do-mandarim');
+    expect(c.text).toContain('Ótimo');
+    expect(c.author).toBe('Pedro');
+    expect(c.approved).toBe(false);
+    expect(c.id).toBeTypeOf('string');
+    expect(getComments()).toHaveLength(1);
+  });
+
+  it('getCommentsByPost filters correctly', () => {
+    addComment('post-1', '', 'Comentário 1', 'Ana');
+    addComment('post-2', '', 'Comentário 2', 'Bia');
+    addComment('post-1', '', 'Comentário 3', 'Carlos');
+    expect(getCommentsByPost('post-1')).toHaveLength(2);
+    expect(getCommentsByPost('post-2')).toHaveLength(1);
+  });
+
+  it('getCommentsByLesson filters correctly', () => {
+    addComment('', 'licao-1', 'Comentário lição 1', 'Ana');
+    addComment('', 'licao-2', 'Comentário lição 2', 'Bia');
+    addComment('', 'licao-1', 'Outro comentário', 'Carlos');
+    expect(getCommentsByLesson('licao-1')).toHaveLength(2);
+    expect(getCommentsByLesson('licao-2')).toHaveLength(1);
+  });
+
+  it('seed includes 5 comments', () => {
+    seedInitialData();
+    expect(getComments()).toHaveLength(5);
   });
 
   it('getSituations returns 5 entries after seed', () => {

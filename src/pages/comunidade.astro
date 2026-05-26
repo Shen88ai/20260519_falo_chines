@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import seedData from '../data/comunidade-data.json';
+
 ---
 
 <Layout title="Comunidade - Falo Chinês" description="Participe da comunidade Falo Chinês: peça situações, registre dificuldades e compartilhe macetes.">
@@ -17,24 +19,29 @@ import Layout from '../layouts/Layout.astro';
         <a href="#situacoes" class="comunidade-tab flex-1 text-center py-3 text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-brand-gold border-b-2 border-transparent transition-all" data-tab="situacoes">🗣️ Situações</a>
         <a href="#dificuldades" class="comunidade-tab flex-1 text-center py-3 text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-brand-gold border-b-2 border-transparent transition-all" data-tab="dificuldades">🔍 Dificuldades</a>
         <a href="#macetes" class="comunidade-tab flex-1 text-center py-3 text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-brand-gold border-b-2 border-transparent transition-all" data-tab="macetes">🧠 Macetes</a>
+        <a href="#comentarios" class="comunidade-tab flex-1 text-center py-3 text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-brand-gold border-b-2 border-transparent transition-all" data-tab="comentarios">💬 Comentários</a>
       </div>
 
       <div id="comunidade-content">
         <div id="tab-situacoes" class="comunidade-panel"></div>
         <div id="tab-dificuldades" class="comunidade-panel hidden"></div>
         <div id="tab-macetes" class="comunidade-panel hidden"></div>
+        <div id="tab-comentarios" class="comunidade-panel hidden"></div>
       </div>
 
     </div>
   </div>
 </Layout>
 
-<script>
+<script define:vars={{ seedData: seedData }}>
+
+
   const tabs = document.querySelectorAll('.comunidade-tab');
   const panels = {
     situacoes: document.getElementById('tab-situacoes'),
     dificuldades: document.getElementById('tab-dificuldades'),
     macetes: document.getElementById('tab-macetes'),
+    comentarios: document.getElementById('tab-comentarios'),
   };
 
   function activateTab(hash) {
@@ -62,22 +69,33 @@ import Layout from '../layouts/Layout.astro';
     });
   });
 
-  async function mountBoards() {
-    const storage = await import('../lib/comunidade-storage');
-    storage.seedInitialData();
+  function getLocal(key) {
+    try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch { return []; }
+  }
+  function setLocal(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
 
-    const situacoesEl = document.getElementById('tab-situacoes');
-    const dificuldadesEl = document.getElementById('tab-dificuldades');
-    const macetesEl = document.getElementById('tab-macetes');
-
-    if (situacoesEl) renderSituacaoBoard(situacoesEl, storage);
-    if (dificuldadesEl) renderDificuldadeBoard(dificuldadesEl, storage);
-    if (macetesEl) renderMaceteBoard(macetesEl, storage);
+  function mountBoards() {
+    renderSituacaoBoard(document.getElementById('tab-situacoes'));
+    renderDificuldadeBoard(document.getElementById('tab-dificuldades'));
+    renderMaceteBoard(document.getElementById('tab-macetes'));
+    renderComentarioBoard(document.getElementById('tab-comentarios'));
   }
 
-  function renderSituacaoBoard(container, storage) {
-    const list = storage.getSituations();
-    const sorted = [...list].sort((a, b) => b.votes - a.votes);
+  function dedupBy(arr, keyFn) {
+    const seen = new Set();
+    return arr.filter(item => {
+      const key = keyFn(item);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function renderSituacaoBoard(container) {
+    const fetched = seedData.situacoes || [];
+    const local = getLocal('falo-chines-situations');
+    const list = dedupBy([...fetched, ...local], s => s.title).sort((a, b) => b.votes - a.votes);
 
     const statusColors = {
       pendente: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
@@ -87,24 +105,32 @@ import Layout from '../layouts/Layout.astro';
     const statusLabels = { pendente: 'Pendente', 'em andamento': 'Em andamento', publicado: 'Publicado ✓' };
 
     let html = `
-      <div class="mb-6">
-        <button id="btn-nova-situacao" class="text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl bg-brand-gold/20 text-brand-gold hover:bg-brand-gold/30 border border-brand-gold/30 transition-all">➕ Nova Situação</button>
-      </div>
-      <div id="form-nova-situacao" class="hidden glass-panel rounded-xl p-5 border border-white/5 mb-6">
-        <input id="input-situacao-title" type="text" placeholder="Título da situação..." class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 mb-2 focus:outline-none focus:border-brand-gold/50">
-        <textarea id="input-situacao-desc" placeholder="Descreva a situação em detalhes..." class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 mb-2 focus:outline-none focus:border-brand-gold/50" rows="2"></textarea>
-        <input id="input-situacao-tags" type="text" placeholder="Tags: restaurante, viagem..." class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 mb-3 focus:outline-none focus:border-brand-gold/50">
-        <div class="flex gap-2">
-          <button id="btn-situacao-submit" class="text-xs font-bold px-4 py-2 rounded-lg bg-brand-gold/20 text-brand-gold hover:bg-brand-gold/30 border border-brand-gold/30 transition-all">Enviar</button>
-          <button id="btn-situacao-cancel" class="text-xs font-bold px-4 py-2 rounded-lg bg-white/5 text-gray-400 hover:text-white border border-white/10 transition-all">Cancelar</button>
-        </div>
+      <div class="mb-6 glass-panel rounded-xl p-4 sm:p-5 border border-white/5">
+        <form class="inline-form" data-form="situacao">
+          <h4 class="text-xs font-bold text-white mb-3 uppercase tracking-wider">➕ Sugerir Situação</h4>
+          <input name="title" type="text" placeholder="Título da situação" required
+            class="w-full mb-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors" />
+          <textarea name="description" rows="2" placeholder="Descreva a situação..." required
+            class="w-full mb-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors resize-none"></textarea>
+          <input name="tags" type="text" placeholder="Tags (separadas por vírgula)"
+            class="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors" />
+          <div class="flex items-center justify-between">
+            <button type="submit" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-brand-gold/20 text-brand-gold hover:bg-brand-gold/30 border border-brand-gold/30 transition-all">Enviar</button>
+            <span class="form-feedback text-[11px] text-brand-jade hidden" data-feedback="situacao">✓ Sugerido!</span>
+          </div>
+        </form>
       </div>
       <div class="space-y-3">
     `;
 
-    sorted.forEach(s => {
+    if (list.length === 0) {
+      html += `<p class="text-gray-500 text-sm text-center py-12">Nenhuma situação ainda. Seja o primeiro a sugerir!</p>`;
+    }
+
+    list.forEach(s => {
       const statusColor = statusColors[s.status] || statusColors.pendente;
       const statusLabel = statusLabels[s.status] || s.status;
+      const lessonLink = s.lessonSlug ? `<a href="/licoes/${escapeHtml(s.lessonSlug)}" class="text-[9px] px-2 py-0.5 rounded-full bg-brand-blue/10 text-brand-blue border border-brand-blue/20 hover:bg-brand-blue/20 transition-colors">📖 ${escapeHtml(s.lessonSlug)}</a>` : '';
       html += `
         <div class="glass-panel rounded-xl p-4 sm:p-5 border border-white/5">
           <div class="flex items-start justify-between gap-3">
@@ -112,14 +138,11 @@ import Layout from '../layouts/Layout.astro';
               <h4 class="text-sm font-display font-bold text-white">${escapeHtml(s.title)}</h4>
               <p class="text-[11px] text-gray-400 mt-1">${escapeHtml(s.description)}</p>
               <div class="flex items-center gap-2 mt-2 flex-wrap">
-                ${s.tags.map(t => `<span class="text-[9px] px-2 py-0.5 rounded-full bg-white/5 text-gray-400 border border-white/5">${escapeHtml(t)}</span>`).join('')}
+                ${(s.tags || []).map(t => `<span class="text-[9px] px-2 py-0.5 rounded-full bg-white/5 text-gray-400 border border-white/5">${escapeHtml(t)}</span>`).join('')}
+                ${lessonLink}
                 <span class="text-[9px] px-2 py-0.5 rounded-full ${statusColor} border">${statusLabel}</span>
               </div>
-              <span class="block text-[9px] text-gray-500 mt-2">por ${escapeHtml(s.author)}</span>
-            </div>
-            <div class="flex flex-col items-center gap-0.5 shrink-0">
-              <button class="situacao-vote text-lg text-gray-400 hover:text-brand-gold transition-colors" data-id="${s.id}">👍</button>
-              <span class="text-xs font-bold text-white">${s.votes}</span>
+              <span class="block text-[9px] text-gray-500 mt-2">por ${escapeHtml(s.author || 'Anônimo')}</span>
             </div>
           </div>
         </div>
@@ -128,39 +151,15 @@ import Layout from '../layouts/Layout.astro';
 
     html += `</div>`;
     container.innerHTML = html;
-
-    document.getElementById('btn-nova-situacao')?.addEventListener('click', () => {
-      const form = document.getElementById('form-nova-situacao');
-      if (form) form.classList.toggle('hidden');
-    });
-    document.getElementById('btn-situacao-cancel')?.addEventListener('click', () => {
-      const form = document.getElementById('form-nova-situacao');
-      if (form) form.classList.add('hidden');
-    });
-    document.getElementById('btn-situacao-submit')?.addEventListener('click', () => {
-      const title = document.getElementById('input-situacao-title');
-      const desc = document.getElementById('input-situacao-desc');
-      const tags = document.getElementById('input-situacao-tags');
-      if (!title || !desc || !title.value.trim()) return;
-      const tagList = tags ? tags.value.split(',').map(t => t.trim()).filter(Boolean) : [];
-      storage.addSituation(title.value.trim(), desc.value.trim(), tagList);
-      title.value = '';
-      if (desc) desc.value = '';
-      if (tags) tags.value = '';
-      renderSituacaoBoard(container, storage);
-    });
-    document.querySelectorAll('.situacao-vote').forEach(btn => {
-      btn.addEventListener('click', function () {
-        storage.voteSituation(this.getAttribute('data-id'));
-        renderSituacaoBoard(container, storage);
-      });
-    });
   }
 
-  function renderDificuldadeBoard(container, storage) {
-    const list = storage.getDifficulties();
+  function renderDificuldadeBoard(container) {
+    const fetched = seedData.dificuldades || [];
+    const local = getLocal('falo-chines-difficulties');
+    const all = dedupBy([...fetched, ...local], d => d.character + '|' + d.type + '|' + d.lessonSlug);
+
     const byChar = {};
-    list.forEach(d => {
+    all.forEach(d => {
       if (!byChar[d.character]) byChar[d.character] = { character: d.character, total: 0, types: {} };
       byChar[d.character].total++;
       byChar[d.character].types[d.type] = (byChar[d.character].types[d.type] || 0) + 1;
@@ -171,7 +170,7 @@ import Layout from '../layouts/Layout.astro';
 
     let html = `<div class="space-y-3">`;
     if (sorted.length === 0) {
-      html += `<p class="text-gray-500 text-sm text-center py-12">Nenhuma dificuldade registrada ainda.</p>`;
+      html += `<p class="text-gray-500 text-sm text-center py-12">Nenhuma dificuldade registrada ainda. Clique em "Tive dificuldade" nos caracteres das lições!</p>`;
     }
     sorted.forEach((item, i) => {
       const maxType = Object.entries(item.types).sort((a, b) => b[1] - a[1])[0];
@@ -196,37 +195,43 @@ import Layout from '../layouts/Layout.astro';
     container.innerHTML = html;
   }
 
-  function renderMaceteBoard(container, storage) {
-    const list = storage.getMnemonics();
-    const sorted = [...list].sort((a, b) => b.votes - a.votes);
+  function renderMaceteBoard(container) {
+    const fetched = seedData.macetes || [];
+    const local = getLocal('falo-chines-mnemonics');
+    const list = dedupBy([...fetched, ...local], m => m.character + '|' + m.text).sort((a, b) => b.votes - a.votes);
 
     let html = `
-      <div class="mb-6">
-        <button id="btn-novo-macete" class="text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl bg-brand-gold/20 text-brand-gold hover:bg-brand-gold/30 border border-brand-gold/30 transition-all">🧠 Novo Macete</button>
-      </div>
-      <div id="form-novo-macete" class="hidden glass-panel rounded-xl p-5 border border-white/5 mb-6">
-        <input id="input-macete-char" type="text" placeholder="Caractere (ex: 学)" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 mb-2 focus:outline-none focus:border-brand-gold/50">
-        <textarea id="input-macete-text" placeholder="Seu macete para memorizar..." class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 mb-2 focus:outline-none focus:border-brand-gold/50" rows="2"></textarea>
-        <input id="input-macete-author" type="text" placeholder="Seu nome" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 mb-3 focus:outline-none focus:border-brand-gold/50">
-        <div class="flex gap-2">
-          <button id="btn-macete-submit" class="text-xs font-bold px-4 py-2 rounded-lg bg-brand-gold/20 text-brand-gold hover:bg-brand-gold/30 border border-brand-gold/30 transition-all">Enviar</button>
-          <button id="btn-macete-cancel" class="text-xs font-bold px-4 py-2 rounded-lg bg-white/5 text-gray-400 hover:text-white border border-white/10 transition-all">Cancelar</button>
-        </div>
+      <div class="mb-6 glass-panel rounded-xl p-4 sm:p-5 border border-white/5">
+        <form class="inline-form" data-form="macete">
+          <h4 class="text-xs font-bold text-white mb-3 uppercase tracking-wider">🧠 Compartilhar Macete</h4>
+          <input name="character" type="text" placeholder="Caractere" required
+            class="w-full mb-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors" />
+          <textarea name="text" rows="2" placeholder="Seu macete..." required
+            class="w-full mb-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors resize-none"></textarea>
+          <input name="author" type="text" placeholder="Seu nome (opcional)"
+            class="w-full mb-3 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors" />
+          <div class="flex items-center justify-between">
+            <button type="submit" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-brand-gold/20 text-brand-gold hover:bg-brand-gold/30 border border-brand-gold/30 transition-all">Enviar</button>
+            <span class="form-feedback text-[11px] text-brand-jade hidden" data-feedback="macete">✓ Macete compartilhado!</span>
+          </div>
+        </form>
       </div>
       <div class="space-y-3">
     `;
 
-    sorted.forEach(m => {
+    if (list.length === 0) {
+      html += `<p class="text-gray-500 text-sm text-center py-12">Nenhum macete ainda. Seja o primeiro a compartilhar!</p>`;
+    }
+
+    list.forEach(m => {
       html += `
         <div class="glass-panel rounded-xl p-4 sm:p-5 border border-white/5 flex items-start gap-4">
           <span class="text-2xl font-extrabold text-white font-serif-zh w-10 text-center shrink-0">${m.character}</span>
           <div class="flex-1 min-w-0">
             <p class="text-sm text-gray-200">“${escapeHtml(m.text)}”</p>
             <div class="flex items-center gap-3 mt-2">
-              <span class="text-[10px] text-gray-500">por ${escapeHtml(m.author)}</span>
-              <button class="macete-vote text-xs text-gray-400 hover:text-brand-gold transition-colors flex items-center gap-1" data-id="${m.id}">
-                👍 <span>${m.votes}</span>
-              </button>
+              <span class="text-[10px] text-gray-500">por ${escapeHtml(m.author || 'Anônimo')}</span>
+              <span class="text-xs text-gray-400 flex items-center gap-1">👍 ${m.votes}</span>
               ${m.votes >= 5 ? '<span class="text-[9px] px-2 py-0.5 rounded-full bg-brand-gold/10 text-brand-gold border border-brand-gold/20">✨ Destaque</span>' : ''}
             </div>
           </div>
@@ -236,32 +241,63 @@ import Layout from '../layouts/Layout.astro';
 
     html += `</div>`;
     container.innerHTML = html;
+  }
 
-    document.getElementById('btn-novo-macete')?.addEventListener('click', () => {
-      const form = document.getElementById('form-novo-macete');
-      if (form) form.classList.toggle('hidden');
+  function renderComentarioBoard(container) {
+    const fetched = seedData.comentarios || [];
+    const local = getLocal('falo-chines-comments');
+    const all = dedupBy([...fetched, ...local], c => c.text).filter(c => c.approved !== false);
+    const sorted = all.sort((a, b) => b.timestamp - a.timestamp);
+
+    let html = `
+      <div class="mb-6 glass-panel rounded-xl p-4 sm:p-5 border border-white/5">
+        <form class="inline-form" data-form="comentario">
+          <h4 class="text-xs font-bold text-white mb-3 uppercase tracking-wider">💬 Deixe seu Comentário</h4>
+          <input name="author" type="text" placeholder="Seu nome"
+            class="w-full mb-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors" />
+          <textarea name="text" rows="2" placeholder="Escreva seu comentário..." required
+            class="w-full mb-2 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors resize-none"></textarea>
+          <div class="flex items-center justify-between">
+            <button type="submit" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-brand-gold/20 text-brand-gold hover:bg-brand-gold/30 border border-brand-gold/30 transition-all">Enviar</button>
+            <span class="form-feedback text-[11px] text-brand-jade hidden" data-feedback="comentario">✓ Comentário salvo!</span>
+          </div>
+        </form>
+      </div>
+      <div class="space-y-3">
+    `;
+
+    if (sorted.length === 0) {
+      html += `<p class="text-gray-500 text-sm text-center py-12">Nenhum comentário ainda. Seja o primeiro!</p>`;
+    }
+
+    sorted.forEach(c => {
+      const targetLink = c.postSlug
+        ? `<a href="/blog/${escapeHtml(c.postSlug)}" class="text-[9px] text-brand-blue hover:text-brand-gold transition-colors">📝 ${escapeHtml(c.postSlug)}</a>`
+        : c.lessonSlug
+        ? `<a href="/licoes/${escapeHtml(c.lessonSlug)}" class="text-[9px] text-brand-blue hover:text-brand-gold transition-colors">📖 ${escapeHtml(c.lessonSlug)}</a>`
+        : '';
+      html += `
+        <div class="glass-panel rounded-xl p-4 sm:p-5 border border-white/5">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center text-sm font-bold shrink-0">
+              ${escapeHtml(c.author.charAt(0).toUpperCase())}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-xs font-bold text-white">${escapeHtml(c.author)}</span>
+                <span class="text-[9px] text-gray-500">${new Date(c.timestamp).toLocaleDateString('pt-BR')}</span>
+                ${targetLink ? `<span class="text-[9px]">${targetLink}</span>` : ''}
+              </div>
+              <p class="text-sm text-gray-300">“${escapeHtml(c.text)}”</p>
+              ${c.approved === undefined ? '<span class="text-[9px] text-yellow-400 mt-1 block">⏳ Aguardando moderação</span>' : ''}
+            </div>
+          </div>
+        </div>
+      `;
     });
-    document.getElementById('btn-macete-cancel')?.addEventListener('click', () => {
-      const form = document.getElementById('form-novo-macete');
-      if (form) form.classList.add('hidden');
-    });
-    document.getElementById('btn-macete-submit')?.addEventListener('click', () => {
-      const char = document.getElementById('input-macete-char');
-      const text = document.getElementById('input-macete-text');
-      const author = document.getElementById('input-macete-author');
-      if (!char || !text || !char.value.trim() || !text.value.trim()) return;
-      storage.addMnemonic(char.value.trim(), text.value.trim(), author?.value.trim() || 'Anônimo');
-      char.value = '';
-      if (text) text.value = '';
-      if (author) author.value = '';
-      renderMaceteBoard(container, storage);
-    });
-    document.querySelectorAll('.macete-vote').forEach(btn => {
-      btn.addEventListener('click', function () {
-        storage.voteMnemonic(this.getAttribute('data-id'));
-        renderMaceteBoard(container, storage);
-      });
-    });
+
+    html += `</div>`;
+    container.innerHTML = html;
   }
 
   function escapeHtml(str) {
@@ -271,4 +307,53 @@ import Layout from '../layouts/Layout.astro';
   }
 
   mountBoards();
+
+  // Inline form submission via event delegation
+  document.getElementById('comunidade-content').addEventListener('submit', function(e) {
+    const form = e.target.closest('form[data-form]');
+    if (!form) return;
+    e.preventDefault();
+
+    const formType = form.dataset.form;
+
+    if (formType === 'situacao') {
+      const title = form.querySelector('[name="title"]').value.trim();
+      const description = form.querySelector('[name="description"]').value.trim();
+      const tagsStr = form.querySelector('[name="tags"]').value.trim();
+      if (!title || !description) return;
+      const tags = tagsStr ? tagsStr.split(',').map(function(t) { return t.trim(); }).filter(Boolean) : [];
+      const list = getLocal('falo-chines-situations');
+      list.push({ id: uid(), title: title, description: description, tags: tags, votes: 1, status: 'pendente', author: 'Anônimo', lessonSlug: '', timestamp: Date.now() });
+      setLocal('falo-chines-situations', list);
+      showFeedback(form, 'situacao');
+      renderSituacaoBoard(panels.situacoes);
+    } else if (formType === 'macete') {
+      const character = form.querySelector('[name="character"]').value.trim();
+      const text = form.querySelector('[name="text"]').value.trim();
+      const author = form.querySelector('[name="author"]').value.trim() || 'Anônimo';
+      if (!character || !text) return;
+      const list = getLocal('falo-chines-mnemonics');
+      list.push({ id: uid(), character: character, text: text, author: author, votes: 0, timestamp: Date.now() });
+      setLocal('falo-chines-mnemonics', list);
+      showFeedback(form, 'macete');
+      renderMaceteBoard(panels.macetes);
+    } else if (formType === 'comentario') {
+      const author = form.querySelector('[name="author"]').value.trim() || 'Anônimo';
+      const text = form.querySelector('[name="text"]').value.trim();
+      if (!text) return;
+      const list = getLocal('falo-chines-comments');
+      list.push({ id: uid(), postSlug: '', lessonSlug: '', author: author, text: text, approved: false, timestamp: Date.now() });
+      setLocal('falo-chines-comments', list);
+      showFeedback(form, 'comentario');
+      renderComentarioBoard(panels.comentarios);
+    }
+  });
+
+  function showFeedback(form, type) {
+    var fb = form.querySelector('.form-feedback[data-feedback="' + type + '"]');
+    if (fb) {
+      fb.classList.remove('hidden');
+      setTimeout(function() { fb.classList.add('hidden'); }, 2000);
+    }
+  }
 </script>

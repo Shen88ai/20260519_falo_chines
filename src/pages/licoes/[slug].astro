@@ -7,6 +7,7 @@ import { dictionary } from '../../data/dictionary';
 import { socialProof } from '../../data/social-proof-data';
 import { getZhongwenLink } from '../../lib/dictionary-utils';
 import ComunidadeCard from '../../components/ComunidadeCard.astro';
+import comunidadeData from '../../data/comunidade-data.json';
 
 // Build lesson lookup for client-side teaser generation
 const allLessons = await getCollection('lessons');
@@ -56,6 +57,17 @@ const allLessonSlugs = (await getCollection('lessons'))
 const currentIdx = allLessonSlugs.findIndex(l => l.slug === flatSlug);
 const prevLesson = currentIdx > 0 ? allLessonSlugs[currentIdx - 1] : null;
 const nextLesson = currentIdx < allLessonSlugs.length - 1 ? allLessonSlugs[currentIdx + 1] : null;
+
+
+// Related situações for this lesson
+const relatedSituacoes = (comunidadeData.situacoes || [])
+  .filter(s => s.lessonSlug === flatSlug)
+  .sort((a, b) => b.votes - a.votes);
+
+// Related comments for this lesson
+const relatedComments = (comunidadeData.comentarios || [])
+  .filter(c => c.lessonSlug === flatSlug && c.approved !== false)
+  .sort((a, b) => b.timestamp - a.timestamp);
 ---
 
 <Layout 
@@ -247,6 +259,76 @@ const nextLesson = currentIdx < allLessonSlugs.length - 1 ? allLessonSlugs[curre
             </div>
           </div>
 
+          {relatedSituacoes.length > 0 && (
+          <div class="glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-2xl">
+            <div class="flex items-center gap-3 mb-5">
+              <span class="text-xl">🗣️</span>
+              <h3 class="text-lg font-display font-extrabold text-white">Situações Relacionadas</h3>
+              <span class="text-[10px] text-gray-500 font-medium">{relatedSituacoes.length} {relatedSituacoes.length === 1 ? 'sugestão' : 'sugestões'}</span>
+            </div>
+            <div class="space-y-3">
+              {relatedSituacoes.map(s => (
+                <div class="rounded-xl p-4 border border-white/5 bg-white/[0.02]">
+                  <h4 class="text-sm font-display font-bold text-white">{s.title}</h4>
+                  <p class="text-[11px] text-gray-400 mt-1">{s.description}</p>
+                  <div class="flex items-center gap-2 mt-2 flex-wrap">
+                    {(s.tags || []).map(t => <span class="text-[9px] px-2 py-0.5 rounded-full bg-white/5 text-gray-400 border border-white/5">{t}</span>)}
+                    <span class="text-[10px] text-gray-500">👍 {s.votes}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/5 text-center">
+              <a href="/comunidade#situacoes" class="text-[11px] font-bold uppercase tracking-wider text-brand-gold hover:text-white transition-colors">➕ Sugerir nova situação para esta lição</a>
+            </div>
+          </div>
+          )}
+
+          <!-- Comments Section -->
+          <div class="glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 shadow-2xl">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-xl">💬</span>
+              <h3 class="text-lg font-display font-extrabold text-white">Comentários</h3>
+              <span class="text-[10px] text-gray-500 font-medium">{relatedComments.length} {relatedComments.length === 1 ? 'comentário' : 'comentários'}</span>
+            </div>
+
+            {relatedComments.length > 0 && (
+            <div class="space-y-4 mb-8">
+              {relatedComments.map(c => (
+                <div class="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <div class="w-8 h-8 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center text-sm font-bold shrink-0">
+                    {c.author.charAt(0).toUpperCase()}
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-0.5">
+                      <span class="text-xs font-bold text-white">{c.author}</span>
+                      <span class="text-[9px] text-gray-500">{new Date(c.timestamp).toLocaleDateString('pt-BR')}</span>
+                    </div>
+                    <p class="text-sm text-gray-300">“{c.text}”</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            )}
+
+            {relatedComments.length === 0 && (
+            <p class="text-gray-500 text-sm text-center py-8 border border-dashed border-white/5 rounded-xl mb-8">
+              Nenhum comentário ainda. Seja o primeiro!
+            </p>
+            )}
+
+            <!-- Quick Comment Form (localStorage) -->
+            <div class="border-t border-white/5 pt-6">
+              <p class="text-xs text-gray-400 mb-3">Deixe seu comentário sobre esta lição:</p>
+              <input id="lesson-comment-author" type="text" placeholder="Seu nome" class="w-full mb-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors" />
+              <textarea id="lesson-comment-text" rows="3" placeholder="Escreva seu comentário..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-brand-gold/50 transition-colors resize-none"></textarea>
+              <div class="flex items-center justify-between mt-3">
+                <button id="lesson-comment-submit" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-brand-gold/20 text-brand-gold hover:bg-brand-gold/30 border border-brand-gold/30 transition-all">Enviar</button>
+              </div>
+              <p id="lesson-comment-feedback" class="text-[11px] text-brand-jade mt-2 hidden">✓ Comentário salvo! Aparecerá após moderação.</p>
+            </div>
+          </div>
+
         </article>
 
       </div>
@@ -339,7 +421,7 @@ const nextLesson = currentIdx < allLessonSlugs.length - 1 ? allLessonSlugs[curre
       getMnemonics: function() { return read('falo-chines-mnemonics') },
       getMnemonicsByChar: function(c) { return read('falo-chines-mnemonics').filter(function(m) { return m.character === c }) },
       voteMnemonic: function(id) { var list = read('falo-chines-mnemonics'); var idx = list.findIndex(function(m) { return m.id === id }); if (idx === -1) return null; list[idx].votes++; write('falo-chines-mnemonics', list); return list[idx]; },
-      addSituation: function(title, desc, tags) { var list = read('falo-chines-situations'); var s = { id: uid(), title: title, description: desc, tags: tags, votes: 1, status: 'pendente', author: 'Anônimo', timestamp: Date.now() }; list.push(s); write('falo-chines-situations', list); return s; },
+      addSituation: function(title, desc, tags, lessonSlug) { var list = read('falo-chines-situations'); var s = { id: uid(), title: title, description: desc, tags: tags, votes: 1, status: 'pendente', author: 'Anônimo', lessonSlug: lessonSlug || '', timestamp: Date.now() }; list.push(s); write('falo-chines-situations', list); return s; },
     };
   })();
   var __currentChar = '';
@@ -718,4 +800,27 @@ const nextLesson = currentIdx < allLessonSlugs.length - 1 ? allLessonSlugs[curre
       console.warn("Falha ao desenhar minimap da jornada:", e);
     }
   })();
+
+  // Lesson page quick comment (localStorage)
+  document.getElementById('lesson-comment-submit')?.addEventListener('click', function() {
+    const author = document.getElementById('lesson-comment-author').value.trim() || 'Anônimo';
+    const text = document.getElementById('lesson-comment-text').value.trim();
+    if (!text) return;
+    try {
+      const list = JSON.parse(localStorage.getItem('falo-chines-comments') || '[]');
+      list.push({
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+        postSlug: '',
+        lessonSlug: window.__currentLessonSlug || flatSlug,
+        author: author,
+        text: text,
+        approved: false,
+        timestamp: Date.now()
+      });
+      localStorage.setItem('falo-chines-comments', JSON.stringify(list));
+      document.getElementById('lesson-comment-text').value = '';
+      document.getElementById('lesson-comment-feedback').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('lesson-comment-feedback').classList.add('hidden'); }, 3000);
+    } catch(e) { console.warn('Falha ao salvar comentário:', e); }
+  });
 </script>

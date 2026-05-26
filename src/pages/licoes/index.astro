@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import CoverCarrossel from '../../components/CoverCarrossel.astro';
+import PhaseSocialProof from '../../components/PhaseSocialProof.astro';
 
 // Busca todas as lições
 const allLessons = await getCollection('lessons');
@@ -73,6 +74,8 @@ const phases = {
 
       <!-- Cover Carrossel -->
       {carouselItems.length > 1 && <CoverCarrossel items={carouselItems} />}
+
+      <PhaseSocialProof />
 
       <!-- Phase Sections -->
       <div class="space-y-16">
