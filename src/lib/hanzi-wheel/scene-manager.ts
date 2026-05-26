@@ -26,6 +26,14 @@ let wheelGroup: THREE.Group;
 let raycaster: THREE.Raycaster;
 let mouse: THREE.Vector2;
 
+function getCameraZ(canvas: HTMLCanvasElement): number {
+  const base = 2.8;
+  const refHeight = 600;
+  const h = canvas.clientHeight || window.innerHeight;
+  if (h < refHeight) return base * (refHeight / h);
+  return base;
+}
+
 export async function initScene(canvas: HTMLCanvasElement): Promise<void> {
   if (isInitialized) return;
   isInitialized = true;
@@ -34,7 +42,7 @@ export async function initScene(canvas: HTMLCanvasElement): Promise<void> {
 
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(50, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-  camera.position.z = 2.8;
+  camera.position.z = getCameraZ(canvas);
 
   renderer = new THREE.WebGLRenderer({
     canvas,
@@ -58,6 +66,7 @@ export async function initScene(canvas: HTMLCanvasElement): Promise<void> {
 
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('click', onClick, true);
+  canvas.addEventListener('touchstart', onTouchStart, { passive: true });
   window.addEventListener('resize', onResize);
   window.addEventListener('visibilitychange', onVisibilityChange);
   window.addEventListener('hanzi-wheel:category-change', onCategoryChange as EventListener);
@@ -150,6 +159,25 @@ function startRenderLoop(): void {
   animationId = requestAnimationFrame(loop);
 }
 
+function onTouchStart(e: TouchEvent): void {
+  if (e.touches.length !== 1) return;
+  const canvas = renderer.domElement;
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches[0];
+  mouse.x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const sprites = getOrbitingSprites();
+  const intersects = raycaster.intersectObjects(sprites);
+
+  if (intersects.length > 0) {
+    const sprite = intersects[0].object as THREE.Sprite;
+    const char = sprite.userData.character as string;
+    stateManager.selectCharacter(char);
+  }
+}
+
 function onResize(): void {
   const canvas = renderer.domElement;
   const parent = canvas.parentElement;
@@ -157,6 +185,7 @@ function onResize(): void {
   const w = parent.clientWidth;
   const h = parent.clientHeight;
   camera.aspect = w / h;
+  camera.position.z = getCameraZ(canvas);
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
 }
@@ -174,6 +203,8 @@ export function disposeScene(): void {
   if (animationId) cancelAnimationFrame(animationId);
   document.removeEventListener('mousemove', onMouseMove);
   document.removeEventListener('click', onClick, true);
+  const canvas = renderer?.domElement;
+  if (canvas) canvas.removeEventListener('touchstart', onTouchStart);
   window.removeEventListener('resize', onResize);
   window.removeEventListener('visibilitychange', onVisibilityChange);
   window.removeEventListener('hanzi-wheel:category-change', onCategoryChange as EventListener);

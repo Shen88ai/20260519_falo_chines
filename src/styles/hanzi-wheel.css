@@ -258,3 +258,69 @@
 .hw-dot:hover {
   background: rgba(255, 255, 255, 0.4);
 }
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .hanzi-wheel-wrapper {
+    min-height: 360px;
+    padding-top: 24px;
+  }
+
+  .hw-detail-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    height: auto;
+    max-height: 55vh;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px 16px 0 0;
+    padding: 20px 20px 32px;
+    transform: translateY(100%);
+  }
+
+  .hw-detail-panel.active {
+    transform: translateY(0);
+  }
+
+  .hw-detail-close {
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 50%;
+  }
+
+  .hw-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hw-tab {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .hw-dots-row {
+    gap: 4px;
+  }
+
+  .hw-nav-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 8px;
+  }
+
+  .hw-dot {
+    width: 5px;
+    height: 5px;
+  }
+}
