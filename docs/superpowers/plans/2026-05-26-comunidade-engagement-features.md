@@ -10,6 +10,33 @@
 
 ---
 
+## Seed Data (5 examples each)
+
+Every feature needs 5 pre-seeded entries so new users see a populated hub on first visit. Data is injected on first localStorage access (no data = seed it).
+
+### Situations (5)
+1. 🗣️ "Como peço comida vegetariana em Beijing?" — tags: restaurante, viagem — 12 votos — autor: Ana
+2. 🗣️ "O que falar quando encontro um amigo chinês pela primeira vez?" — tags: social, saudação — 9 votos — autor: Carlos
+3. 🗣️ "Como negocio preço no mercado de rua?" — tags: compras, negócios — 7 votos — autor: Maria
+4. 🗣️ "O que dizer se me atrasar para uma reunião?" — tags: trabalho, desculpa — 5 votos — autor: João
+5. 🗣️ "Como elogiar a comida da minha sogra chinesa?" — tags: social, cultura — 4 votos — autor: Ling
+
+### Mnemonics (5)
+1. 🧠 妈 — "Mãe (女) trabalha como cavalo (马) — dois empregos!" — 15 votos — autor: Pedro
+2. 🧠 好 — "Mulher (女) com criança (子) = tudo bom!" — 12 votos — autor: Sofia
+3. 🧠 休 — "Pessoa (亻) encostada na árvore (木) = descansar" — 8 votos — autor: Lucas
+4. 🧠 安 — "Mulher (女) em casa (宀) = paz e tranquilidade" — 6 votos — autor: Julia
+5. 🧠 家 — "Porco (豕) debaixo do teto (宀) = lar" — 5 votos — autor: Tiago
+
+### Difficulties (5)
+1. 🔍 学 — 8 reports (ton: 4, significado: 2, radicals: 2)
+2. 🔍 国 — 6 reports (traços: 3, significado: 2, ton: 1)
+3. 🔍 妈 — 5 reports (ton: 3, significado: 1, outro: 1)
+4. 🔍 马 — 4 reports (ton: 3, radicals: 1)
+5. 🔍 爱 — 3 reports (radical: 2, significado: 1)
+
+---
+
 ## Chunk 1: Storage Layer
 
 ### Task 1.1: Write failing tests for storage helpers
@@ -114,6 +141,24 @@ describe('comunidade-storage', () => {
     const s = addSituation('Título', 'Desc', []);
     voteSituation(s.id);
     expect(voteSituation(s.id)?.votes).toBe(3);
+  });
+
+  // --- Seed data ---
+  it('getSituations returns 5 entries after seed', () => {
+    const { seedInitialData } = await import('../src/lib/comunidade-storage');
+    localStorage.clear();
+    seedInitialData();
+    expect(getSituations()).toHaveLength(5);
+    expect(getMnemonics()).toHaveLength(5);
+    expect(getDifficulties()).toHaveLength(20); // sum of all difficulty reports
+  });
+
+  it('seedInitialData is idempotent', () => {
+    const { seedInitialData } = await import('../src/lib/comunidade-storage');
+    localStorage.clear();
+    seedInitialData();
+    seedInitialData();
+    expect(getSituations()).toHaveLength(5);
   });
 });
 ```
@@ -242,6 +287,65 @@ export function voteSituation(id: string): Situation | null {
   list[idx].votes++;
   write(KEYS.situations, list);
   return list[idx];
+}
+
+// --- Seed data ---
+const SEED_FLAG_KEY = 'falo-chines-seeded';
+
+const SEED_SITUATIONS: Array<Omit<Situation, 'id' | 'timestamp'>> = [
+  { title: 'Como peço comida vegetariana em Beijing?', description: 'Vou viajar para Beijing e como evitar carne sem passar fome', tags: ['restaurante', 'viagem'], votes: 12, status: 'publicado', author: 'Ana' },
+  { title: 'O que falar quando encontro um amigo chinês pela primeira vez?', description: 'Quais saudações e perguntas são educadas no primeiro encontro?', tags: ['social', 'saudação'], votes: 9, status: 'publicado', author: 'Carlos' },
+  { title: 'Como negocio preço no mercado de rua?', description: 'Barganhar é comum na China, mas nunca sei as palavras certas', tags: ['compras', 'negócios'], votes: 7, status: 'em andamento', author: 'Maria' },
+  { title: 'O que dizer se me atrasar para uma reunião?', description: 'No trânsito de SP fico preso e preciso me desculpar profissionalmente', tags: ['trabalho', 'desculpa'], votes: 5, status: 'pendente', author: 'João' },
+  { title: 'Como elogiar a comida da minha sogra chinesa?', description: 'Minha sogra é chinesa e cozinha muito, quero elogiar sem parecer superficial', tags: ['social', 'cultura'], votes: 4, status: 'pendente', author: 'Ling' },
+];
+
+const SEED_MNEMONICS: Array<Omit<Mnemonic, 'id' | 'timestamp'>> = [
+  { character: '妈', text: 'Mãe (女) trabalha como cavalo (马) — dois empregos!', author: 'Pedro', votes: 15 },
+  { character: '好', text: 'Mulher (女) com criança (子) = tudo bom!', author: 'Sofia', votes: 12 },
+  { character: '休', text: 'Pessoa (亻) encostada na árvore (木) = descansar', author: 'Lucas', votes: 8 },
+  { character: '安', text: 'Mulher (女) em casa (宀) = paz e tranquilidade', author: 'Julia', votes: 6 },
+  { character: '家', text: 'Porco (豕) debaixo do teto (宀) = lar', author: 'Tiago', votes: 5 },
+];
+
+const SEED_DIFFICULTIES: Array<DifficultyReport> = [
+  { character: '学', type: 'tone', lessonSlug: '04-sintaxe-basica', timestamp: Date.now() - 86400000 * 7 },
+  { character: '学', type: 'tone', lessonSlug: '04-sintaxe-basica', timestamp: Date.now() - 86400000 * 6 },
+  { character: '学', type: 'tone', lessonSlug: '04-sintaxe-basica', timestamp: Date.now() - 86400000 * 5 },
+  { character: '学', type: 'tone', lessonSlug: '06-mae-chinesa-fluencia', timestamp: Date.now() - 86400000 * 4 },
+  { character: '学', type: 'meaning', lessonSlug: '04-sintaxe-basica', timestamp: Date.now() - 86400000 * 3 },
+  { character: '学', type: 'meaning', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() - 86400000 * 2 },
+  { character: '学', type: 'radical', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() - 86400000 * 1 },
+  { character: '学', type: 'radical', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() },
+  { character: '国', type: 'strokes', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() - 86400000 * 6 },
+  { character: '国', type: 'strokes', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() - 86400000 * 5 },
+  { character: '国', type: 'strokes', lessonSlug: '02-pinyin-iniciais', timestamp: Date.now() - 86400000 * 4 },
+  { character: '国', type: 'meaning', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() - 86400000 * 2 },
+  { character: '国', type: 'meaning', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() - 86400000 * 1 },
+  { character: '国', type: 'tone', lessonSlug: '02-pinyin-iniciais', timestamp: Date.now() },
+  { character: '妈', type: 'tone', lessonSlug: '01-tons-primordiais', timestamp: Date.now() - 86400000 * 5 },
+  { character: '妈', type: 'tone', lessonSlug: '01-tons-primordiais', timestamp: Date.now() - 86400000 * 3 },
+  { character: '妈', type: 'tone', lessonSlug: '06-mae-chinesa-fluencia', timestamp: Date.now() - 86400000 * 1 },
+  { character: '妈', type: 'meaning', lessonSlug: '01-tons-primordiais', timestamp: Date.now() },
+  { character: '妈', type: 'other', lessonSlug: '01-tons-primordiais', timestamp: Date.now() },
+  { character: '马', type: 'tone', lessonSlug: '01-tons-primordiais', timestamp: Date.now() - 86400000 * 4 },
+  { character: '马', type: 'tone', lessonSlug: '01-tons-primordiais', timestamp: Date.now() - 86400000 * 2 },
+  { character: '马', type: 'tone', lessonSlug: '01-tons-primordiais', timestamp: Date.now() },
+  { character: '马', type: 'radical', lessonSlug: '01-tons-primordiais', timestamp: Date.now() },
+  { character: '爱', type: 'radical', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() - 86400000 * 3 },
+  { character: '爱', type: 'radical', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() - 86400000 * 1 },
+  { character: '爱', type: 'meaning', lessonSlug: '03-radicais-fundamentais', timestamp: Date.now() },
+];
+
+export function seedInitialData(): void {
+  if (localStorage.getItem(SEED_FLAG_KEY)) return;
+  const situations = getSituations();
+  if (situations.length > 0) return;
+  const now = Date.now();
+  write(KEYS.situations, SEED_SITUATIONS.map((s, i) => ({ ...s, id: uid(), timestamp: now - i * 86400000 })));
+  write(KEYS.mnemonics, SEED_MNEMONICS.map((m, i) => ({ ...m, id: uid(), timestamp: now - i * 86400000 })));
+  write(KEYS.difficulties, SEED_DIFFICULTIES);
+  localStorage.setItem(SEED_FLAG_KEY, '1');
 }
 ```
 
@@ -480,9 +584,11 @@ import Layout from '../../layouts/Layout.astro';
 
   // --- Now mount the board components ---
   async function mountBoards() {
-    const { getSituations, addSituation, voteSituation } = await import('../../lib/comunidade-storage');
-    const { getDifficulties, addDifficulty } = await import('../../lib/comunidade-storage');
-    const { getMnemonics, addMnemonic, voteMnemonic, getMnemonicsByChar } = await import('../../lib/comunidade-storage');
+    const storage = await import('../../lib/comunidade-storage');
+    storage.seedInitialData();
+    const { getSituations, addSituation, voteSituation } = storage;
+    const { getDifficulties, addDifficulty } = storage;
+    const { getMnemonics, addMnemonic, voteMnemonic, getMnemonicsByChar } = storage;
 
     const situacoesEl = document.getElementById('tab-situacoes');
     const dificuldadesEl = document.getElementById('tab-dificuldades');
