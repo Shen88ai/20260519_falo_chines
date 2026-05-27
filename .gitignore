@@ -30,3 +30,6 @@ pnpm-debug.log*
 *.log
 
 Thumbs.db
+
+# Obsidian vault config
+.obsidian/

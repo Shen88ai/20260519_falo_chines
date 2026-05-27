@@ -1,13 +1,13 @@
 /**
- * Gera um link direto para o dicionário etimológico Zhongwen.com para um caractere ou palavra específica.
+ * Gera um link direto para o dicionário zdic.net para um caractere ou palavra específica.
  * Caso a entrada seja nula, indefinida ou vazia, retorna a página principal do site.
  * 
  * @param character O caractere chinês ou palavra para buscar.
- * @returns A URL parametrizada e codificada para busca no Zhongwen.com.
+ * @returns A URL parametrizada e codificada para o caractere no zdic.net.
  */
 export function getZhongwenLink(character?: string | null): string {
   if (!character) {
-    return 'https://zhongwen.com/';
+    return 'https://zdic.net/';
   }
-  return `https://zhongwen.com/cgi-bin/zipfind.cgi?terms=${encodeURIComponent(character)}`;
+  return `https://zdic.net/hans/${encodeURIComponent(character)}`;
 }

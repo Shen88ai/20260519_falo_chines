@@ -488,7 +488,7 @@ const relatedComments = (comunidadeData.comentarios || [])
 
           keys.forEach(key => {
             const regex = new RegExp(key, 'g');
-            const directLink = key ? `https://zhongwen.com/cgi-bin/zipfind.cgi?terms=${encodeURIComponent(key)}` : `https://zhongwen.com/`;
+            const directLink = key ? `https://zdic.net/hans/${encodeURIComponent(key)}` : `https://zdic.net/`;
             
             escapedText = escapedText.replace(
               regex, 
@@ -549,9 +549,9 @@ const relatedComments = (comunidadeData.comentarios || [])
           if (popupMnemonicaContainer) popupMnemonicaContainer.classList.add('hidden');
         }
 
-        if (popupLink) {
-          popupLink.href = char ? `https://zhongwen.com/cgi-bin/zipfind.cgi?terms=${encodeURIComponent(char)}` : `https://zhongwen.com/`;
-        }
+          if (popupLink) {
+            popupLink.href = char ? `https://zdic.net/hans/${encodeURIComponent(char)}` : `https://zdic.net/`;
+          }
 
         popup.classList.remove('hidden');
         setTimeout(() => {

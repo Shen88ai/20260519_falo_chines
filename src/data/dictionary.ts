@@ -33,6 +33,16 @@ export const dictionary: Record<string, DictionaryEntry> = {
   '一': { character: '一', pinyin: 'yī', portuguese: 'Um', radical: '一', strokeCount: 1, fase: 'A', topic: 'numeros' },
   '二': { character: '二', pinyin: 'èr', portuguese: 'Dois', radical: '二', strokeCount: 2, fase: 'A', topic: 'numeros' },
   '三': { character: '三', pinyin: 'sān', portuguese: 'Três', radical: '一', strokeCount: 3, fase: 'A', topic: 'numeros' },
+  '四': { character: '四', pinyin: 'sì', portuguese: 'Quatro', radical: '囗', strokeCount: 5, fase: 'A', topic: 'numeros' },
+  '五': { character: '五', pinyin: 'wǔ', portuguese: 'Cinco', radical: '二', strokeCount: 4, fase: 'A', topic: 'numeros' },
+  '六': { character: '六', pinyin: 'liù', portuguese: 'Seis', radical: '八', strokeCount: 4, mnemonica: 'Pictograma de uma cabana ou telhado.', fase: 'A', topic: 'numeros' },
+  '七': { character: '七', pinyin: 'qī', portuguese: 'Sete', radical: '一', strokeCount: 2, mnemonica: 'Originalmente ligado a "cortar" — vire-o e vire 切.', fase: 'A', topic: 'numeros' },
+  '八': { character: '八', pinyin: 'bā', portuguese: 'Oito', radical: '八', strokeCount: 2, mnemonica: 'Pernas se afastando — originalmente significava "separar".', fase: 'A', topic: 'numeros' },
+  '九': { character: '九', pinyin: 'jiǔ', portuguese: 'Nove', radical: '丿', strokeCount: 2, mnemonica: 'Braço curvado tentando alcançar algo — explorar.', fase: 'A', topic: 'numeros' },
+  '十': { character: '十', pinyin: 'shí', portuguese: 'Dez', radical: '十', strokeCount: 2, mnemonica: 'Traço vertical que representa o 10 na contagem antiga.', fase: 'A', topic: 'numeros' },
+  '切': { character: '切', pinyin: 'qiē', portuguese: 'Cortar / Fatiar', radical: '刀', strokeCount: 4, mnemonica: 'Sete (七) + faca (刀) = cortar.', fase: 'A', topic: 'acao' },
+  '分': { character: '分', pinyin: 'fēn', portuguese: 'Separar / Dividir / Minuto', radical: '刀', strokeCount: 4, mnemonica: 'Oito (八) + faca (刀) = dividir.', fase: 'A', topic: 'acao' },
+  '究': { character: '究', pinyin: 'jiū', portuguese: 'Explorar / Pesquisar / Investigar', radical: '穴', strokeCount: 7, mnemonica: 'Caverna (穴) + braço explorador (九) = pesquisar.', fase: 'A', topic: 'educacao' },
   // Fase B entries
   '商': { character: '商', pinyin: 'shāng', portuguese: 'Comércio / Negócios', radical: '口', strokeCount: 11, mnemonica: 'Derivado de um pedestal ritualístico da Dinastia Shang.', fase: 'B', topic: 'negocios' },
   '业': { character: '业', pinyin: 'yè', portuguese: 'Indústria / Profissão', radical: '一', strokeCount: 5, mnemonica: 'Painel de madeira ou ramificações prosperando.', fase: 'B', topic: 'negocios' },
@@ -65,7 +75,6 @@ export const dictionary: Record<string, DictionaryEntry> = {
   '斌': { character: '斌', pinyin: 'bīn', portuguese: 'Sobrenome Bin / Culto', radical: '文', strokeCount: 12, fase: 'D', topic: 'social' },
   // 囗 radical
   '回': { character: '回', pinyin: 'huí', portuguese: 'Voltar / Vez / Responder', radical: '囗', strokeCount: 6, fase: 'A', topic: 'direcao' },
-  '四': { character: '四', pinyin: 'sì', portuguese: 'Quatro', radical: '囗', strokeCount: 5, fase: 'A', topic: 'numeros' },
   '园': { character: '园', pinyin: 'yuán', portuguese: 'Jardim / Parque', radical: '囗', strokeCount: 7, fase: 'C', topic: 'natureza' },
   '图': { character: '图', pinyin: 'tú', portuguese: 'Mapa / Desenho / Plano', radical: '囗', strokeCount: 8, fase: 'B', topic: 'educacao' },
   // 子 radical
@@ -125,7 +134,6 @@ export const dictionary: Record<string, DictionaryEntry> = {
   '星': { character: '星', pinyin: 'xīng', portuguese: 'Estrela / Planeta', radical: '日', strokeCount: 9, fase: 'A', topic: 'natureza' },
   // 二 radical
   '云': { character: '云', pinyin: 'yún', portuguese: 'Nuvem / Dizer', radical: '二', strokeCount: 4, fase: 'B', topic: 'natureza' },
-  '五': { character: '五', pinyin: 'wǔ', portuguese: 'Cinco', radical: '二', strokeCount: 4, fase: 'A', topic: 'numeros' },
   '些': { character: '些', pinyin: 'xiē', portuguese: 'Alguns / Poucos', radical: '二', strokeCount: 8, fase: 'A', topic: 'numeros' },
   '井': { character: '井', pinyin: 'jǐng', portuguese: 'Poço / Ordenado', radical: '二', strokeCount: 4, fase: 'C', topic: 'natureza' },
   // 水 radical
