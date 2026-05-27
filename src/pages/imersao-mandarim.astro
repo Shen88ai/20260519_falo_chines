@@ -1,0 +1,305 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getWhatsAppEnrollUrl } from '../lib/courses-data';
+---
+
+<Layout>
+  <!-- Header -->
+  <section class="py-16 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white tracking-tight">
+        Imersão em Mandarim para Profissionais e Estudantes de Carreira
+      </h1>
+      <p class="mt-4 text-xl text-gray-300 max-w-3xl">
+        Aprenda o mandarim que você REALMENTE precisa para crescer na carreira ou ter sucesso nos negócios com a China. Nada de teoria inútil - tudo prático e aplicável imediatamente.
+      </p>
+      <!-- Infographic Image -->
+      <div class="mt-6 max-w-3xl mx-auto">
+        <img src="/images/services/infografico-imersao-mandarim.png" alt="Infográfico: Imersão em Mandarim para Profissionais e Estudantes de Carreira" class="w-full rounded-xl border border-white/5 shadow-lg">
+      </div>
+    </div>
+  </section>
+
+  <!-- Program Overview -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-display font-bold text-white mb-12">Nosso formato de imersão que realmente funciona</h2>
+      
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="glass-panel rounded-2xl p-8 border border-white/5">
+          <h3 class="text-2xl font-display font-bold text-white mb-4">Foco 100% Prático</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Nenhuma aula de gramática abstrata ou decoreba de caracteres. Você aprende apenas o que vai usar NA SEMANA que vem - frases para reuniões, viagens, negociações e situações reais do seu dia a dia profissional.
+          </p>
+        </div>
+        
+        <div class="glass-panel rounded-2xl p-8 border border-white/5">
+          <h3 class="text-2xl font-display font-bold text-white mb-4">Simulações de Situações Reais</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Pratique cenários como: check-in no aeroporto para voos para Xangai/Guangzhou, jantar de negócios com fornecedores chineses, visita a fábricas em Guangdong, negociação no Alibaba e lidando com questões alfandegárias.
+          </p>
+        </div>
+      </div>
+      
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="glass-panel rounded-2xl p-8 border border-white/5">
+          <h3 class="text-2xl font-display font-bold text-white mb-4">Suporte Dinâmico e Contínuo</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Áudios nativos por WhatsApp para revisão diária, flashcards personalizados por tema (negócios, viagem, cultura) e correção de pronúncia em tempo real através da nossa plataforma com análise de voz.
+          </p>
+        </div>
+        
+        <div class="glass-panel rounded-2xl p-8 border border-white/5">
+          <h3 class="text-2xl font-display font-bold text-white mb-4">Método da "Mãe Chinesa"</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Baseado na abordagem natural de aprendizagem: imersão afetiva + repetição consciente, não decorativo. Assim como crianças aprendem seu idioma materno, você desenvolve fluência através da exposição constante e significativa, não da memorização exaustiva.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Available Modules -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-display font-bold text-white text-center mb-12">Módulos Disponíveis para Seus Objetivos Específicos</h2>
+      
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Business Chinese -->
+        <div class="group glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-blue/10 rounded-full text-brand-blue">
+              💼
+            </div>
+            <h3 class="font-display font-bold text-xl text-white">Chinês para Negócios</h3>
+          </div>
+          
+          <p class="text-gray-300 leading-relaxed mb-6">
+            Vocabulário e frases específicas para reuniões, negociações, e-mails profissionais e apresentações com parceiros chineses. Inclui protocolos de mianzi (面子) e guanxi (关系) que são essenciais para o sucesso nos negócios com a China.
+          </p>
+          
+          <ul class="space-y-3 text-gray-400">
+            <li>✓ Apresentação profissional e troca de cartões de visita</li>
+            <li>✓ Frases para negociação de preços e prazos</li>
+            <li>✓ Vocabulário de comércio exterior e termos alfandegários</li>
+            <li>✓ Expressões para jantares de negócios e socialização</li>
+            <li>✓ Comunicação por e-mail e WeChat profissional</li>
+          </ul>
+          
+          <a 
+            href={getWhatsAppEnrollUrl('Chinês para Negócios')} 
+            class="mt-6 inline-block px-6 py-3 bg-brand-blue/10 text-brand-blue font-bold rounded-full hover:bg-brand-blue/20 transition-colors"
+          >
+            Inscreva-se já
+          </a>
+        </div>
+        
+        <!-- Travel Chinese -->
+        <div class="group glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-gold/10 rounded-full text-brand-gold">
+              ✈️
+            </div>
+            <h3 class="font-display font-bold text-xl text-white">Mandarim para Viagem de Negócios</h3>
+          </div>
+          
+          <p class="text-gray-300 leading-relaxed mb-6">
+            Tudo o que você precisa para se locomover, se comunicar e ter sucesso em viagens de negócios à China: do aeroporto ao hotel, da fábrica ao restaurante, incluindo situações imprevisíveis e emergências.
+          </p>
+          
+          <ul class="space-y-3 text-gray-400">
+            <li>✓ Aeroporto: check-in, alfândega, transporte</li>
+            <li>✓ Hotel: check-in, solicitações, problemas</li>
+            <li>✓ Transporte: táxi, metrô, direções</li>
+            <li>✓ Refeições: pedir comida, restrições alimentares, conta</li>
+            <li>✓ Emergências: saúde, perda de documentos, assistência</li>
+          </ul>
+          
+          <a 
+            href={getWhatsAppEnrollUrl('Viagem de Negócios')} 
+            class="mt-6 inline-block px-6 py-3 bg-brand-gold/10 text-brand-gold font-bold rounded-full hover:bg-brand-gold/20 transition-colors"
+          >
+            Inscreva-se já
+          </a>
+        </div>
+        
+        <!-- E-commerce Chinese -->
+        <div class="group glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-purple/10 rounded-full text-brand-purple">
+              📦
+            </div>
+            <h3 class="font-display font-bold text-xl text-white">Mandarim para E-commerce com a China</h3>
+          </div>
+          
+          <p class="text-gray-300 leading-relaxed mb-6">
+            Essencial para quem trabalha com plataformas como Alibaba, Made-in-China ou fornece produtos para marketplaces chineses. Foco na comunicação com fornecedores, controle de qualidade e resolução de problemas.
+          </p>
+          
+          <ul class="space-y-3 text-gray-400">
+            <li>✓ Negociação inicial e amostras no Alibaba</li>
+            <li>✓ Controle de qualidade e inspeções</li>
+            <li>✓ Logística e termos de embarque (FOB, CIF, etc.)</li>
+            <li>✓ Pagamentos e métodos comuns na China</li>
+            <li>✓ Resolução de problemas e devoluções</li>
+          </ul>
+          
+          <a 
+            href={getWhatsAppEnrollUrl('E-commerce com a China')} 
+            class="mt-6 inline-block px-6 py-3 bg-brand-purple/10 text-brand-purple font-bold rounded-full hover:bg-brand-purple/20 transition-colors"
+          >
+            Inscreva-se já
+          </a>
+        </div>
+        
+        <!-- HSK Preparation -->
+        <div class="group glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-red/10 rounded-full text-brand-red">
+              📊
+            </div>
+            <h3 class="font-display font-bold text-xl text-white">Preparação para HSK 3-4 Contextualizado</h3>
+          </div>
+          
+          <p class="text-gray-300 leading-relaxed mb-6>
+            Foco no vocabulário e estruturas que você REALMENTE usa no ambiente profissional, não apenas no conteúdo genérico do HSK. Ideal para profissionais que precisam da certificação para avançar na carreira com empresas que têm operações na China.
+          </p>
+          
+          <ul class="space-y-3 text-gray-400">
+            <li>✓ Vocabulário de negócios e comércio exterior</li>
+            <li>✓ Estruturas úteis para e-mails e relatórios profissionais</li>
+            <li>✓ Leitura de documentos comerciais simples</li>
+            <li>✓ Compreensão de áudios em contextos profissionais</li>
+            <li>✓ Expressões para reuniões e apresentações</li>
+          </ul>
+          
+          <a 
+            href={getWhatsAppEnrollUrl('HSK Contextualizado')} 
+            class="mt-6 inline-block px-6 py-3 bg-brand-red/10 text-brand-red font-bold rounded-full hover:bg-brand-red/20 transition-colors"
+          >
+            Inscreva-se já
+          </a>
+        </div>
+        
+        <!-- Corporate Training -->
+        <div class="group glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-jade/10 rounded-full text-brand-jade">
+              🏢
+            </div>
+            <h3 class="font-display font-bold text-xl text-white">Treinamento Corporativo sob Medida</h3>
+          </div>
+          
+          <p class="text-gray-300 leading-relaxed mb-6>
+            Programas personalizados para equipes de empresas que trabalham com a China. Conteúdo adaptado ao seu setor específico (indústria, tecnologia, agronegócio, etc.) e às necessidades reais da sua equipe em viagens, negociações e operações diárias.
+          </p>
+          
+          <ul class="space-y-3 text-gray-400">
+            <li>✓ Análise de necessidades da sua equipe e setor</li>
+            <li>✓ Conteúdo 100% relevante ao seu dia a dia profissional</li>
+            <li>✓ Horários flexíveis para atender à sua operação</li>
+            <li>✓ Acompanhamento de progresso e relatórios de desempenho</li>
+            <li>✓ Integração com fluxos de trabalho existentes</li>
+          </ul>
+          
+          <a 
+            href={getWhatsAppEnrollUrl('Treinamento Corporativo')} 
+            class="mt-6 inline-block px-6 py-3 bg-brand-jade/10 text-brand-jade font-bold rounded-full hover:bg-brand-jade/20 transition-colors"
+          >
+            Inscreva-se já
+          </a>
+        </div>
+        
+        <!-- Pronunciation Focus -->
+        <div class="group glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-blue/10 rounded-full text-brand-blue">
+              🔊
+            </div>
+            <h3 class="font-display font-bold text-xl text-white">Foco na Pronúncia e Tons</h3>
+          </div>
+          
+          <p class="text-gray-300 leading-relaxed mb-6>
+            Para quem já tem algum conhecimento de mandarim mas tem dificuldade com os tons e pronúncia - essencial para ser compreendido por nativos. Uso intensivo da nossa tecnologia de análise de voz em tempo real via Web Audio API.
+          </p>
+          
+          <ul class="space-y-3 text-gray-400">
+            <li>✓ Domínio dos quatro tons com feedback imediato</li>
+            <li>✓ Pronúncia de sons desafiadores para falantes de português</li>
+            <li>✓ Entonação em frases e frases completas</li>
+            <li>✓ Correção de erros comuns de pronúncia</li>
+            <li>✓ Construção de confiança para falar com nativos</li>
+          </ul>
+          
+          <a 
+            href={getWhatsAppEnrollUrl('Pronúncia e Tons')} 
+            class="mt-6 inline-block px-6 py-3 bg-brand-blue/10 text-brand-blue font-bold rounded-full hover:bg-brand-blue/20 transition-colors"
+          >
+            Inscreva-se já
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="py-20 bg-black/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-display font-bold text-white text-center mb-12">Como funciona nossa imersão</h2>
+      
+      <div class="grid gap-8 md:grid-cols-3">
+        <div class="flex items-center gap-4 p-6 bg-white/5 rounded-xl border border-white/5">
+          <div class="w-12 h-12 flex items-center justify-center bg-brand-blue/10 rounded-full text-brand-blue">
+            1️⃣
+          </div>
+          <div>
+            <h4 class="font-display font-bold text-xs text-white mb-2">Avaliação Inicial</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Entendemos seus objetivos específicos, nível atual e contexto profissional para criar um plano de aprendizado 100% personalizado às suas necessidades reais.
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-4 p-6 bg-white/5 rounded-xl border border-white/5">
+          <div class="w-12 h-12 flex items-center justify-center bg-brand-gold/10 rounded-full text-brand-gold">
+            2️⃣
+          </div>
+          <div>
+            <h4 class="font-display font-bold text-xs text-white mb-2">Aprendizado Prático</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Aulas focadas no que você vai usar imediatamente - nada de teoria inútil. Cada lição tem aplicação direta no seu contexto de negócios, viagem ou carreira.
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-4 p-6 bg-white/5 rounded-xl border border-white/5">
+          <div class="w-12 h-12 flex items-center justify-center bg-brand-purple/10 rounded-full text-brand-purple">
+            3️⃣
+          </div>
+          <div>
+            <h4 class="font-display font-bold text-xs text-white mb-2">Suporte Contínuo</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              Áudios nativos para revisão, flashcards personalizados e correção de pronúncia em tempo real. Você não fica sozinho entre as aulas - temos suporte diário para garantir seu progresso.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-20 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-display font-bold text-white mb-6">Pronto para falar mandarim com confiança em suas interações com a China?</h2>
+      <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+        Não perca mais tempo com métodos que não funcionam para profissionais ocupados. Nossa imersão é projetada para entregar resultados reais no menor tempo possível, focando exclusivamente no que você vai usar.
+      </p>
+      <a 
+        href={getWhatsAppEnrollUrl('Imersão em Mandarim')} 
+        class="inline-block px-8 py-4 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold rounded-full hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300 transform hover:-translate-y-0.5"
+      >
+        Comece Sua Imersão Gratuita 🚀
+      </a>
+    </div>
+  </section>
+</Layout>

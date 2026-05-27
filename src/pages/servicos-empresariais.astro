@@ -1,0 +1,178 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getWhatsAppQuoteUrl } from '../lib/courses-data';
+---
+
+<Layout>
+  <!-- Header -->
+  <section class="py-16 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white tracking-tight">
+        Tradução, Interpretação e Facilitação Comercial para Empresas Brasil-China
+      </h1>
+      <p class="mt-4 text-xl text-gray-300 max-w-3xl">
+        Não fazemos apenas tradução literal - oferecemos adequação cultural e técnica para seus negócios com a China, evitando custos retrabalho e maximizando oportunidades comerciais.
+      </p>
+      <!-- Infographic Image -->
+      <div class="mt-6 max-w-3xl mx-auto">
+        <img src="/images/services/infografico-servicos-empresariais.png" alt="Infográfico: Serviços de Tradução, Interpretação e Facilitação Comercial Brasil-China" class="w-full rounded-xl border border-white/5 shadow-lg">
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Overview -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-display font-bold text-white mb-12">Como ajudamos empresas paulistanas a terem sucesso com a China</h2>
+      
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Translation Service -->
+        <div class="group glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-blue/10 rounded-full text-brand-blue">
+              📄
+            </div>
+            <h3 class="font-display font-bold text-xl text-white">Tradução Técnica Especializada</h3>
+          </div>
+          
+          <p class="text-gray-300 leading-relaxed mb-6">
+            Tradutores especializados com conhecimento profundo de documentos de comércio exterior, incluindo conferência de NCM, validação de conhecimentos de embarque, packing lists, certificados de origem e adaptação de contratos comerciais para o mercado chinês.
+          </p>
+          
+          <ul class="space-y-3 text-gray-400">
+            <li>✓ Documentos de importação/exportação (DE, LI, packing list)</li>
+            <li>✓ Contratos comerciais e termos de pagamento</li>
+            <li>✓ Catálogos técnicos e manuais com adaptação de normas GB/CCC</li>
+            <li>✓ Patentes e documentos de propriedade intelectual</li>
+            <li>✓ Relatórios executivos e apresentações para investidores</li>
+          </ul>
+          
+          <a 
+            href={getWhatsAppQuoteUrl('Tradução Técnica')} 
+            class="mt-6 inline-block px-6 py-3 bg-brand-blue/10 text-brand-blue font-bold rounded-full hover:bg-brand-blue/20 transition-colors"
+          >
+            Solicitar Orçamento
+          </a>
+        </div>
+        
+        <!-- Interpretation Service -->
+        <div class="group glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-gold/10 rounded-full text-brand-gold">
+              🎙️
+            </div>
+            <h3 class="font-display font-bold text-xl text-white">Interpretação para Negócios</h3>
+          </div>
+          
+          <p class="text-gray-300 leading-relaxed mb-6">
+            Interpretação simultânea e consecutiva para reuniões, feiras internacionais (Canton Fair), visitas a fábricas, auditorias e rodadas de investimento. Entendemos que negócios na China envolvem muito mais que idioma - envolvem mianzi (面子 - respeito/prestígio) e guanxi (关系 - relacionamentos/confiança).
+          </p>
+          
+          <ul class="space-y-3 text-gray-400">
+            <li>✓ Reuniões de negócios e negociações</li>
+            <li>✓ Feiras e eventos (Canton Fair, Hong Kong Electronics Fair)</li>
+            <li>✓ Visitas a fábricas e inspeções de qualidade</li>
+            <li>✓ Conferências e seminários técnicos</li>
+            <li>✓ Treinamentos e capacitações técnicas</li>
+          </ul>
+          
+          <a 
+            href={getWhatsAppQuoteUrl('Interpretação')} 
+            class="mt-6 inline-block px-6 py-3 bg-brand-gold/10 text-brand-gold font-bold rounded-full hover:bg-brand-gold/20 transition-colors"
+          >
+            Solicitar Orçamento
+          </a>
+        </div>
+        
+        <!-- Facilitation Service -->
+        <div class="group glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-purple/10 rounded-full text-brand-purple">
+              🌉
+            </div>
+            <h3 class="font-display font-bold text-xl text-white">Facilitação Comercial Brasil-China</h3>
+          </div>
+          
+          <p class="text-gray-300 leading-relaxed mb-6">
+            Ponte cultural para evitar armadilhas de comunicação, análise de propostas chinesas, preparação para reuniões com executivos chineses e apoio em negociações para garantir que suas intenções sejam corretamente transmitidas e compreendidas.
+          </p>
+          
+          <ul class="space-y-3 text-gray-400">
+            <li>✓ Análise cultural de propostas e contratos chineses</li>
+            <li>✓ Preparação para reuniões (protocolos de mianzi e guanxi)</li>
+            <li>✓ Acompanhamento em primeiras negociações</li>
+            <li>✓ Consultoria sobre práticas de negócios na China</li>
+            <li>✓ Mediação em casos de mal-entendido cultural</li>
+          </ul>
+          
+          <a 
+            href={getWhatsAppQuoteUrl('Facilitação Comercial')} 
+            class="mt-6 inline-block px-6 py-3 bg-brand-purple/10 text-brand-purple font-bold rounded-full hover:bg-brand-purple/20 transition-colors"
+          >
+            Solicitar Orçamento
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="py-20 bg-black/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-display font-bold text-white text-center mb-12">Por que escolher o Falo Chinês para sua empresa?</h2>
+      
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="space-y-6">
+          <h3 class="text-2xl font-display font-bold text-white mb-4">Expertise em Comércio Exterior</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Atuamos exclusivamente com empresas do comércio exterior de São Paulo desde 2020, entendendo profundamente os desafios específicos de importação/exportação com a China, incluindo questões alfandegárias, tributárias e logísticas.
+          </p>
+        </div>
+        
+        <div class="space-y-6">
+          <h3 class="text-2xl font-display font-bold text-white mb-4">Abordagem Cultural Técnica</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Não somos apenas tradutores - somos facilitadores de negócios que entendem tanto os aspectos técnicos dos documentos quanto as nuances culturais que podem fazer ou quebrar uma negociação com fornecedores chineses.
+          </p>
+        </div>
+      </div>
+      
+      <!-- Testimonials -->
+      <div class="mt-16">
+        <h3 class="text-2xl font-display font-bold text-white text-center mb-8">O que dizem nossos clientes</h3>
+        
+        <div class="grid gap-6 md:grid-cols-2">
+          <div class="glass-panel rounded-2xl p-6 border border-white/5">
+            <p class="text-italic text-gray-300 leading-relaxed">
+              "O Falo Chinês identificou uma classificação NCM incorreta em nossos documentos que nos custaria quase R$ 200mil em multas evitáveis. Seu trabalho vai muito além da tradução - é uma verdadeira assessoria de comércio exterior."
+            </p>
+            <p class="mt-4 text-xs text-gray-400 text-right font-bold">— Rafael T., Gerente de Comércio Exterior, Indústria SP</p>
+          </div>
+          
+          <div class="glass-panel rounded-2xl p-6 border border-white/5">
+            <p class="text-italic text-gray-300 leading-relaxed">
+              "Graças ao apoio em interpretação e facilitação comercial, fechamos nosso primeiro contrato de fornecimento com uma fábrica em Guangdong em apenas 6 semanas, evitando vários mal-entendidos que teriam prejudicado a negociação."
+            </p>
+            <p class="mt-4 text-xs text-gray-400 text-right font-bold">— Patricia L., Diretora de Compras, Distribuidora SP</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-20 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-display font-bold text-white mb-6">Pronto para levar seus negócios com a China para o próximo nível?</h2>
+      <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+        Evite custos retrabalho por erros culturais e técnicos. Fale conosco para entender como podemos ajudar sua empresa a ter mais sucesso nas operações com a China.
+      </p>
+      <a 
+        href={getWhatsAppQuoteUrl('Serviços Empresariais')} 
+        class="inline-block px-8 py-4 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold rounded-full hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300 transform hover:-translate-y-0.5"
+      >
+        Solicite Seu Orçamento Gratuito 📋
+      </a>
+    </div>
+  </section>
+</Layout>

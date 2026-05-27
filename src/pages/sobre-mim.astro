@@ -1,0 +1,219 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { stefanyShen, CONTACT_PHONE } from '../lib/courses-data';
+---
+
+<Layout>
+  <!-- Header -->
+  <section class="py-16 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white tracking-tight">
+        Sobre Mim: Sua Ponte entre Brasil e China
+      </h1>
+      <p class="mt-4 text-xl text-gray-300 max-w-3xl">
+        Tradutora, intérprete e especialista em negócios Brasil-China com mais de 20 anos de experiência facilitando comunicação e operações entre empresas brasileiras e fornecedores chineses.
+      </p>
+    </div>
+  </section>
+
+  <!-- Professional Profile -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-12 md:grid-cols-2">
+        <!-- Profile Image/Info -->
+        <div class="flex flex-col items-center text-center">
+          <div class="w-24 h-24 rounded-full bg-brand-gold/10 flex items-center justify-center border border-brand-gold/5 mb-6">
+            👩‍💼
+          </div>
+          <h2 class="text-3xl font-display font-bold text-white mb-4">
+            {stefanyShen.name}
+          </h2>
+          <p class="text-lg text-gray-300 mb-6">
+            Tradutora & Intérprete Especialista em Negócios Brasil-China
+          </p>
+          
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+              <span class="text-brand-gold">📍</span>
+              <span>Baseada em São Paulo, atendendo empresas de todo o Brasil</span>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+              <span class="text-brand-gold">🌐</span>
+              <span>Experiência internacional: Taiwan → Paraguai → Chile → Brasil</span>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+              <span class="text-brand-gold">⏰</span>
+              <span>Mais de 20 anos de experiência em educação e diplomacia linguística</span>
+            </div>
+          </div>
+          
+          <div class="flex gap-4 mt-6">
+            <a 
+              href={`https://wa.me/${CONTACT_PHONE}?text=${encodeURIComponent('Olá, gostaria de falar com a professora Stefany sobre os cursos e serviços.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 px-5 py-3 rounded-full bg-brand-blue/10 text-brand-blue font-bold hover:bg-brand-blue/20 transition-colors"
+            >
+              Falar no WhatsApp 💬
+            </a>
+            
+            <a 
+              href="https://linkedin.com/in/stefany-shen" 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 px-5 py-3 rounded-full border border-white/5 text-white font-bold hover:bg-white/10 transition-colors"
+            >
+              Ver LinkedIn 🔗
+            </a>
+          </div>
+        </div>
+        
+        <!-- Professional Bio -->
+        <div class="space-y-6">
+          <h2 class="text-2xl font-display font-bold text-white mb-4">Minha trajetória como ponte Brasil-China</h2>
+          
+          <p class="text-gray-300 leading-relaxed mb-6">
+            Minha jornada como tradutora e intérprete começou muito antes de eu trabalhar formalmente com idiomas. Cresci em um ambiente multicultural que me ensinou desde cedo que a comunicação eficaz vai muito além das palavras - envolve compreensão cultural, contexto e intenção.
+          </p>
+          
+          <h3 class="text-xl font-display font-bold text-white mb-3">Experiência Profissional</h3>
+          <ul class="space-y-4 text-gray-300">
+            <li>✓ <strong>Tradução Técnica:</strong> Mais de 15 anos trabalhando com documentos de comércio exterior, contratos comerciais, manuais técnicos e especificações de importação/exportação para empresas brasileiras que operam com a China</li>
+            <li>✓ <strong>Interpretação de Negócios:</strong> Atuação em reuniões de alto nível, feiras internacionais (Canton Fair), visitas a fábricas e rodadas de investimento entre Brasil e China</li>
+            <li>✓ <strong>Facilitação Comercial:</strong> Consultoria para empresas que desejam entrar ou expandir suas operações no mercado chinês, incluindo análise cultural de propostas e preparação para negociações</li>
+            <li>✓ <strong>Ensino de Mandarim:</strong> Desenvolvimento do método "Right Brain Chinese" e da abordagem da "Mãe Chinesa" para ensino eficaz de mandarim a falantes de português</li>
+            <li>✓ <strong>Especialização em Comércio Exterior:</strong> Conhecimento aprofundado de processos alfandegários, classificação NCM, incoterms e documentação necessária para operações entre Brasil e China</li>
+          </ul>
+          
+          <h3 class="text-xl font-display font-bold text-white mb-3">Formação e Especializações</h3>
+          <ul class="space-y-4 text-gray-300">
+            <li>✓ Formação em Tradução e Interpretação com especialização emAsync</li>
+            <li>✓ Cursos avançados de língua chinesa (Mandarim) em instituições reconhecidas</li>
+            <li>✓ Estudos em cultura e etiqueta de negócios chineses</li>
+            <li>✓ Capacitação em comércio exterior e processos alfandegários</li>
+            <li>✓ Treinamento constante em novas metodologias de ensino de idiomas</li>
+          </ul>
+          
+          <div class="mt-8 p-6 bg-white/5 rounded-xl border border-white/5">
+            <h3 class="text-xl font-display font-bold text-white mb-4">Minha proposta de valor para você</h3>
+            <p class="text-gray-300 leading-relaxed">
+              Se você é uma <strong>empresa</strong>: Evito custos retrabalho por erros culturais e técnicos em documentos, garanto que suas comunicações sejam compreendidas corretamente pelos parceiros chineses e ajudo a evitar armadilhas de negociação que podem custar caro.
+            </p>
+            <p class="text-gray-300 leading-relaxed mt-4">
+              Se você é um <strong>profissional</strong>: Ensino o mandarim que você REALMENTE precisa para crescer na carreira ou ter sucesso nos negócios com a China - nada de teoria inútil, tudo prático e aplicável imediatamente.
+            </p>
+            <p class="text-gray-300 leading-relaxed mt-4">
+              Se você é um <strong>estudante de carreira</strong>: Preparo você para o mercado de trabalho global com foco específico nas oportunidades que o relacionamento Brasil-China oferece, especialmente no ecossistema empresarial de São Paulo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Clients Trust Me -->
+  <section class="py-20 bg-black/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-display font-bold text-white text-center mb-12">Por que empresas e profissionais confiam no meu trabalho</h2>
+      
+      <div class="grid gap-8 md:grid-cols-3">
+        <div class="glass-panel rounded-2xl p-6 border border-white/5">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-10 h-10 flex items-center justify-center bg-brand-blue/10 rounded-full text-brand-blue">
+              🎯
+            </div>
+            <h4 class="font-display font-bold text-xs text-white">Especialização em Nicho</h4>
+          </div>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            Atuo exclusivamente no segmento Brasil-China, entendendo profundamente os desafios específicos desse mercado, desde questões alfandegárias até nuances culturais que fazem a diferença nos negócios.
+          </p>
+        </div>
+        
+        <div class="glass-panel rounded-2xl p-6 border border-white/5">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-10 h-10 flex items-center justify-center bg-brand-gold/10 rounded-full text-brand-gold">
+              🔒
+            </div>
+            <h4 class="font-display font-bold text-xs text-white">Confidencialidade e Profissionalismo</h4>
+          </div>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            Trabalho com documentos sensíveis e informações confidenciais de empresas, mantendo os mais altos padrões de ética profissional e segurança da informação.
+          </p>
+        </div>
+        
+        <div class="glass-panel rounded-2xl p-6 border border-white/5">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-10 h-10 flex items-center justify-center bg-brand-purple/10 rounded-full text-brand-purple">
+              📈
+            </div>
+            <h4 class="font-display font-bold text-xs text-white">Foco em Resultados Práticos</h4>
+          </div>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            Meu trabalho é medido pelos resultados que entrego: documentos sem erros custosos, negociações bem-sucedidas, profissionais que conseguem se comunicar com confiança e empresas que evitam problemas evitáveis.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Testimonials -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-display font-bold text-white text-center mb-12">O que dizem quienes já trabalharam comigo</h2>
+      
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="glass-panel rounded-2xl p-6 border border-white/5">
+          <p class="text-italic text-gray-300 leading-relaxed">
+            "A Stefany identificou erros críticos em nossos documentos de exportação que nos custariam multas evitáveis. Seu trabalho vai muito além da tradução - é uma verdadeira assessoria de comércio exterior com foco na China."
+          </p>
+          <p class="mt-4 text-xs text-gray-400 text-right font-bold">— Carlos M., Diretor de Compras, Importadora SP</p>
+        </div>
+        
+        <div class="glass-panel rounded-2xl p-6 border border-white/5">
+          <p class="text-italic text-gray-300 leading-relaxed">
+            "Graças ao apoio em interpretação e facilitação comercial da Stefany, fechamos nosso primeiro contrato de fornecimento com uma fábrica em Guangdong em apenas 6 semanas, evitando vários mal-entendidos que teriam prejudicado a negociação."
+          </p>
+          <p class="mt-4 text-xs text-gray-400 text-right font-bold">— Patricia L., Gerente de Negócios Internacionais, Distribuidora SP</p>
+        </div>
+        
+        <div class="glass-panel rounded-2xl p-6 border border-white/5">
+          <p class="text-italic text-gray-300 leading-relaxed>
+            "As aulas de mandarim com a Stefany foram transformadoras para minha carreira. Em 3 meses, consegui liderar reuniões com fornecedores chineses sem precisar de intérprete, o que me abriu portas para promoções e novos desafios profissionais."
+          </p>
+          <p class="mt-4 text-xs text-gray-400 text-right font-bold">— Rafael T., Analista de Comércio Exterior, Indústria SP</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-20 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-display font-bold text-white mb-6">Pronto para ter uma ponte confiável entre Brasil e China para seus negócios ou carreira?</h2>
+      <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+        Seja para tradução técnica, interpretação de negócios ou aprendizado prático de mandarim, estou aqui para ajudar você a ter mais sucesso nas suas interações com a China.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+        <a 
+          href={`https://wa.me/${CONTACT_PHONE}?text=${encodeURIComponent('Olá, gostaria de agendar uma consulta inicial para entender como posso ajudar meus negócios ou carreira com a China.')}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex-1 sm:flex-1 px-6 py-4 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold rounded-full hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300 transform hover:-translate-y-0.5"
+        >
+          Agendar Consulta Gratuita 🚀
+        </a>
+        
+        <a 
+          href="https://linkedin.com/in/stefany-shen" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex-1 sm:flex-1 px-6 py-4 border border-white/5 text-white font-extrabold rounded-full hover:bg-white/10 transition-colors"
+        >
+          Ver Meu LinkedIn Profesional 🔗
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -234,6 +234,112 @@ export interface DictionaryEntry {
 
 Sistema auto-contido (zero dependências externas) para alunos submeterem e visualizarem conteúdo da comunidade. Disponível em `/comunidade` e integrado nas páginas de blog e lições.
 
+## Páginas de Serviços (Business Pages)
+
+Novas páginas institucionais foram adicionadas para apresentar os serviços profissionais de tradução/interpretação e programas de imersão em mandarim para o público B2B e B2C:
+
+### Estrutura das Páginas de Serviços
+
+1. **Serviços Empresariais** (`src/pages/servicos-empresariais.astro`)
+   - Foco em serviços B2B: tradução técnica, interpretação para negócios e facilitação comercial
+   - Público-alvo: empresas de comércio exterior de São Paulo
+   - Inclui infográfico visual explicando os serviços e diferenciais
+
+2. **Imersão em Mandarim** (`src/pages/imersao-mandarim.astro`)
+   - Foco em programas de aprendizado de mandarim para profissionais e estudantes de carreira
+   - Público-alvo: profissionais ocupados, empreendedores e estudantes que precisam de mandarim para negócios ou carreira
+   - Inclui infográfico visual explicando o formato de imersão e módulos disponíveis
+
+3. **Sobre Mim** (`src/pages/sobre-mim.astro`)
+   - Página de autoridade com trajetória profissional e depoimentos
+   - Estabelece credibilidade como ponte entre Brasil e China
+
+### Sistema de Infográficos para Páginas de Serviços
+
+Cada página de serviço inclui um infográfico visual que comunica imediatamente o valor proposition:
+
+#### Localização das Imagens
+- Diretório: `public/images/services/`
+- Nomeação: `infografico-{nome-da-pagina}.png`
+- Exemplo: `infografico-servicos-empresariais.png`
+
+#### Implementação nas Páginas
+```astro
+<!-- No cabeçalho da página, após a descrição principal -->
+<div class="mt-6 max-w-3xl mx-auto">
+  <img src="/images/services/infografico-{slug}.png" 
+       alt="Descrição do infográfico" 
+       class="w-full rounded-xl border border-white/5 shadow-lg">
+</div>
+```
+
+#### Especificações Técnicas para Infográficos
+- **Formato**: PNG com fundo transparente quando necessário
+- **Largura**: Responsiva (w-full) dentro de container max-w-3xl mx-auto
+- **Estilo**: bordas arredondadas, borda suave e sombra para destaque visual
+- **Acessibilidade**: texto alt descritivo para leitores de tela
+
+#### Guia Rápido: Adicionar Infográfico a uma Nova Página de Serviço
+1. **Gerar imagem** com IA usando os prompts em `src/Resource/prompts/services/`
+2. **Salvar** em `public/images/services/infografico-{slug}.png`
+3. **Adicionar** o bloco de imagem no cabeçalho da página `.astro`, após a descrição principal
+4. **Verificar** responsividade em diferentes tamanhos de tela
+
+## Comunidade — Engajamento Coletivo
+
+## Páginas de Serviços (Business Pages)
+
+Novas páginas institucionais foram adicionadas para apresentar os serviços profissionais de tradução/interpretação e programas de imersão em mandarim para o público B2B e B2C:
+
+### Estrutura das Páginas de Serviços
+
+1. **Serviços Empresariais** (`src/pages/servicos-empresariais.astro`)
+   - Foco em serviços B2B: tradução técnica, interpretação para negócios e facilitação comercial
+   - Público-alvo: empresas de comércio exterior de São Paulo
+   - Inclui infográfico visual explicando os serviços e diferenciais
+
+2. **Imersão em Mandarim** (`src/pages/imersao-mandarim.astro`)
+   - Foco em programas de aprendizado de mandarim para profissionais e estudantes de carreira
+   - Público-alvo: profissionais ocupados, empreendedores e estudantes que precisam de mandarim para negócios ou carreira
+   - Inclui infográfico visual explicando o formato de imersão e módulos disponíveis
+
+3. **Sobre Mim** (`src/pages/sobre-mim.astro`)
+   - Página de autoridade com trajetória profissional e depoimentos
+   - Estabelece credibilidade como ponte entre Brasil e China
+
+### Sistema de Infográficos para Páginas de Serviços
+
+Cada página de serviço inclui um infográfico visual que comunica imediatamente o valor proposition:
+
+#### Localização das Imagens
+- Diretório: `public/images/services/`
+- Nomeação: `infografico-{nome-da-pagina}.png`
+- Exemplo: `infografico-servicos-empresariais.png`
+
+#### Implementação nas Páginas
+```astro
+<!-- No cabeçalho da página, após a descrição principal -->
+<div class="mt-6 max-w-3xl mx-auto">
+  <img src="/images/services/infografico-{slug}.png" 
+       alt="Descrição do infográfico" 
+       class="w-full rounded-xl border border-white/5 shadow-lg">
+</div>
+```
+
+#### Especificações Técnicas para Infográficos
+- **Formato**: PNG com fundo transparente quando necessário
+- **Largura**: Responsiva (w-full) dentro de container max-w-3xl mx-auto
+- **Estilo**: bordas arredondadas, borda suave e sombra para destaque visual
+- **Acessibilidade**: texto alt descritivo para leitores de tela
+
+#### Guia Rápido: Adicionar Infográfico a uma Nova Página de Serviço
+1. **Gerar imagem** com IA usando os prompts em `src/Resource/prompts/services/`
+2. **Salvar** em `public/images/services/infografico-{slug}.png`
+3. **Adicionar** o bloco de imagem no cabeçalho da página `.astro`, após a descrição principal
+4. **Verificar** responsividade em diferentes tamanhos de tela
+
+## Comunidade — Engajamento Coletivo
+
 ### Fluxo de Dados
 
 1. **Seed data** em `src/data/comunidade-data.json` é carregada na primeira visita (5 registros de exemplo por categoria)

@@ -93,10 +93,10 @@ export const specialCourses: SpecialCourse[] = [
 ];
 
 export const translationService: TranslationService = {
-  title: 'Serviços de Tradução & Interpretação',
-  types: 'Tradução simultânea e consecutiva para eventos, seminários e congressos.',
+  title: 'Serviços de Tradução & Interpretação Brasil-China',
+  types: 'Tradução técnica, interpretação para negócios e facilitação comercial com foco no comércio exterior entre Brasil e China.',
   languages: ['Mandarim', 'Português', 'Espanhol', 'Inglês'],
-  clients: ['CNI', 'HSBC', 'FIESP', 'Global Word', 'Bureau Translations']
+  clients: ['Empresas de Comércio Exterior SP', 'Indústrias com Fornecedores Chinese', 'Distribuidoras de Produtos Asiáticos', 'Consultorias de Comércio Internacional']
 };
 
 export const stefanyShen: Biography = {
