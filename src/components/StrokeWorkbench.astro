@@ -983,7 +983,9 @@ export type { Layer, ManagerOptions, QuizCallbacks } from '../lib/hanzi-writer-m
   }
 
   // --- Init ---
-  loadChar('中');
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialChar = urlParams.get('char') || '中';
+  loadChar(initialChar);
 
   // --- Event Handlers ---
 

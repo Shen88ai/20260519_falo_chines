@@ -1,0 +1,297 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { dictionary } from '../data/dictionary';
+import { getTraditional } from '../data/simplified-to-traditional';
+
+const allEntries = Object.values(dictionary);
+
+// Get unique topics dynamically
+const topics = [...new Set(allEntries.map(e => e.topic))].sort();
+
+const phaseLabels = {
+  'A': 'Fase A — Sobrevivência',
+  'B': 'Fase B — Negócios B2B',
+  'C': 'Fase C — Fluência Prática',
+  'D': 'Fase D — Imersão Total'
+};
+---
+
+<Layout title="Falo Chinês 🧭 - Glossário Pedagógico" description="Explore todos os caracteres chineses ensinados no Falo Chinês, com significados, pinyin, radicais, ordem dos traços e mnemônicas.">
+  <section class="py-12 border-b border-white/5 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Page Header -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/25 text-xs font-bold text-brand-gold tracking-widest uppercase animate-pulse">
+          🧭 DICIONÁRIO E DIRETÓRIO DE HANZI
+        </span>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white tracking-tight mt-4">
+          Glossário Pedagógico
+        </h1>
+        <p class="mt-3 text-sm text-gray-400 max-w-xl mx-auto leading-relaxed">
+          Sua bússola para revisar caracteres. Busque por caractere, pinyin ou tradução, e filtre pelas fases e temas das lições.
+        </p>
+      </div>
+
+      <!-- Controls Panel (Search & Filters) -->
+      <div class="glass-panel rounded-2xl p-6 border border-white/5 mb-10 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Search Bar -->
+          <div class="md:col-span-2 relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 text-lg">🔍</span>
+            <input 
+              type="text" 
+              id="search-input" 
+              placeholder="Pesquisar caractere, pinyin ou significado (ex: '中', 'xue', 'comer')..." 
+              class="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-black/45 text-white outline-none focus:border-brand-gold/50 transition-colors text-sm"
+            />
+          </div>
+
+          <!-- Topic Filter -->
+          <div class="relative">
+            <select 
+              id="topic-select" 
+              class="w-full px-4 py-3 rounded-xl border border-white/10 bg-black/45 text-white outline-none focus:border-brand-gold/50 transition-colors text-sm appearance-none cursor-pointer"
+            >
+              <option value="">Tópico: Todos</option>
+              {topics.map(t => (
+                <option value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+              ))}
+            </select>
+            <span class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400 text-xs">▼</span>
+          </div>
+        </div>
+
+        <!-- Phase Tabs -->
+        <div class="flex flex-wrap gap-2 pt-2 border-t border-white/5">
+          <button 
+            class="phase-btn px-4 py-2 rounded-lg text-xs font-bold border border-white/5 bg-white/5 text-gray-400 hover:text-white transition-all cursor-pointer active" 
+            data-phase=""
+          >
+            Todas as Fases ({allEntries.length})
+          </button>
+          {Object.entries(phaseLabels).map(([fase, label]) => {
+            const count = allEntries.filter(e => e.fase === fase).length;
+            return (
+              <button 
+                class="phase-btn px-4 py-2 rounded-lg text-xs font-bold border border-white/5 bg-white/5 text-gray-400 hover:text-white transition-all cursor-pointer" 
+                data-phase={fase}
+              >
+                {label} ({count})
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <!-- Empty State Placeholder -->
+      <div id="empty-state" class="hidden text-center py-20 bg-white/2 border border-dashed border-white/5 rounded-2xl">
+        <span class="text-5xl">🧭</span>
+        <h3 class="mt-4 text-lg font-bold text-white">Nenhum caractere encontrado</h3>
+        <p class="mt-2 text-sm text-gray-400">Tente buscar por termos diferentes ou ajuste seus filtros.</p>
+      </div>
+
+      <!-- Character Grid -->
+      <div id="character-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {allEntries.map(entry => {
+          const traditional = getTraditional(entry.character);
+          
+          // Phase coloring & glow setups
+          let borderGlowClass = 'hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]';
+          let badgeColorClass = 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+          if (entry.fase === 'A') {
+            borderGlowClass = 'hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:border-brand-red/35';
+            badgeColorClass = 'bg-brand-red/10 text-brand-red border-brand-red/35';
+          } else if (entry.fase === 'B') {
+            borderGlowClass = 'hover:shadow-[0_0_20px_rgba(251,191,36,0.25)] hover:border-brand-gold/35';
+            badgeColorClass = 'bg-brand-gold/10 text-brand-gold border-brand-gold/35';
+          } else if (entry.fase === 'C') {
+            borderGlowClass = 'hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] hover:border-brand-purple/35';
+            badgeColorClass = 'bg-brand-purple/10 text-brand-purple border-brand-purple/35';
+          } else if (entry.fase === 'D') {
+            borderGlowClass = 'hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:border-brand-blue/35';
+            badgeColorClass = 'bg-brand-blue/10 text-brand-blue border-brand-blue/35';
+          }
+
+          return (
+            <div 
+              class="char-card glass-panel rounded-2xl p-5 border border-white/5 transition-all duration-300 flex flex-col justify-between group overflow-hidden relative"
+              data-char={entry.character}
+              data-traditional={traditional || ''}
+              data-pinyin={entry.pinyin}
+              data-meaning={entry.portuguese}
+              data-phase={entry.fase}
+              data-topic={entry.topic}
+              data-cy={`char-card-${entry.character}`}
+            >
+              <!-- Card Header Info -->
+              <div>
+                <div class="flex justify-between items-start gap-2 mb-3">
+                  <!-- Topic Tag -->
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-white/5 border border-white/10 text-gray-400">
+                    {entry.topic}
+                  </span>
+
+                  <!-- Phase Badge -->
+                  <span class={`px-2 py-0.5 rounded-full text-[9px] font-extrabold border uppercase ${badgeColorClass}`}>
+                    Fase {entry.fase}
+                  </span>
+                </div>
+
+                <!-- Main Character Display -->
+                <div class="flex items-baseline gap-2 mb-2">
+                  <span class="font-zh text-5xl font-extrabold text-brand-gold select-all drop-shadow-[0_2px_10px_rgba(212,168,67,0.2)] group-hover:scale-105 transition-transform duration-300">
+                    {entry.character}
+                  </span>
+                  {traditional && (
+                    <span class="font-zh text-xl text-gray-500 select-all" title={`Forma tradicional de ${entry.character}`}>
+                      ({traditional})
+                    </span>
+                  )}
+                </div>
+
+                <!-- Pinyin Pronunciation -->
+                <span class="text-sm font-bold text-gray-200 font-sans tracking-wide block">
+                  拼音: <span class="text-white bg-white/5 px-2 py-0.5 rounded text-xs">{entry.pinyin}</span>
+                </span>
+
+                <!-- Portuguese Definition -->
+                <p class="text-xs text-gray-300 mt-2 line-clamp-2 group-hover:line-clamp-none transition-all duration-300 leading-relaxed">
+                  {entry.portuguese}
+                </p>
+
+                <!-- Radical & Stroke details -->
+                <div class="flex items-center gap-4 text-[10px] text-gray-500 mt-3 pt-2 border-t border-white/5">
+                  <span>Radical: <strong class="text-gray-400 font-zh">{entry.radical}</strong></span>
+                  <span>Traços: <strong class="text-gray-400">{entry.strokeCount}</strong></span>
+                </div>
+
+                <!-- Mnemonic Box -->
+                {entry.mnemonica && (
+                  <div class="mt-4 p-3 rounded-xl bg-brand-gold/5 border border-brand-gold/15 text-[10px] text-gray-300 leading-relaxed">
+                    <span class="font-bold text-brand-gold block mb-1">💡 Mnemônica:</span>
+                    {entry.mnemonica}
+                  </div>
+                )}
+              </div>
+
+              <!-- Action Links / Buttons -->
+              <div class="flex gap-2 mt-5 pt-3 border-t border-white/5">
+                <a 
+                  href={`/strokes?char=${encodeURIComponent(entry.character)}`}
+                  class="flex-1 text-center py-2 rounded-lg text-xs font-extrabold bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg hover:opacity-90 active:scale-95 transition-all"
+                  title="Praticar escrita deste caractere"
+                >
+                  Praticar ✍️
+                </a>
+                <a 
+                  href={`https://www.zdic.net/hans/${encodeURIComponent(entry.character)}`}
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="px-3 py-2 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:bg-white/10 active:scale-95 transition-all flex items-center justify-center"
+                  title="Ver dicionário Zdic"
+                >
+                  Zdic ↗
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Client-Side Interactive Filtering logic
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const topicSelect = document.getElementById('topic-select') as HTMLSelectElement;
+  const phaseBtns = document.querySelectorAll('.phase-btn');
+  const cards = document.querySelectorAll('.char-card') as NodeListOf<HTMLElement>;
+  const emptyState = document.getElementById('empty-state')!;
+  
+  let currentSearch = '';
+  let currentTopic = '';
+  let currentPhase = '';
+
+  function normalizeText(text: string): string {
+    return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function filterGrid() {
+    let visibleCount = 0;
+    const query = normalizeText(currentSearch.trim());
+
+    cards.forEach(card => {
+      const char = card.dataset.char || '';
+      const traditional = card.dataset.traditional || '';
+      const pinyin = normalizeText(card.dataset.pinyin || '');
+      const meaning = normalizeText(card.dataset.meaning || '');
+      const phase = card.dataset.phase || '';
+      const topic = card.dataset.topic || '';
+
+      // Match criteria
+      const matchesSearch = !query || 
+                            char.includes(query) || 
+                            traditional.includes(query) || 
+                            pinyin.includes(query) || 
+                            meaning.includes(query);
+      
+      const matchesTopic = !currentTopic || topic === currentTopic;
+      const matchesPhase = !currentPhase || phase === currentPhase;
+
+      if (matchesSearch && matchesTopic && matchesPhase) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (visibleCount === 0) {
+      emptyState.classList.remove('hidden');
+    } else {
+      emptyState.classList.add('hidden');
+    }
+  }
+
+  // Bind Search events
+  searchInput.addEventListener('input', (e) => {
+    currentSearch = (e.target as HTMLInputElement).value;
+    filterGrid();
+  });
+
+  // Bind Topic selector events
+  topicSelect.addEventListener('change', (e) => {
+    currentTopic = (e.target as HTMLSelectElement).value;
+    filterGrid();
+  });
+
+  // Bind Phase button events
+  phaseBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      phaseBtns.forEach(b => b.classList.remove('active', 'bg-brand-gold/15', 'border-brand-gold/30', 'text-brand-gold'));
+      
+      btn.classList.add('active');
+      if (btn.getAttribute('data-phase')) {
+        btn.classList.add('bg-brand-gold/15', 'border-brand-gold/30', 'text-brand-gold');
+      }
+
+      currentPhase = btn.getAttribute('data-phase') || '';
+      filterGrid();
+    });
+  });
+</script>
+
+<style>
+  /* Premium phase-btn styles */
+  .phase-btn.active:not([data-phase=""]) {
+    /* Set by class toggle */
+  }
+  .phase-btn.active[data-phase=""] {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #fff;
+  }
+</style>
