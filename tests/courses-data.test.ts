@@ -91,10 +91,15 @@ describe('Módulo de Dados dos Cursos e Serviços', () => {
   });
 
   it('deve conter as informações dos serviços de Tradução & Interpretação', () => {
-    expect(translationService.title).toBe('Serviços de Tradução & Interpretação');
-    expect(translationService.types).toContain('Tradução simultânea e consecutiva');
+    expect(translationService.title).toBe('Serviços de Tradução & Interpretação Brasil-China');
+    expect(translationService.types).toContain('Tradução técnica, interpretação para negócios e facilitação comercial');
     expect(translationService.languages).toEqual(expect.arrayContaining(['Mandarim', 'Português', 'Espanhol', 'Inglês']));
-    expect(translationService.clients).toEqual(expect.arrayContaining(['CNI', 'HSBC', 'FIESP', 'Global Word', 'Bureau Translations']));
+    expect(translationService.clients).toEqual(expect.arrayContaining([
+      'Empresas de Comércio Exterior SP',
+      'Indústrias com Fornecedores Chinese',
+      'Distribuidoras de Produtos Asiáticos',
+      'Consultorias de Comércio Internacional'
+    ]));
   });
 
   it('deve gerar URLs do WhatsApp válidas e devidamente codificadas', () => {

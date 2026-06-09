@@ -30,12 +30,12 @@
   backdrop-filter: blur(8px);
   z-index: 100;
   pointer-events: none;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 .hw-tooltip-char {
   font-size: 24px;
-  font-family: 'Noto Serif SC', serif;
+  font-family: var(--font-zh-hand);
   color: #D4A843;
 }
 
@@ -82,7 +82,7 @@
 
 .hw-detail-char {
   font-size: 42px;
-  font-family: 'Noto Serif SC', serif;
+  font-family: var(--font-zh-hand);
   color: #D4A843;
   text-align: center;
   margin-bottom: 8px;
@@ -191,7 +191,7 @@
   color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   transition: all 0.2s;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 .hw-tab:hover {

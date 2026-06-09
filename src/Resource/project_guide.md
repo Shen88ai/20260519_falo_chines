@@ -371,3 +371,81 @@ Cada página de serviço inclui um infográfico visual que comunica imediatament
 | `src/lib/comunidade-storage.ts` | localStorage CRUD + tipos compartilhados |
 | `src/data/comunidade-data.json` | Seed data estático (5 registros por categoria) |
 | `tests/comunidade-storage.test.ts` | 71 testes unitários |
+
+---
+
+## Sistema de Prática de Traços (笔画 / Strokes)
+
+Módulo interativo de caligrafia chinesa usando a biblioteca [Hanzi Writer](https://hanziwriter.org) (MIT License). Acessível via `/strokes` e pelo link "Traços" no menu principal.
+
+### Arquitetura
+
+| Arquivo | Função |
+|---------|--------|
+| `src/lib/hanzi-writer-manager.ts` | Wrapper que gerencia instância do HanziWriter, estado do caractere atual, e camadas progressivas (watch → practice → master) |
+| `src/components/StrokeWorkbench.astro` | Componente principal com canvas SVG, painel de controles, decomposição de traços, quiz e estatísticas |
+| `src/pages/strokes.astro` | Página de rota que importa o componente |
+| `tests/hanzi-writer-manager.test.ts` | 17 testes unitários (criação, métodos, camadas) |
+
+### Camadas Progressivas (Layer System)
+
+| Camada | UX | API HanziWriter |
+|--------|-----|-----------------|
+| **Assistir** (watch) | Input de caractere, play animação, loop, controle de velocidade, show/hide contorno e caractere | `animateCharacter()`, `loopCharacterAnimation()`, `pauseAnimation()` |
+| **Praticar** (practice) | Quiz com contorno visível, seletor de tolerância a erros, cores customizáveis (traço, radical, desenho) | `quiz()` com `showHintAfterMisses`, `updateColor()` |
+| **Dominar** (master) | Quiz sem contorno, estatísticas de erros/precisão/traços | `quiz()` sem outline + callbacks `onMistake`, `onCorrectStroke`, `onComplete` |
+
+### Decomposição de Traços (Fanning Strokes)
+
+Toggle "Desdobrar traços" na camada Assistir que carrega dados SVG brutos via `HanziWriter.loadCharacterData()` e renderiza cada traço cumulativo em painéis `80×80` independentes:
+
+- Cada painel mostra traços 1→N (acumulativo), último traço em destaque dourado
+- Clique em painel reproduz `animateStroke(i)` no canvas principal
+- Painéis são responsivos e utilizam `HanziWriter.getScalingTransform()`
+
+### Script Toggle (简体/繁體)
+
+Botão `简` / `繁` ao lado do input de caractere que alterna entre Chinês Simplificado e Tradicional. Usa `getTraditional()` e `getSimplified()` do módulo `src/data/simplified-to-traditional.ts`.
+
+### Dados de Conversão
+
+| Arquivo | Mudança |
+|---------|---------|
+| `src/data/simplified-to-traditional.ts` | Adicionado `traditionalToSimplified` (reverse map) + função `getSimplified()` |
+| `tests/simplified-to-traditional.test.ts` | 3 novos testes: reverse lookup, same-char undefined, round-trip |
+
+### Canvas Responsivo
+
+HanziWriter inicializado com `480×480` (vs 200×200 original). Container SVG com `max-width: 540px` e `max-width: 100%` via CSS para escalar em mobile.
+
+---
+
+## Página de Licenças Open-Source
+
+`src/pages/licencas.astro` — página dedicada com ambas as licenças exigidas pela Hotmart:
+
+1. **MIT License**: Hanzi Writer (motor de animação e reconhecimento de traços)
+2. **Arphic Public License**: Dados vetoriais de traços (hanzi-writer-data-tw)
+
+Link adicionado no footer global (`Layout.astro`) → `Licenças`.
+
+---
+
+## Fontes Web (Google Fonts)
+
+Substituição completa do sistema de fontes para estilo mais relaxado e amigável:
+
+| Uso | Anterior | Novo | Licença |
+|-----|----------|------|---------|
+| Português (corpo + títulos) | Inter (sans) + Outfit (display) | **Nunito** (300–900) | OFL |
+| Chinês (UI/botões) | Noto Serif SC | **ZCOOL QingKe HuangYou** (手写风) | OFL |
+| Chinês (texto longo) | Noto Serif SC | **Noto Sans SC** | OFL |
+
+### Arquivos Alterados
+
+- `src/styles/global.css` — Google Fonts import + variáveis `--font-sans`, `--font-display`, `--font-zh`, `--font-zh-hand`
+- `src/styles/hanzi-wheel.css` — 4 `font-family` atualizados
+- `src/components/Welcome.astro` — hardcoded font-family
+- `src/components/StrokeWorkbench.astro` — 3 `font-family` de elementos chineses
+- `src/pages/licoes/[slug].astro` — 3x `font-serif-zh` → `font-zh`
+- `src/pages/comunidade.astro` — 2x `font-serif-zh` → `font-zh`

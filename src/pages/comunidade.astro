@@ -176,7 +176,7 @@ import seedData from '../data/comunidade-data.json';
       const maxType = Object.entries(item.types).sort((a, b) => b[1] - a[1])[0];
       html += `
         <div class="glass-panel rounded-xl p-4 sm:p-5 border border-white/5 flex items-center gap-4">
-          <span class="text-2xl font-extrabold text-white w-10 text-center font-serif-zh">${item.character}</span>
+          <span class="text-2xl font-extrabold text-white w-10 text-center font-zh">${item.character}</span>
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2">
               <span class="text-xs font-bold text-white">🔥 ${item.total}</span>
@@ -226,7 +226,7 @@ import seedData from '../data/comunidade-data.json';
     list.forEach(m => {
       html += `
         <div class="glass-panel rounded-xl p-4 sm:p-5 border border-white/5 flex items-start gap-4">
-          <span class="text-2xl font-extrabold text-white font-serif-zh w-10 text-center shrink-0">${m.character}</span>
+          <span class="text-2xl font-extrabold text-white font-zh w-10 text-center shrink-0">${m.character}</span>
           <div class="flex-1 min-w-0">
             <p class="text-sm text-gray-200">“${escapeHtml(m.text)}”</p>
             <div class="flex items-center gap-3 mt-2">

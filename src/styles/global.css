@@ -1,10 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'TW-Kai';
+  src: url('/fonts/TW-Kai-98_1.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TW-Kai-Ext-B';
+  src: url('/fonts/TW-Kai-Ext-B-98_1.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TW-Kai-Plus';
+  src: url('/fonts/TW-Kai-Plus-98_1.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Outfit', sans-serif;
-  --font-serif-zh: 'Noto Serif SC', 'Noto Serif CJK TC', serif;
+  --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+  --font-display: 'Nunito', sans-serif;
+  --font-zh: 'TW-Kai', 'TW-Kai-Plus', 'TW-Kai-Ext-B', 'Noto Sans SC', 'ZCOOL QingKe HuangYou', sans-serif;
+  --font-zh-hand: 'TW-Kai', 'TW-Kai-Plus', 'TW-Kai-Ext-B', 'ZCOOL QingKe HuangYou', 'Noto Sans SC', cursive;
 
   --color-brand-red: hsl(355, 75%, 48%);
   --color-brand-gold: hsl(45, 95%, 50%);

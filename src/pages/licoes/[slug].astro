@@ -343,13 +343,13 @@ const relatedComments = (comunidadeData.comentarios || [])
   >
     <div class="flex items-start justify-between mb-3 border-b border-white/5 pb-2">
       <div class="flex items-center gap-3">
-        <span class="text-4xl font-serif-zh font-black text-white filter drop-shadow-[0_2px_4px_rgba(251,191,36,0.3)]" id="popup-char">中</span>
+        <span class="text-4xl font-zh font-black text-white filter drop-shadow-[0_2px_4px_rgba(251,191,36,0.3)]" id="popup-char">中</span>
         <div>
           <span class="block text-sm font-display font-black text-brand-gold" id="popup-pinyin">zhōng</span>
           <span class="block text-[9px] uppercase font-bold text-gray-400 tracking-wider">Pronúncia Pinyin</span>
           <div id="popup-traditional-container" class="hidden mt-1">
             <span class="block text-[9px] uppercase font-bold text-brand-gold/70 tracking-wider">Tradicional:</span>
-            <span class="block text-lg font-serif-zh font-bold text-white" id="popup-traditional"></span>
+            <span class="block text-lg font-zh font-bold text-white" id="popup-traditional"></span>
           </div>
         </div>
       </div>
@@ -492,7 +492,7 @@ const relatedComments = (comunidadeData.comentarios || [])
             
             escapedText = escapedText.replace(
               regex, 
-              `<a href="${directLink}" target="_blank" rel="noopener noreferrer" class="glossary-term text-brand-gold hover:text-white border-b border-brand-gold/30 hover:border-white border-dashed font-serif-zh font-bold text-lg px-0.5 transition-colors cursor-help" data-char="${key}">${key}</a>`
+              `<a href="${directLink}" target="_blank" rel="noopener noreferrer" class="glossary-term text-brand-gold hover:text-white border-b border-brand-gold/30 hover:border-white border-dashed font-zh font-bold text-lg px-0.5 transition-colors cursor-help" data-char="${key}">${key}</a>`
             );
           });
 
