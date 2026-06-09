@@ -1,0 +1,300 @@
+---
+import { NAV_CATEGORIES, type NavCategory } from '../lib/nav-menu';
+
+const { currentPath = '/' } = Astro.props as { currentPath?: string };
+---
+
+<nav class="hidden md:flex items-center gap-1" id="desktop-nav" aria-label="Navegação principal">
+  <style>
+    .dropdown-group { position: relative; }
+    .dropdown-panel {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      min-width: 200px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+      z-index: 50;
+      pointer-events: none;
+    }
+    .dropdown-group:hover .dropdown-panel,
+    .dropdown-group.is-open .dropdown-panel {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(4px);
+      pointer-events: auto;
+    }
+    @media (hover: none) {
+      .dropdown-panel {
+        transition: opacity 0.15s ease, visibility 0.15s ease;
+      }
+    }
+  </style>
+
+  {NAV_CATEGORIES.map((cat: NavCategory) => (
+    <div class="dropdown-group" data-category={cat.id}>
+      <button
+        class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-brand-gold hover:bg-white/5 transition-all duration-200 cursor-pointer"
+        aria-expanded="false"
+        aria-haspopup="true"
+      >
+        <span>{cat.icon}</span>
+        <span>{cat.label}</span>
+        <svg class="w-3.5 h-3.5 mt-0.5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div class="dropdown-panel">
+        <div class="glass-panel rounded-xl py-2 shadow-2xl border border-white/10 backdrop-blur-xl">
+          {cat.items.map(item => {
+            const isActive = currentPath === item.href || currentPath.startsWith(item.href + '/') || (item.href === '/licoes' && currentPath.startsWith('/licoes/'));
+            return (
+              <a
+                href={item.href}
+                class={`flex flex-col px-4 py-2.5 transition-colors duration-150 ${
+                  isActive
+                    ? 'bg-brand-gold/10 text-brand-gold border-l-2 border-brand-gold'
+                    : 'text-gray-300 hover:bg-white/5 hover:text-white border-l-2 border-transparent'
+                }`}
+              >
+                <span class="text-sm font-medium">{item.label}</span>
+                {item.description && (
+                  <span class="text-[11px] text-gray-500 mt-0.5">{item.description}</span>
+                )}
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  ))}
+</nav>
+
+<!-- Mobile Hamburger Button (inside header, fixed inside body via script) -->
+<button
+  id="mobile-menu-btn"
+  class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-gray-300 hover:text-brand-gold hover:bg-white/5 transition-all duration-200 cursor-pointer"
+  aria-label="Abrir menu"
+  aria-expanded="false"
+>
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="hamburger-icon">
+    <path id="hamburger-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    <path id="hamburger-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+</button>
+
+<script>
+  import { createNavController, NAV_CATEGORIES } from '../lib/nav-menu';
+
+  const controller = createNavController();
+
+  function getOrCreate(id: string, tag = 'div'): HTMLElement {
+    let el = document.getElementById(id);
+    if (!el) {
+      el = document.createElement(tag);
+      el.id = id;
+      document.body.appendChild(el);
+    }
+    return el;
+  }
+
+  function renderMobilePanel() {
+    const overlayId = 'mobile-overlay';
+    const menuId = 'mobile-menu';
+
+    let overlay = document.getElementById(overlayId);
+    let menu = document.getElementById(menuId);
+
+    if (overlay && menu) return; // already rendered
+
+    // Create overlay
+    overlay = document.createElement('div');
+    overlay.id = overlayId;
+    overlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm opacity-0 invisible transition-all duration-300 z-50';
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(overlay);
+
+    // Extract categories data passed via data attributes
+    const categories: Array<{id: string; icon: string; label: string; items: Array<{label: string; href: string; description?: string}>}> = NAV_CATEGORIES;
+
+    // Build mobile menu
+    menu = document.createElement('div');
+    menu.id = menuId;
+    menu.className = 'fixed top-0 right-0 h-full w-full max-w-sm glass-panel border-l border-white/10 transform translate-x-full transition-transform duration-300 ease-out overflow-y-auto z-[60]';
+    menu.setAttribute('role', 'dialog');
+    menu.setAttribute('aria-modal', 'true');
+    menu.setAttribute('aria-label', 'Menu de navegação');
+
+    const currentPath = window.location.pathname;
+
+    menu.innerHTML = `
+      <div class="flex items-center justify-between p-4 border-b border-white/5">
+        <span class="text-sm font-display font-bold text-white tracking-wider">MENU</span>
+        <button id="mobile-close-btn" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer" aria-label="Fechar menu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+      <div class="p-4 space-y-1" id="mobile-categories">
+        ${categories.map(cat => `
+          <div class="mobile-category" data-category="${cat.id}">
+            <button class="mobile-category-btn flex items-center justify-between w-full px-3 py-3 rounded-lg text-sm font-medium text-gray-300 hover:text-brand-gold hover:bg-white/5 transition-all duration-200 cursor-pointer" aria-expanded="false">
+              <span class="flex items-center gap-2"><span>${cat.icon}</span><span>${cat.label}</span></span>
+              <svg class="w-4 h-4 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div class="mobile-submenu max-h-0 overflow-hidden transition-all duration-300 ease-out">
+              <div class="pl-4 pr-2 pb-2 space-y-0.5">
+                ${cat.items.map(item => {
+                  const isActive = currentPath === item.href || currentPath.startsWith(item.href + '/') || (item.href === '/licoes' && currentPath.startsWith('/licoes/'));
+                  return `<a href="${item.href}" class="flex flex-col px-4 py-2.5 rounded-lg transition-colors duration-150 ${isActive ? 'bg-brand-gold/10 text-brand-gold' : 'text-gray-400 hover:bg-white/5 hover:text-white'}"><span class="text-sm font-medium">${item.label}</span>${item.description ? `<span class="text-[11px] text-gray-500 mt-0.5">${item.description}</span>` : ''}</a>`;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+    document.body.appendChild(menu);
+
+    // Bind events
+    setupMobileEvents();
+  }
+
+  function setupMobileEvents() {
+    const overlay = document.getElementById('mobile-overlay')!;
+    const menu = document.getElementById('mobile-menu')!;
+    const closeBtn = document.getElementById('mobile-close-btn')!;
+
+    function updateUI(open: boolean) {
+      menu.classList.toggle('translate-x-full', !open);
+      overlay.classList.toggle('opacity-0', !open);
+      overlay.classList.toggle('invisible', !open);
+      const btn = document.getElementById('mobile-menu-btn');
+      if (btn) btn.setAttribute('aria-expanded', String(open));
+      const openIcon = document.getElementById('hamburger-open');
+      const closeIcon = document.getElementById('hamburger-close');
+      if (openIcon) openIcon.classList.toggle('hidden', open);
+      if (closeIcon) closeIcon.classList.toggle('hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    function closeMobilePanel() {
+      controller.closeMobile();
+      updateUI(false);
+      menu.querySelectorAll('.mobile-category[data-category]').forEach(el => {
+        const btn = el.querySelector('.mobile-category-btn');
+        const sub = el.querySelector('.mobile-submenu') as HTMLElement;
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+        if (sub) sub.style.maxHeight = '0';
+      });
+    }
+
+    closeBtn.addEventListener('click', closeMobilePanel);
+    overlay.addEventListener('click', closeMobilePanel);
+
+    // Accordion
+    menu.querySelectorAll('.mobile-category-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = (btn as HTMLElement).closest('.mobile-category') as HTMLElement;
+        if (!cat) return;
+        const sub = cat.querySelector('.mobile-submenu') as HTMLElement;
+        if (!sub) return;
+        const isOpen = sub.style.maxHeight && sub.style.maxHeight !== '0';
+        if (isOpen) {
+          sub.style.maxHeight = '0';
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          const container = cat.closest('#mobile-categories');
+          container?.querySelectorAll('.mobile-submenu').forEach(s => { (s as HTMLElement).style.maxHeight = '0'; });
+          container?.querySelectorAll('.mobile-category-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+          sub.style.maxHeight = sub.scrollHeight + 'px';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Close on navigation
+    menu.querySelectorAll('a[href]').forEach(link => {
+      link.addEventListener('click', closeMobilePanel);
+    });
+
+    // ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (controller.isMobileOpen()) closeMobilePanel();
+      }
+    });
+  }
+
+  // Desktop: click toggle for touch devices
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (isTouchDevice) {
+    document.querySelectorAll('.dropdown-group[data-category]').forEach(group => {
+      const btn = group.querySelector('button');
+      const catId = (group as HTMLElement).dataset.category!;
+      btn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        const wasOpen = group.classList.contains('is-open');
+        document.querySelectorAll('.dropdown-group.is-open').forEach(g => {
+          g.classList.remove('is-open');
+          g.querySelector('button')?.setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+          group.classList.add('is-open');
+          btn?.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('.dropdown-group')) {
+        document.querySelectorAll('.dropdown-group.is-open').forEach(g => {
+          g.classList.remove('is-open');
+          g.querySelector('button')?.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+  }
+
+  // Hamburger button handler
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+    renderMobilePanel();
+    // small delay to ensure DOM is rendered before animation
+    requestAnimationFrame(() => {
+      if (controller.isMobileOpen()) {
+        controller.closeMobile();
+        const overlay = document.getElementById('mobile-overlay')!;
+        const menu = document.getElementById('mobile-menu')!;
+        menu.classList.add('translate-x-full');
+        overlay.classList.add('opacity-0');
+        overlay.classList.add('invisible');
+        document.body.style.overflow = '';
+      } else {
+        controller.toggleMobile();
+        const overlay = document.getElementById('mobile-overlay')!;
+        const menu = document.getElementById('mobile-menu')!;
+        menu.classList.remove('translate-x-full');
+        overlay.classList.remove('opacity-0');
+        overlay.classList.remove('invisible');
+        document.body.style.overflow = 'hidden';
+        const btn = document.getElementById('mobile-menu-btn');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+        const openIcon = document.getElementById('hamburger-open');
+        const closeIcon = document.getElementById('hamburger-close');
+        if (openIcon) openIcon.classList.toggle('hidden', false);
+        if (closeIcon) closeIcon.classList.toggle('hidden', true);
+      }
+    });
+  });
+
+  // Close desktop dropdowns on ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.dropdown-group.is-open').forEach(g => {
+        g.classList.remove('is-open');
+        g.querySelector('button')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+</script>

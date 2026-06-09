@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import SearchBar from '../components/SearchBar.astro';
 import StreakDisplay from '../components/StreakDisplay.astro';
+import NavMenu from '../components/NavMenu.astro';
 import type { SearchItemData } from '../components/SearchBar.astro';
 
 const allLessonModules = Object.entries(
@@ -101,36 +102,7 @@ const {
           </div>
         </a>
 
-<!-- Desktop Navigation Links -->
-<nav class="hidden md:flex items-center gap-8">
-  <a href="/" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-    Início
-  </a>
-  <a href="/#nivelamento" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-    Nivelamento
-  </a>
-  <a href="/licoes" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-    Lições
-  </a>
-  <a href="/blog" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-    Blog
-  </a>
-  <a href="/galeria" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-    Galeria
-  </a>
-  <a href="/strokes" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-    Traços
-  </a>
-  <a href="/servicos-empresariais" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-    Serviços Empresariais
-  </a>
-  <a href="/imersao-mandarim" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-    Imersão Mandarim
-  </a>
-  <a href="/glossario" class="text-sm font-medium text-gray-300 hover:text-brand-gold transition-colors duration-300">
-    Glossário
-  </a>
-</nav>
+        <NavMenu currentPath={Astro.url.pathname} />
 
         <!-- Right Utilities: Global Search & CTA -->
         <div class="flex items-center gap-3">
@@ -171,6 +143,7 @@ const {
           <a href="/#nivelamento" class="hover:text-brand-gold transition-colors">Diagnóstico</a>
           <a href="/glossario" class="hover:text-brand-gold transition-colors">Glossário</a>
           <a href="/licencas" class="hover:text-brand-gold transition-colors">Licenças</a>
+          <a href="https://www.linkedin.com/in/stefany-shen-0470b839" target="_blank" rel="noopener noreferrer" class="hover:text-brand-gold transition-colors">LinkedIn ↗</a>
           <a href="https://www.zdic.net/" target="_blank" rel="noopener noreferrer" class="hover:text-brand-gold transition-colors">Zdic.net ↗</a>
         </div>
 
