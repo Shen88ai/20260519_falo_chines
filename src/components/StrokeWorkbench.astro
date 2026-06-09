@@ -41,6 +41,15 @@ export type { Layer, ManagerOptions, QuizCallbacks } from '../lib/hanzi-writer-m
     <div class="canvas-area">
       <div class="canvas-container glass-panel" id="hanzi-canvas-container"></div>
 
+      <!-- Stroke Decomposition Strip -->
+      <div class="fanning-strip" id="fanning-strip" style="display:none">
+        <div class="fanning-header">
+          <span class="fanning-title">📐 Decomposição dos traços</span>
+          <span class="fanning-count" id="fanning-count"></span>
+        </div>
+        <div class="fanning-grid" id="fanning-grid"></div>
+      </div>
+
       <!-- Quick Character Picker -->
       <div class="quick-chars">
         <span class="quick-chars-label">Comuns:</span>
@@ -112,6 +121,10 @@ export type { Layer, ManagerOptions, QuizCallbacks } from '../lib/hanzi-writer-m
             <label class="toggle-label">
               <input type="checkbox" id="toggle-character" checked />
               <span>Mostrar caractere</span>
+            </label>
+            <label class="toggle-label">
+              <input type="checkbox" id="toggle-fanning" />
+              <span>Desdobrar traços</span>
             </label>
           </div>
         </div>
@@ -381,6 +394,64 @@ export type { Layer, ManagerOptions, QuizCallbacks } from '../lib/hanzi-writer-m
     background: rgba(251,191,36,0.1);
     border-color: rgba(251,191,36,0.3);
     color: #fbbf24;
+  }
+
+  /* Fanning / Stroke Decomposition */
+  .fanning-strip {
+    background: rgba(0,0,0,0.25);
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .fanning-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .fanning-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .fanning-count {
+    font-size: 10px;
+    color: #666;
+    font-family: monospace;
+  }
+  .fanning-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+  }
+  .fanning-panel {
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    overflow: hidden;
+    transition: border-color 0.2s;
+    cursor: pointer;
+  }
+  .fanning-panel:hover {
+    border-color: rgba(251,191,36,0.3);
+  }
+  .fanning-panel.active {
+    border-color: #fbbf24;
+    box-shadow: 0 0 12px rgba(251,191,36,0.2);
+  }
+  .fanning-panel svg {
+    display: block;
+  }
+  .fanning-panel-label {
+    display: block;
+    text-align: center;
+    font-size: 8px;
+    color: #666;
+    padding: 2px 0 4px;
+    font-family: monospace;
   }
 
   /* Controls Panel */
@@ -728,6 +799,10 @@ export type { Layer, ManagerOptions, QuizCallbacks } from '../lib/hanzi-writer-m
   const speedValue = document.getElementById('speed-value')!;
   const toggleOutline = document.getElementById('toggle-outline') as HTMLInputElement;
   const toggleCharacter = document.getElementById('toggle-character') as HTMLInputElement;
+  const toggleFanning = document.getElementById('toggle-fanning') as HTMLInputElement;
+  const fanningStrip = document.getElementById('fanning-strip')!;
+  const fanningGrid = document.getElementById('fanning-grid')!;
+  const fanningCount = document.getElementById('fanning-count')!;
   const hintSelect = document.getElementById('hint-select') as HTMLSelectElement;
   const colorStroke = document.getElementById('color-stroke') as HTMLInputElement;
   const colorRadical = document.getElementById('color-radical') as HTMLInputElement;
@@ -767,6 +842,7 @@ export type { Layer, ManagerOptions, QuizCallbacks } from '../lib/hanzi-writer-m
       manager.cancelQuiz();
       isQuizActive = false;
     }
+    if (toggleFanning.checked) renderFanning(target);
     updateStats();
   }
 
@@ -789,6 +865,82 @@ export type { Layer, ManagerOptions, QuizCallbacks } from '../lib/hanzi-writer-m
     statTotal.textContent = String(mistakes);
     statStrokes.textContent = String(correct);
     statAccuracy.textContent = total > 0 ? `${Math.round((correct / total) * 100)}%` : '100%';
+  }
+
+  const PANEL_SIZE = 80;
+  let fanningCharData: any = null;
+
+  function clearFanning() {
+    fanningGrid.innerHTML = '';
+    fanningStrip.style.display = 'none';
+    fanningCharData = null;
+  }
+
+  function renderFanning(char: string) {
+    if (!(window as any).HanziWriter || !(window as any).HanziWriter.loadCharacterData) return;
+    clearFanning();
+    (window as any).HanziWriter.loadCharacterData(char).then((charData: any) => {
+      fanningCharData = charData;
+      const strokes = charData.strokes;
+      if (!strokes || strokes.length === 0) return;
+
+      fanningCount.textContent = `${strokes.length} traços`;
+      fanningStrip.style.display = 'block';
+      fanningGrid.innerHTML = '';
+
+      for (let i = 0; i < strokes.length; i++) {
+        const portion = strokes.slice(0, i + 1);
+        const panel = document.createElement('div');
+        panel.className = i === 0 ? 'fanning-panel active' : 'fanning-panel';
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', String(PANEL_SIZE));
+        svg.setAttribute('height', String(PANEL_SIZE));
+        svg.setAttribute('viewBox', `0 0 ${PANEL_SIZE} ${PANEL_SIZE}`);
+
+        const transformData = (window as any).HanziWriter.getScalingTransform(PANEL_SIZE, PANEL_SIZE, 2);
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        group.setAttributeNS(null, 'transform', transformData.transform);
+
+        portion.forEach((pathStr: string, idx: number) => {
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttributeNS(null, 'd', pathStr);
+          path.style.fill = idx === portion.length - 1 ? '#fbbf24' : '#555';
+          path.style.opacity = idx === portion.length - 1 ? '1' : '0.25';
+          group.appendChild(path);
+        });
+
+        svg.appendChild(group);
+        panel.appendChild(svg);
+
+        const label = document.createElement('span');
+        label.className = 'fanning-panel-label';
+        label.textContent = `${i + 1}`;
+        panel.appendChild(label);
+
+        panel.addEventListener('click', () => {
+          manager.hideCharacter();
+          manager.showOutline();
+          manager.animateStroke(i);
+          document.querySelectorAll('.fanning-panel').forEach(p => p.classList.remove('active'));
+          panel.classList.add('active');
+          log(`▶ Traço ${i + 1}`, 'info');
+        });
+
+        fanningGrid.appendChild(panel);
+      }
+    }).catch(() => {
+      log('Erro ao carregar dados do caractere', 'error');
+    });
+  }
+
+  function toggleFanningView() {
+    if (toggleFanning.checked) {
+      const current = charInput.value.trim();
+      if (current) renderFanning(current);
+    } else {
+      clearFanning();
+    }
   }
 
   function setLayer(layer: string) {
@@ -892,6 +1044,7 @@ export type { Layer, ManagerOptions, QuizCallbacks } from '../lib/hanzi-writer-m
     if (toggleCharacter.checked) manager.showCharacter();
     else manager.hideCharacter();
   });
+  toggleFanning.addEventListener('change', toggleFanningView);
 
   // Quiz controls
   function startQuiz(options: { showHintAfterMisses?: number | false; showOutline?: boolean } = {}) {
