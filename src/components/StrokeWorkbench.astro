@@ -1,0 +1,978 @@
+---
+export type { Layer, ManagerOptions, QuizCallbacks } from '../lib/hanzi-writer-manager';
+---
+
+<!-- HanziWriter CDN -->
+<script is:inline src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.0/dist/hanzi-writer.min.js"></script>
+
+<div class="stroke-workbench" id="stroke-workbench">
+  <!-- Layer Tabs -->
+  <div class="layer-tabs" id="layer-tabs">
+    <button class="layer-tab active" data-layer="watch" data-cy="tab-watch">
+      <span class="tab-icon">👁️</span>
+      <span class="tab-label">Assistir</span>
+      <span class="tab-desc">Ver animação dos traços</span>
+    </button>
+    <button class="layer-tab" data-layer="practice" data-cy="tab-practice">
+      <span class="tab-icon">✍️</span>
+      <span class="tab-label">Praticar</span>
+      <span class="tab-desc">Escrever com guia</span>
+    </button>
+    <button class="layer-tab" data-layer="master" data-cy="tab-master">
+      <span class="tab-icon">🏆</span>
+      <span class="tab-label">Dominar</span>
+      <span class="tab-desc">Desafio sem ajuda</span>
+    </button>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progress-fill" style="width: 33%"></div>
+    <div class="progress-steps">
+      <span class="progress-step active" data-step="0">1</span>
+      <span class="progress-step" data-step="1">2</span>
+      <span class="progress-step" data-step="2">3</span>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="workbench-main">
+    <!-- SVG Canvas -->
+    <div class="canvas-area">
+      <div class="canvas-container glass-panel" id="hanzi-canvas-container"></div>
+
+      <!-- Quick Character Picker -->
+      <div class="quick-chars">
+        <span class="quick-chars-label">Comuns:</span>
+        <button class="quick-char-btn" data-char="中">中</button>
+        <button class="quick-char-btn" data-char="国">国</button>
+        <button class="quick-char-btn" data-char="我">我</button>
+        <button class="quick-char-btn" data-char="你">你</button>
+        <button class="quick-char-btn" data-char="好">好</button>
+        <button class="quick-char-btn" data-char="大">大</button>
+        <button class="quick-char-btn" data-char="小">小</button>
+        <button class="quick-char-btn" data-char="人">人</button>
+        <button class="quick-char-btn" data-char="山">山</button>
+        <button class="quick-char-btn" data-char="水">水</button>
+      </div>
+    </div>
+
+    <!-- Controls Panel -->
+    <div class="controls-panel glass-panel">
+      <!-- Character Input (always visible) -->
+      <div class="control-section">
+        <label class="control-label">
+          <span class="label-icon">🔤</span> Caractere
+        </label>
+        <div class="input-row">
+          <button class="btn btn-script-toggle" id="btn-script-toggle" title="Alternar entre Chinês Simplificado e Tradicional" data-cy="btn-script-toggle">简</button>
+          <input
+            type="text"
+            class="char-input"
+            id="char-input"
+            maxlength="1"
+            placeholder="Digite..."
+            value="中"
+          />
+          <button class="btn btn-primary btn-load" id="btn-load" data-cy="btn-load">Ir</button>
+        </div>
+      </div>
+
+      <!-- Layer 1: Watch Controls -->
+      <div class="layer-controls" data-layer="watch">
+        <div class="control-section">
+          <label class="control-label">
+            <span class="label-icon">▶️</span> Animação
+          </label>
+          <div class="btn-row">
+            <button class="btn btn-action" id="btn-play" data-cy="btn-play">▶ Play</button>
+            <button class="btn btn-action" id="btn-loop" data-cy="btn-loop">🔁 Loop</button>
+            <button class="btn btn-action" id="btn-pause" data-cy="btn-pause">⏸ Pausar</button>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <label class="control-label">
+            <span class="label-icon">⚡</span> Velocidade
+          </label>
+          <div class="slider-row">
+            <span class="slider-label">Lenta</span>
+            <input type="range" id="speed-slider" min="0.25" max="5" step="0.25" value="1" />
+            <span class="slider-value" id="speed-value">1x</span>
+            <span class="slider-label">Rápida</span>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <div class="toggle-row">
+            <label class="toggle-label">
+              <input type="checkbox" id="toggle-outline" checked />
+              <span>Mostrar contorno</span>
+            </label>
+            <label class="toggle-label">
+              <input type="checkbox" id="toggle-character" checked />
+              <span>Mostrar caractere</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layer 2: Practice Controls -->
+      <div class="layer-controls" data-layer="practice" style="display:none">
+        <div class="control-section">
+          <label class="control-label">
+            <span class="label-icon">✍️</span> Quiz
+          </label>
+          <div class="btn-row">
+            <button class="btn btn-quiz" id="btn-quiz" data-cy="btn-quiz">✍️ Iniciar Quiz</button>
+            <button class="btn btn-action" id="btn-cancel-quiz">⏹ Cancelar</button>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <label class="control-label">
+            <span class="label-icon">💡</span> Dicas após erros
+          </label>
+          <select class="char-input" id="hint-select">
+            <option value="1">1 erro</option>
+            <option value="2">2 erros</option>
+            <option value="3" selected>3 erros</option>
+            <option value="5">5 erros</option>
+            <option value="false">Nunca</option>
+          </select>
+        </div>
+
+        <div class="control-section">
+          <label class="control-label">
+            <span class="label-icon">🎨</span> Cores
+          </label>
+          <div class="color-row">
+            <div class="color-picker">
+              <span>Traço</span>
+              <input type="color" id="color-stroke" value="#E74C3C" />
+            </div>
+            <div class="color-picker">
+              <span>Radical</span>
+              <input type="color" id="color-radical" value="#3498DB" />
+            </div>
+            <div class="color-picker">
+              <span>Desenho</span>
+              <input type="color" id="color-drawing" value="#333333" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layer 3: Master Controls -->
+      <div class="layer-controls" data-layer="master" style="display:none">
+        <div class="control-section">
+          <label class="control-label">
+            <span class="label-icon">🏆</span> Desafio
+          </label>
+          <div class="btn-row">
+            <button class="btn btn-quiz" id="btn-master-quiz" data-cy="btn-master-quiz">🏆 Iniciar Desafio</button>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <label class="control-label">
+            <span class="label-icon">📊</span> Estatísticas
+          </label>
+          <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+              <span class="stat-value" id="stat-total">0</span>
+              <span class="stat-label">Total Erros</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value" id="stat-strokes">0</span>
+              <span class="stat-label">Traços</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value" id="stat-accuracy">100%</span>
+              <span class="stat-label">Precisão</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layer Advancement -->
+      <div class="control-section layer-advance">
+        <button class="btn btn-progress" id="btn-next-layer" data-cy="btn-next-layer">
+          🚀 Próximo Nível
+        </button>
+        <button class="btn btn-action" id="btn-reset-layer" style="font-size:11px;padding:4px 10px;">
+          ↺ Reiniciar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status / Quiz Log -->
+  <div class="status-bar glass-panel" id="status-bar">
+    <div class="status-header">
+      <span class="status-icon">📋</span>
+      <span class="status-title">Registro</span>
+      <button class="status-clear" id="btn-clear-log">Limpar</button>
+    </div>
+    <div class="status-log" id="status-log">
+      <div class="log-entry log-info">👋 Bem-vindo! Carregue um caractere para começar.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stroke-workbench {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Layer Tabs */
+  .layer-tabs {
+    display: flex;
+    gap: 8px;
+  }
+  .layer-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    color: #999;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+  }
+  .layer-tab:hover {
+    background: rgba(255,255,255,0.06);
+    color: #ccc;
+  }
+  .layer-tab.active {
+    background: rgba(251,191,36,0.1);
+    border-color: rgba(251,191,36,0.3);
+    color: #fbbf24;
+  }
+  .layer-tab.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .tab-icon { font-size: 20px; }
+  .tab-label { font-size: 13px; font-weight: 700; }
+  .tab-desc { font-size: 9px; color: #666; }
+
+  /* Progress Bar */
+  .progress-bar-track {
+    position: relative;
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    margin: 4px 0 8px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ef4444, #fbbf24);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+  .progress-steps {
+    position: absolute;
+    top: -8px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .progress-step {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #222;
+    border: 2px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #666;
+    transition: all 0.3s;
+  }
+  .progress-step.active {
+    background: #fbbf24;
+    border-color: #fbbf24;
+    color: #111;
+  }
+  .progress-step.done {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+  }
+
+  /* Main Layout */
+  .workbench-main {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .workbench-main {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Canvas Area */
+  .canvas-area {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .canvas-container {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 540px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    padding: 8px;
+  }
+  .canvas-container svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Quick Chars */
+  .quick-chars {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .quick-chars-label {
+    font-size: 10px;
+    color: #666;
+    font-weight: 600;
+  }
+  .quick-char-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    color: #ccc;
+    font-size: 16px;
+    font-family: 'Noto Serif SC', serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .quick-char-btn:hover {
+    background: rgba(251,191,36,0.1);
+    border-color: rgba(251,191,36,0.3);
+    color: #fbbf24;
+  }
+
+  /* Controls Panel */
+  .controls-panel {
+    padding: 16px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .control-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .control-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .label-icon { font-size: 13px; }
+
+  /* Inputs */
+  .input-row {
+    display: flex;
+    gap: 4px;
+  }
+  .char-input {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Noto Serif SC', serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .char-input:focus {
+    border-color: #fbbf24;
+  }
+  .btn-load {
+    padding: 8px 12px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #ef4444, #fbbf24);
+    color: #111;
+    border: none;
+    font-weight: 700;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 15px rgba(251,191,36,0.3);
+  }
+  .btn-action {
+    background: rgba(255,255,255,0.06);
+    color: #ccc;
+  }
+  .btn-action:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+  }
+  .btn-quiz {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    border: none;
+    font-weight: 700;
+  }
+  .btn-quiz:hover {
+    box-shadow: 0 0 15px rgba(16,185,129,0.3);
+  }
+  .btn-progress {
+    background: linear-gradient(135deg, #a855f7, #6366f1);
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    flex: 1;
+  }
+  .btn-progress:hover {
+    box-shadow: 0 0 15px rgba(168,85,247,0.3);
+  }
+  .btn-script-toggle {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.06);
+    color: #ccc;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Serif SC', serif;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-script-toggle:hover {
+    background: rgba(251,191,36,0.1);
+    border-color: rgba(251,191,36,0.3);
+    color: #fbbf24;
+  }
+  .btn-script-toggle.trad {
+    color: #a78bfa;
+    border-color: rgba(167,139,250,0.3);
+    background: rgba(167,139,250,0.08);
+  }
+  .btn-script-toggle.trad:hover {
+    background: rgba(167,139,250,0.15);
+    border-color: rgba(167,139,250,0.4);
+  }
+  .btn-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .btn-row .btn {
+    flex: 1;
+    text-align: center;
+    min-width: 0;
+  }
+
+  /* Slider */
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .slider-label {
+    font-size: 9px;
+    color: #666;
+    white-space: nowrap;
+  }
+  .slider-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fbbf24;
+    min-width: 30px;
+    text-align: center;
+  }
+  input[type="range"] {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fbbf24;
+    cursor: pointer;
+  }
+
+  /* Toggles */
+  .toggle-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #aaa;
+    cursor: pointer;
+  }
+  .toggle-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #fbbf24;
+  }
+
+  /* Color Pickers */
+  .color-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .color-picker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .color-picker span {
+    font-size: 9px;
+    color: #888;
+  }
+  .color-picker input[type="color"] {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  /* Stats */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 6px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fbbf24;
+  }
+  .stat-label {
+    font-size: 8px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* Layer Advance */
+  .layer-advance {
+    flex-direction: row !important;
+    gap: 8px !important;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Status Bar */
+  .status-bar {
+    padding: 12px 16px;
+    border-radius: 12px;
+  }
+  .status-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .status-icon { font-size: 14px; }
+  .status-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    flex: 1;
+  }
+  .status-clear {
+    font-size: 10px;
+    color: #666;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .status-clear:hover { color: #ef4444; }
+  .status-log {
+    max-height: 120px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .log-entry {
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.03);
+    font-family: monospace;
+  }
+  .log-info { color: #60a5fa; }
+  .log-success { color: #34d399; }
+  .log-error { color: #f87171; }
+  .log-warn { color: #fbbf24; }
+</style>
+
+<script>
+  import { HanziWriterManager } from '../lib/hanzi-writer-manager';
+  import { getTraditional, getSimplified } from '../data/simplified-to-traditional';
+
+  const container = document.getElementById('hanzi-canvas-container')!;
+  const manager = new HanziWriterManager(container, {
+    width: 480,
+    height: 480,
+    padding: 10,
+    strokeColor: '#E74C3C',
+    radicalColor: '#3498DB',
+    showOutline: true,
+    showCharacter: true,
+  });
+
+  let currentLayer: string = 'watch';
+  let isQuizActive = false;
+  let quizTotalMistakes = 0;
+  let quizTotalCorrect = 0;
+  let useTraditional = false;
+
+  // --- DOM refs ---
+  const charInput = document.getElementById('char-input') as HTMLInputElement;
+  const btnLoad = document.getElementById('btn-load')!;
+  const btnScriptToggle = document.getElementById('btn-script-toggle')!;
+  const btnPlay = document.getElementById('btn-play')!;
+  const btnLoop = document.getElementById('btn-loop')!;
+  const btnPause = document.getElementById('btn-pause')!;
+  const btnQuiz = document.getElementById('btn-quiz')!;
+  const btnCancelQuiz = document.getElementById('btn-cancel-quiz')!;
+  const btnMasterQuiz = document.getElementById('btn-master-quiz')!;
+  const btnNextLayer = document.getElementById('btn-next-layer')!;
+  const btnResetLayer = document.getElementById('btn-reset-layer')!;
+  const speedSlider = document.getElementById('speed-slider') as HTMLInputElement;
+  const speedValue = document.getElementById('speed-value')!;
+  const toggleOutline = document.getElementById('toggle-outline') as HTMLInputElement;
+  const toggleCharacter = document.getElementById('toggle-character') as HTMLInputElement;
+  const hintSelect = document.getElementById('hint-select') as HTMLSelectElement;
+  const colorStroke = document.getElementById('color-stroke') as HTMLInputElement;
+  const colorRadical = document.getElementById('color-radical') as HTMLInputElement;
+  const colorDrawing = document.getElementById('color-drawing') as HTMLInputElement;
+  const statusLog = document.getElementById('status-log')!;
+  const progressFill = document.getElementById('progress-fill')!;
+  const statTotal = document.getElementById('stat-total')!;
+  const statStrokes = document.getElementById('stat-strokes')!;
+  const statAccuracy = document.getElementById('stat-accuracy')!;
+  const tabs = document.querySelectorAll('.layer-tab');
+  const quickChars = document.querySelectorAll('.quick-char-btn');
+  const layerControls = document.querySelectorAll('.layer-controls');
+  const progressSteps = document.querySelectorAll('.progress-step');
+
+  // --- Helpers ---
+  function log(message: string, type: 'info' | 'success' | 'error' | 'warn' = 'info') {
+    const entry = document.createElement('div');
+    entry.className = `log-entry log-${type}`;
+    entry.textContent = message;
+    statusLog.appendChild(entry);
+    statusLog.scrollTop = statusLog.scrollHeight;
+  }
+
+  function toTargetScript(char: string): string {
+    if (useTraditional) {
+      return getTraditional(char) || char;
+    }
+    return getSimplified(char) || char;
+  }
+
+  function loadChar(char: string) {
+    const target = toTargetScript(char);
+    manager.loadCharacter(target);
+    charInput.value = target;
+    log(`Carregado: ${target}`, 'info');
+    if (isQuizActive) {
+      manager.cancelQuiz();
+      isQuizActive = false;
+    }
+    updateStats();
+  }
+
+  function toggleScript() {
+    useTraditional = !useTraditional;
+    btnScriptToggle.textContent = useTraditional ? '繁' : '简';
+    btnScriptToggle.classList.toggle('trad', useTraditional);
+    const current = charInput.value.trim();
+    if (current) {
+      const converted = toTargetScript(current);
+      if (converted !== current) loadChar(converted);
+    }
+    log(`Script: ${useTraditional ? 'Tradicional (繁體)' : 'Simplificado (简体)'}`, 'info');
+  }
+
+  function updateStats() {
+    const mistakes = quizTotalMistakes;
+    const correct = quizTotalCorrect;
+    const total = mistakes + correct || 1;
+    statTotal.textContent = String(mistakes);
+    statStrokes.textContent = String(correct);
+    statAccuracy.textContent = total > 0 ? `${Math.round((correct / total) * 100)}%` : '100%';
+  }
+
+  function setLayer(layer: string) {
+    currentLayer = layer;
+    manager.setLayer(layer as any);
+
+    tabs.forEach(t => {
+      t.classList.toggle('active', t.getAttribute('data-layer') === layer);
+    });
+    layerControls.forEach(c => {
+      c.style.display = c.getAttribute('data-layer') === layer ? '' : 'none';
+    });
+
+    const layerIndex = ['watch', 'practice', 'master'].indexOf(layer);
+    const progress = ((layerIndex + 1) / 3) * 100;
+    progressFill.style.width = `${progress}%`;
+    progressSteps.forEach((s, i) => {
+      s.classList.remove('active', 'done');
+      if (i < layerIndex) s.classList.add('done');
+      else if (i === layerIndex) s.classList.add('active');
+    });
+
+    // Layer-specific setup
+    manager.resetLayer();
+    for (let i = 0; i < layerIndex; i++) manager.advanceLayer();
+
+    if (layer === 'practice') {
+      manager.showOutline();
+      toggleOutline.checked = true;
+    }
+    if (layer === 'master') {
+      manager.hideOutline();
+      toggleOutline.checked = false;
+      quizTotalMistakes = 0;
+      quizTotalCorrect = 0;
+      updateStats();
+    }
+
+    log(`Modo: ${tabs[layerIndex].querySelector('.tab-label')!.textContent}`, 'info');
+  }
+
+  // --- Init ---
+  loadChar('中');
+
+  // --- Event Handlers ---
+
+  // Character loading
+  btnLoad.addEventListener('click', () => {
+    const val = charInput.value.trim();
+    if (val) loadChar(val);
+  });
+  charInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') btnLoad.click();
+  });
+  quickChars.forEach(btn => {
+    btn.addEventListener('click', () => loadChar(btn.getAttribute('data-char')!));
+  });
+
+  // Script toggle
+  btnScriptToggle.addEventListener('click', toggleScript);
+
+  // Layer tabs
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      setLayer(tab.getAttribute('data-layer')!);
+    });
+  });
+
+  // Animation controls
+  btnPlay.addEventListener('click', () => {
+    if (!manager.getCharacter()) return;
+    manager.animate();
+    log('▶ Animação iniciada', 'info');
+  });
+
+  btnLoop.addEventListener('click', () => {
+    if (!manager.getCharacter()) return;
+    manager.loop();
+    log('🔁 Loop iniciado', 'info');
+  });
+
+  btnPause.addEventListener('click', () => {
+    manager.pause();
+    log('⏸ Animação pausada', 'warn');
+    setTimeout(() => manager.resume(), 100);
+  });
+
+  // Speed
+  speedSlider.addEventListener('input', () => {
+    const speed = parseFloat(speedSlider.value);
+    speedValue.textContent = `${speed}x`;
+    manager.updateOptions({ strokeAnimationSpeed: speed });
+  });
+
+  // Toggles
+  toggleOutline.addEventListener('change', () => {
+    if (toggleOutline.checked) manager.showOutline();
+    else manager.hideOutline();
+  });
+  toggleCharacter.addEventListener('change', () => {
+    if (toggleCharacter.checked) manager.showCharacter();
+    else manager.hideCharacter();
+  });
+
+  // Quiz controls
+  function startQuiz(options: { showHintAfterMisses?: number | false; showOutline?: boolean } = {}) {
+    if (!manager.getCharacter()) return;
+    isQuizActive = true;
+    quizTotalMistakes = 0;
+    quizTotalCorrect = 0;
+    updateStats();
+
+    if (options.showOutline !== undefined) {
+      if (options.showOutline) manager.showOutline();
+      else manager.hideOutline();
+    }
+
+    const hintVal = hintSelect.value;
+    const showHint = hintVal === 'false' ? false : parseInt(hintVal);
+
+    manager.quiz({
+      showHintAfterMisses: showHint,
+      onMistake: (data: any) => {
+        quizTotalMistakes = data.totalMistakes;
+        quizTotalCorrect = data.strokeNum + 1 - data.totalMistakes;
+        updateStats();
+        log(`✗ Erro no traço ${data.strokeNum + 1} (total: ${data.totalMistakes})`, 'error');
+      },
+      onCorrectStroke: (data: any) => {
+        quizTotalMistakes = data.totalMistakes;
+        quizTotalCorrect = (data.strokeNum + 1) - data.totalMistakes;
+        updateStats();
+        log(`✓ Traço ${data.strokeNum + 1} correto!`, 'success');
+      },
+      onComplete: (data: any) => {
+        isQuizActive = false;
+        quizTotalMistakes = data.totalMistakes;
+        updateStats();
+        const accuracy = data.totalMistakes === 0 ? '100%' : '~' + Math.round((1 - data.totalMistakes / quizTotalCorrect) * 100) + '%';
+        log(`🏁 Quiz completo! ${data.totalMistakes} erros. Precisão: ${accuracy}`, 'success');
+      },
+    });
+    log('✍️ Quiz iniciado — desenhe os traços!', 'info');
+  }
+
+  btnQuiz.addEventListener('click', () => startQuiz({ showOutline: true }));
+  btnMasterQuiz.addEventListener('click', () => startQuiz({ showOutline: false }));
+
+  btnCancelQuiz.addEventListener('click', () => {
+    manager.cancelQuiz();
+    isQuizActive = false;
+    log('⏹ Quiz cancelado', 'warn');
+  });
+
+  // Colors
+  colorStroke.addEventListener('input', () => {
+    manager.updateColor('strokeColor', colorStroke.value);
+  });
+  colorRadical.addEventListener('input', () => {
+    manager.updateColor('radicalColor', colorRadical.value);
+  });
+  colorDrawing.addEventListener('input', () => {
+    manager.updateColor('drawingColor', colorDrawing.value);
+  });
+
+  // Layer navigation
+  btnNextLayer.addEventListener('click', () => {
+    const layers = ['watch', 'practice', 'master'];
+    const idx = layers.indexOf(currentLayer);
+    if (idx < layers.length - 1) {
+      setLayer(layers[idx + 1]);
+    } else {
+      log('🏆 Você já domina todos os níveis!', 'success');
+    }
+  });
+
+  btnResetLayer.addEventListener('click', () => {
+    setLayer('watch');
+    loadChar(charInput.value || '中');
+    log('↺ Progresso reiniciado', 'info');
+  });
+
+  // Clear log
+  document.getElementById('btn-clear-log')!.addEventListener('click', () => {
+    statusLog.innerHTML = '';
+  });
+</script>

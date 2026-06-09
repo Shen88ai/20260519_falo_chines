@@ -60,3 +60,11 @@ export const simplifiedToTraditional: Record<string, string> = {
 export function getTraditional(char: string): string | undefined {
   return simplifiedToTraditional[char];
 }
+
+const traditionalToSimplified = Object.fromEntries(
+  Object.entries(simplifiedToTraditional).map(([simp, trad]) => [trad, simp])
+);
+
+export function getSimplified(char: string): string | undefined {
+  return traditionalToSimplified[char];
+}

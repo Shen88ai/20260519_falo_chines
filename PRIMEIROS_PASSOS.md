@@ -33,11 +33,11 @@ Acesse: http://localhost:4321 para verificar:
 **Roteiro sugerido (30-45 segundos):**
 1. **Gancho (0-5s):** "Você sabia que 30% das empresas SP perdem dinheiro por erros em documentos com a China?" [Mostrar expressão de preocupação]
 2. **Problema (5-15s):** Mostre 3 exemplos visuais rápidos:
-   - NCM errado → multa da Receita [Mostrar documento com NCM destacado]
-   - Packing list inconsistente → atraso na alfândega [Mostrar documento com diferença destacada]
-   - Termos de pagamento incorretos → bloqueio de pagamento [Mostrar e-mail de banco]
+    - Código HS brasileiro (NCM) errado → multa da Receita [Mostrar documento com código NCM destacado]
+    - Packing list inconsistente → atraso na alfândega [Mostrar documento com diferença destacada]
+    - Termos de pagamento incorretos → bloqueio de pagamento [Mostrar e-mail de banco]
 3. **Solução (15-25s):** "No Falo Chinês, verificamos 3 pontos críticos antes de qualquer documento ser assinado:" [Mostrar checklist]
-   - Conferência de NCM com a descrição real do produto
+    - Conferência do código HS brasileiro (NCM) com a descrição real do produto
    - Validação de incoterms contra o contrato de seguro  
    - Cross-check entre proforma e conhecimento de embarque
 4. **CTA (25-30s):** "Quer evitar esses erros? Meu serviço de tradução técnica está no link da bio" [Mostrar tela do site com seta para o botão de orçamento]

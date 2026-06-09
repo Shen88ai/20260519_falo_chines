@@ -33,3 +33,27 @@ describe('getTraditional', () => {
     expect(getTraditional('人')).toBeUndefined();
   });
 });
+
+describe('getSimplified', () => {
+  it('should return simplified form for a traditional character', async () => {
+    const { getSimplified } = await import('../src/data/simplified-to-traditional');
+    expect(getSimplified('學')).toBe('学');
+    expect(getSimplified('國')).toBe('国');
+    expect(getSimplified('馬')).toBe('马');
+  });
+
+  it('should return undefined if character is same in both scripts', async () => {
+    const { getSimplified } = await import('../src/data/simplified-to-traditional');
+    expect(getSimplified('中')).toBeUndefined();
+    expect(getSimplified('人')).toBeUndefined();
+  });
+
+  it('should round-trip through getTraditional and getSimplified', async () => {
+    const { getTraditional, getSimplified } = await import('../src/data/simplified-to-traditional');
+    const chars = ['国','学','妈','马','语','书','师','爱'];
+    chars.forEach(simp => {
+      const trad = getTraditional(simp)!;
+      expect(getSimplified(trad)).toBe(simp);
+    });
+  });
+});
