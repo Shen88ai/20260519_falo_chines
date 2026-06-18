@@ -3,26 +3,29 @@
 
 @font-face {
   font-family: 'TW-Kai';
-  src: url('/fonts/TW-Kai-98_1.ttf') format('truetype');
+  src: url('/fonts/TW-Kai-98_1-subset.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+4E00-9FFF, U+3400-4DBF, U+F900-FAFF;
 }
 
 @font-face {
   font-family: 'TW-Kai-Ext-B';
-  src: url('/fonts/TW-Kai-Ext-B-98_1.ttf') format('truetype');
+  src: url('/fonts/TW-Kai-Ext-B-98_1-subset.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+4E00-9FFF, U+3400-4DBF, U+F900-FAFF;
 }
 
 @font-face {
   font-family: 'TW-Kai-Plus';
-  src: url('/fonts/TW-Kai-Plus-98_1.ttf') format('truetype');
+  src: url('/fonts/TW-Kai-Plus-98_1-subset.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+4E00-9FFF, U+3400-4DBF, U+F900-FAFF;
 }
 
 @theme {

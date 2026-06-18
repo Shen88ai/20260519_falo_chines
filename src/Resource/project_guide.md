@@ -1,52 +1,125 @@
-Goal
-Analysis of the Mandarin Chinese learning website project (targeted at Portuguese speakers) located at C:\Users\YANG\Antigravity\20260519_falo_chines\ is complete. This document details the project's architecture, content structure, data management systems, and newly implemented search functionality.
-Instructions
+# Guia do Projeto — Falo Chinês 🧭
 
-- Act as a master language learning site engineer.
-- Thoroughly analyze the project: examine all directories, configuration files, content structures, and code logic.
-- Identify key technical decisions, content organization patterns, and data formats.
-- Provide actionable insights and recommendations for scaling content and maintaining consistency.
-- Focus on information that will persist and guide future development and content creation workflows.
-- Continue the analysis workflow until the report is complete, then proceed to the next user directive.
-  Discoveries
-- Tech Stack: Built with Astro v6.3.5 (static site generator), styled with Tailwind CSS v4, and enhanced with Three.js, GSAP, and Fuse.js (used for global search functionality).
-- Content Management: Lessons are authored in Markdown (src/content/lessons/) using a structured frontmatter schema validated by Zod (schemas.ts) for Astro's content collection API.
-- Curriculum Structure: Divided into 4 Phases: A (Phonetics/Tones), B (Ideograms/Radicals), C (Syntax/Grammar), D (HSK/Culture/Immersion).
-- Personalization System: A custom state-manager.ts implements a leveling/assessment quiz that routes users to 4 paths: Executive (Business), Traveler (Survival), Academic (Linguistics), Enthusiast (Culture).
-- Data Architecture:
-  - dictionary.ts stores Hanzi entries (pinyin, Portuguese translations, radicals, stroke counts, mnemonics).
-  - path-mapping.ts defines curriculum routing sequences and learning strategies per path.
-  - courses-data.ts manages course metadata, pricing, and WhatsApp enrollment links.
-- Target Audience: Portuguese speakers learning Mandarin, featuring bilingual content (Portuguese/Chinese) and a unique "Chinese Mother" immersion methodology.
-  Accomplished
-- ✅ Successfully read and parsed package.json, astro.config.mjs, tsconfig.json, vitest.config.ts, .env.txt, and README.md.
-- ✅ Mapped the complete src/ directory tree.
-- ✅ Read all lesson Markdown files across Phases A, B, C, and D.
-- ✅ Read core library files: schemas.ts, courses-data.ts, state-manager.ts, dictionary-utils.ts.
-- ✅ Read data files: dictionary.ts, path-mapping.ts.
-- ✅ Completed analysis of src/components/, src/pages/, src/layouts/, src/styles/, src/Resource/, and tests/ directories.
-- ✅ Implemented and tested global search functionality (Fuse.js) supporting Chinese character lookup.
-- ✅ Verified all existing tests pass (27/27) and build completes successfully.
-  Relevant files / directories
-- Project Root: C:\Users\YANG\Antigravity\20260519_falo_chines\
-- Config & Setup: package.json, astro.config.mjs, tsconfig.json, vitest.config.ts, .env.txt, README.md
-- Content Layer: src/content.config.ts, src/content/lessons/ (contains Phase A, B, C, D Markdown files)
-- Library & Logic: src/lib/schemas.ts, src/lib/courses-data.ts, src/lib/state-manager.ts, src/lib/dictionary-utils.ts
-- Data Models: src/data/dictionary.ts, src/data/path-mapping.ts
-- All analysis completed: src/components/, src/pages/, src/layouts/, src/styles/, src/Resource/, and tests/ directories have been examined and documented.
+> Site de aprendizado de Mandarim para falantes de Português.
+> Build: Astro v6 + Tailwind v4 | Testes: Vitest | Deploy: Cloudflare Workers
 
 ---
 
-## Cover Image Pipeline
+## Stack Tecnológica
 
-Cada post do blog e lição tem uma **cover image** temática. O sistema cobre automaticamente: exibição nos cards de listagem, banner hero na página individual, e galeria com lightbox.
+| Camada | Tecnologia |
+|--------|-----------|
+| Framework | Astro v6.3.5 (static site generator) |
+| Estilo | Tailwind CSS v4 |
+| 3D | Three.js (Hanzi Wheel) |
+| Animação | GSAP |
+| Busca | Fuse.js (busca global) |
+| Testes | Vitest + jsdom |
+| Conteúdo | Markdown + frontmatter validado por Zod |
+
+---
+
+## Estrutura de Diretórios
+
+```
+src/
+├── assets/                    # Assets estáticos (SVG)
+├── components/                # Componentes .astro reutilizáveis
+│   ├── FormNivelamento.astro   # Diagnóstico interativo (pergaminho interno)
+│   ├── HanziWheel.astro        # Roda 3D de caracteres
+│   ├── PergaminhoVirtual.astro # Callout de venda do Manual (full-width, after Stefany)
+│   ├── StrokeWorkbench.astro   # Prática de traços (Hanzi Writer)
+│   ├── NavMenu.astro           # Menu de navegação
+│   ├── Welcome.astro           # Componente de boas-vindas
+│   └── ...                     # Demais componentes
+├── content/                    # Coleções Astro (Markdown)
+│   ├── blog/                   # Artigos do blog
+│   └── lessons/                # Lições (fases A-D)
+├── data/                       # Dados estáticos
+│   ├── dictionary.ts           # 150+ entradas de caracteres
+│   ├── path-mapping.ts         # 4 rotas de aprendizado
+│   ├── courses-data.ts         # Metadados de cursos
+│   └── comunidade-data.json    # Seed data da comunidade
+├── layouts/                    # Layout principal (Layout.astro)
+├── lib/                        # Lógica de negócio
+│   ├── hanzi-wheel/            # Módulo Three.js da roda 3D (9 arquivos)
+│   ├── state-manager.ts        # Máquina de estado do diagnóstico
+│   ├── hanzi-writer-manager.ts # Wrapper do Hanzi Writer
+│   ├── comunidade-storage.ts   # CRUD localStorage da comunidade
+│   └── ...
+├── pages/                      # Rotas (11 páginas)
+│   ├── index.astro             # Homepage (banner + hero + diagnóstico + pergaminho virtual)
+│   ├── manual.astro            # Landing Page do Manual de Caligrafia
+│   ├── strokes.astro           # Prática de traços
+│   └── ...
+├── styles/
+│   ├── global.css              # Estilos globais + classes customizadas
+│   └── hanzi-wheel.css         # Estilos da roda 3D
+└── Resource/
+    └── project_guide.md        # Este guia
+```
+
+---
+
+## Currículo — 4 Fases (A-D)
+
+| Fase | Foco | Exemplos |
+|------|------|----------|
+| A | Fonética, tons, básico | 中, 你, 我, 好 |
+| B | Ideogramas, radicais | 水, 火, 金, 山 |
+| C | Gramática, sintaxe | 心, 语, 师, 书 |
+| D | HSK, imersão, cultura | 爱, 家, 花, 乐 |
+
+Cada lição em `src/content/lessons/` segue schema Zod (`src/lib/schemas.ts`).
+
+---
+
+## Sistema de Diagnóstico (Leveling)
+
+`FormNivelamento.astro` implementa um quiz de 3 passos que roteia o usuário para 4 caminhos:
+
+| Caminho | Motivação | Path |
+|---------|-----------|------|
+| Executivo | Negócios & Carreira | A |
+| Viajante | Viagem & Sobrevivência | B |
+| Acadêmico | Estudos & Certificação HSK | C |
+| Entusiasta | Cultura & Lazer | D |
+
+O resultado é exibido num pergaminho virtual (classe `.parchment-scroll`) com roadmap de checkpoints e botão "Iniciar Jornada".
+
+---
+
+## Sistema de Dicionário
+
+`src/data/dictionary.ts` — 150+ entradas com interface:
+
+```typescript
+interface DictionaryEntry {
+  character: string;    // Caractere chinês
+  pinyin: string;       // Pinyin com acentos
+  portuguese: string;   // Tradução PT-BR
+  radical: string;      // Radical
+  strokeCount: number;  // Nº de traços
+  mnemonica?: string;   // Mnemônico opcional
+  fase: 'A' | 'B' | 'C' | 'D';
+  topic: string;        // Tópico semântico
+}
+```
+
+### Tópicos Disponíveis
+
+`cultura`, `educacao`, `familia`, `descricao`, `social`, `corpo`, `natureza`, `tempo`, `direcao`, `numeros`, `negocios`, `gramatica`, `comida`, `objetos`, `emocao`, `acao`
+
+---
+
+## Sistema de Imagens de Capa (Cover Image Pipeline)
 
 ### Onde as Imagens Ficam
 
 | Tipo | Diretório | Exemplo |
 |------|-----------|---------|
-| Blog | `public/images/blog/` | `public/images/blog/alma-do-mandarim.png` |
-| Lições | `public/images/lessons/` | `public/images/lessons/phase-a-01-tons-primordiais.png` |
+| Blog | `public/images/blog/` | `alma-do-mandarim.png` |
+| Lições | `public/images/lessons/` | `phase-a-01-tons-primordiais.png` |
 
 ### Frontmatter
 
@@ -55,397 +128,331 @@ Cada post do blog e lição tem uma **cover image** temática. O sistema cobre a
 coverImage: "/images/blog/{slug}.png"
 ```
 
-**Lições** (`src/content/lessons/**/*.md`): o schema em `src/lib/schemas.ts` já inclui `coverImage: z.string().optional()`. Adicionar no frontmatter:
+**Lições** (`src/content/lessons/**/*.md`):
 ```yaml
 coverImage: "/images/lessons/{slug}.png"
 ```
 
-Slug = nome do arquivo sem `.md` (ex: `phase-a-01-tons-primordiais`).
+### Guia Rápido
 
-### Onde a Cover Image Aparece
+1. **Gerar imagem** com IA — aspect ratio 16:9, estilo matte painting noturno
+2. **Salvar** em `public/images/{blog|lessons}/{slug}.png`
+3. **Adicionar** `coverImage` ao frontmatter do `.md`
+4. Aparece automaticamente na listagem, banner hero e **Galeria** (`/galeria`)
 
-1. **Listagem de Blog** (`/blog`) — thumbnail 16:9 no topo do card
-2. **Listagem de Lições** (`/licoes`) — thumbnail 16:9 no topo do card, agrupado por fase
-3. **Post individual** (`/blog/{slug}`) — banner hero 21:9 entre breadcrumbs e título
-4. **Lição individual** (`/licoes/{slug}`) — banner hero 21:9 entre breadcrumbs e título
-5. **Galeria** (`/galeria`) — grid responsivo com lightbox fullscreen e filtros (Blog / Fase A-D)
+### Paleta por Fase
 
-### Galeria de Capas (`/galeria`)
-
-Página automática: coleta todos os posts com `coverImage` preenchido. Oferece:
-- Grid responsivo (1-4 colunas) com hover revelando badge e título
-- Filtros por categoria: Todas, Blog, Fase A, B, C, D
-- Lightbox fullscreen: imagem em tela cheia, navegação ←/→, contador (3/9), link para o post
-- Atalhos de teclado: `Esc` fecha, `←`/`→` navega
-
-**Nova postagem aparecerá automaticamente** na galeria — basta ter `coverImage` no frontmatter.
-
-### Guia Rápido: Adicionar Cover Image a um Novo Post
-
-1. **Gerar imagem** com IA. Especificações:
-   - Aspect ratio: 16:9 (`--ar 16:9` no Midjourney)
-   - Estilo: matte painting cinematográfico, atmosfera noturna, ponto focal iluminado
-   - Cor de destaque conforme a fase (ver tabela abaixo)
-   - Versão Midjourney: `--style raw --v 6.1 --s 250`
-
-2. **Salvar** em `public/images/blog/{slug}.png` ou `public/images/lessons/{slug}.png`
-
-3. **Adicionar** `coverImage: "/images/{blog|lessons}/{slug}.png"` ao frontmatter do `.md`
-
-### Fases & Paleta de Cores
-
-| Fase | Cor Hex | Uso na Imagem |
-|------|---------|---------------|
-| Blog | Dourado `#EAB308` | Aurora, luz divina, pergaminhos dourados |
-| Fase A | Vermelho `#B91C1C` | Névoa, pôr-do-sol, lanternas |
-| Fase B | Jade `#2D8A6E` | Vegetação, jade, tinta verde |
-| Fase C | Roxo `#7C3AED` | Céu crepuscular, tinta roxa |
-| Fase D | Azul `#2563EB` | Céu noturno, tinta azul |
-
-### Prompt Template por Tipo de Post
-
-**Blog (reflexão/cultural):** Cenário contemplativo — montanhas, névoa, pergaminhos, luz dourada rompendo a névoa. Tom poético e convidativo.
-
-**Lição de Fonética (Fase A):** Elementos sonoros visíveis — instrumentos musicais, ondas sonoras, notas se transformando em caracteres. Tons vermelhos.
-
-**Lição de Ideogramas (Fase B):** Desconstrução visual — puzzle de caracteres, lupa, mesa de detetive, blocos de montar. Tons verdes/jade.
-
-**Lição de Gramática (Fase C):** Diagramas e ordens — pergaminhos com fórmulas de sintaxe, ábaco, caracteres se alinhando. Tons roxos.
-
-**Lição de HSK/Imersão (Fase D):** Contexto profissional ou íntimo — sala de reunião, cozinha da mãe, quarto infantil. Tons azuis.
-
-### Prompts Existentes (Referência)
-
-Arquivos em `src/Resource/prompts/`:
-- `blog/alma-do-mandarim.md`
-- `lessons/phase-a-01-about.md`, `phase-a-01-tons-primordiais.md`, etc. (1 por lição)
-
-Cada arquivo contém: prompt descritivo longo, variante curta para Midjourney, e parâmetros técnicos.
-
-### Referência
-Design doc: `docs/superpowers/specs/2026-05-25-ai-cover-images-design.md`
+| Fase | Cor | Uso |
+|------|-----|-----|
+| Blog | Dourado `#EAB308` | Aurora, pergaminhos |
+| A | Vermelho `#B91C1C` | Lanternas, pôr-do-sol |
+| B | Jade `#2D8A6E` | Vegetação, tinta verde |
+| C | Roxo `#7C3AED` | Céu crepuscular |
+| D | Azul `#2563EB` | Céu noturno |
 
 ---
 
-## Hanzi Wheel 3D Interactive Component
+## Hanzi Wheel — Componente 3D Interativo
 
-Componente Three.js na homepage (`/`) que exibe caracteres chineses orbitando em 3D. Funciona como navegador visual do dicionário.
-
-### Arquitetura
+Roda de caracteres Three.js na homepage. Funciona como navegador visual do dicionário.
 
 | Arquivo | Função |
 |---------|--------|
-| `src/components/HanziWheel.astro` | Container HTML + canvas + footer (tabs, dots, prev/next) |
-| `src/styles/hanzi-wheel.css` | Estilos do footer, tabs, dots, tooltip, painel de detalhes |
-| `src/lib/hanzi-wheel/scene-manager.ts` | Inicializa cena Three.js, câmera, render loop, raycasting |
-| `src/lib/hanzi-wheel/wheel-core.ts` | Anel externo (gradiente arco-íris), sprite central com efeito "breath" |
-| `src/lib/hanzi-wheel/orbiting-chars.ts` | Sprites orbitantes — suporta **órbita dupla** (>10 chars) |
-| `src/lib/hanzi-wheel/galaxy-cloud.ts` | Fundo com 800 partículas estilo nebulosa (cores da paleta neon) |
-| `src/lib/hanzi-wheel/state-manager.ts` | Estado global: categoria, grupo, hover, seleção |
-| `src/lib/hanzi-wheel/config.ts` | Categorias (Tom/Radical/Tópico/Nível) e `buildGroups()` |
-| `src/lib/hanzi-wheel/types.ts` | Tipos TypeScript (`WheelCategory`, `WheelGroup`, etc.) |
-| `src/lib/hanzi-wheel/character-utils.ts` | Helper para buscar info de caractere no dicionário |
-| `src/lib/hanzi-wheel/device-tier.ts` | Detecta capacidade do dispositivo (high/medium/low) |
+| `HanziWheel.astro` | Container HTML + canvas + footer |
+| `scene-manager.ts` | Cena Three.js, câmera, raycasting |
+| `wheel-core.ts` | Anel arco-íris + sprite central pulsante |
+| `orbiting-chars.ts` | Sprites em órbita (órbita dupla se > 10 chars) |
+| `galaxy-cloud.ts` | 800 partículas estilo nebulosa |
+| `config.ts` | Categorias e grupos |
+| `device-tier.ts` | Detecta high/medium/low |
 
 ### Navegação
 
-- **Tabs** no footer alternam entre: Tom, Radical, Tópico, Nível
-- **Dots** abaixo das tabs representam subgrupos (ex: Fase A, B, C, D)
-- **Botões ◀ ▶** nas laterais dos dots navegam entre grupos (wrapping)
-- Clicar num caractere em órbita abre painel de detalhes (pinyin, tradução, radical, strokes, mnemônico)
+- **Tabs**: Tom, Radical, Tópico, Nível
+- **Dots**: subgrupos (ex: Fase A-D)
+- **◀ ▶**: navega entre grupos
+- **Clique no caractere**: abre painel de detalhes (pinyin, tradução, radical)
 
-### Órbitas Duplas
+---
 
-Grupos com mais de **10 caracteres** são automaticamente divididos em duas órbitas:
-- Órbita interna: raio 1.5, scale 0.5 (caracteres pares)
-- Órbita externa: raio 2.4, scale 0.6 (caracteres ímpares)
-- Single orbit (< 10 chars): raio 2.0, scale 0.65
-- Pequeno offset em Z para evitar sobreposição
+## Pergaminho Virtual (Callout de Venda)
 
-### Efeitos Visuais
+### Componente: `PergaminhoVirtual.astro`
 
-- **Anel externo**: 48 segmentos com gradiente HSL (arco-íris), opacidade 0.7
-- **Caractere central**: scale 0.8, pulsa suavemente (0.7–0.9), opacity 0.8–1.0
-- **Galaxy cloud**: 800 partículas distribuídas em disco, cores da paleta neon, opacidade 0.85, blending aditivo
-- **Fundo**: renderizador usa `setClearColor(0x0a0a14, 1)` — fundo opaco escuro para contraste com sprites brilhantes
-- **Sprites** usam `preserveDrawingBuffer: true` (útil para debug/screenshots)
-- **Text shadow**: branco semi-transparente (`rgba(255,255,255,0.4–0.5)`) em vez de sombra colorida — mais contraste contra fundo escuro
-- **Font**: sprites orbitantes usam `sans-serif` como fallback (em vez de `serif`) para melhor renderização de CJK
+Full-width callout posicionado **após o card da Stefany Shen** na homepage, antes das seções B2B.
 
-### Visibilidade & Debug
+```
+[Card Stefany] → [PERGAMINHO VIRTUAL] → [B2B / Cursos / Footer]
+```
 
-- Se o canvas Three.js aparecer vazio, verificar:
-  1. **Câmera**: `getCameraZ()` ajusta z baseado na altura do canvas — em viewports menores (< 600px), câmera recua (z = 2.8 × 600 / h), o que reduz tamanho aparente dos sprites. Em h=352px, z=4.77.
-  2. **Opacidades**: anel 0.2, linhas 0.7, partículas 0.85, sprites 0.7–1.0. Todos os materiais são `transparent: true`.
-  3. **Renderização**: `readPixels()` confirma que o conteúdo WebGL é renderizado, mas `toDataURL()` retorna vazio (5.5KB PNG) — usar `page.screenshot()` do Playwright para captura visual.
-  4. **Sprite text**: caracteres são desenhados em canvas 2D de 64×64 com fonte 40px. Verificar se a fonte (Noto Serif CJK, SimSun) está disponível — fallback para sans-serif.
-  5. **`preserveDrawingBuffer: true`** é necessário para `readPixels()` funcionar fora do ciclo de renderização.
+### Copy
 
-## Dicionário de Caracteres
+- **Título:** "O Caminho do Foco e da Disciplina Através do Pincel"
+- **Texto:** "Muito mais do que escrita: a caligrafia chinesa é uma meditação ativa para desacelerar a mente. Descubra os segredos etimológicos e a ordem dos traços no nosso guia exclusivo."
+- **CTA:** "Adquirir o Manual de Caligrafia Chinesa"
 
-`src/data/dictionary.ts` armazena todos os caracteres com metadados. Atualmente **150 entradas**, 29 radicais com **5 caracteres cada**.
+### Elementos Visuais
 
-### Interface
+| Elemento | Classe/CSS | Descrição |
+|----------|-----------|-----------|
+| Fundo pergaminho | `.parchment-scroll` | Papel de arroz envelhecido, bordas de madeira |
+| Selo decorativo | `.stamp-seal` | Círculo vermelho com caractere 書 (caligrafia) |
+| Botão CTA | `.stamp-btn` | Visual de carimbo tradicional (sombra estilo nanquim) |
+| Fotos | `foto_StefanyShen.png` + `capa_ebook_numero.png` | Split 60/40 texto-foto |
+| Prova social | inline | "+45 mil pessoas · 4.9★ de satisfação" |
 
-```typescript
-export interface DictionaryEntry {
-  character: string;    // O caractere chinês
-  pinyin: string;       // Pinyin com acentos de tom
-  portuguese: string;   // Tradução em português
-  radical: string;      // Radical do caractere
-  strokeCount: number;  // Número de traços
-  mnemonica?: string;   // Mnemônico opcional
-  audioFilename?: string; // Arquivo de áudio opcional
-  fase: 'A' | 'B' | 'C' | 'D';  // Fase do currículo
-  topic: string;        // Tópico semântico (ex: familia, cultura, negocios)
+### Estilos no `global.css`
+
+```css
+.stamp-seal { box-shadow: 0 2px 0 #7f0000, 0 4px 8px rgba(0,0,0,0.3); }
+.stamp-btn  { box-shadow: 0 4px 0 #7f0000, 0 6px 12px rgba(0,0,0,0.3); }
+```
+
+---
+
+## Fontes Web Chinesas (Subsetting)
+
+### Problema
+
+Fontes TTF chinesas são enormes (35–46 MB cada). Cloudflare Workers tem limite de **25 MB por arquivo**.
+
+### Solução
+
+Subsetting com `fonttools` + `pyftsubset`, mantendo apenas os caracteres efetivamente usados no site.
+
+### Arquivos Resultantes
+
+| Fonte | Tamanho Original | Subset (WOFF2) |
+|-------|-----------------|-----------------|
+| TW-Kai-98_1 | 36.9 MB | **185 KB** |
+| TW-Kai-Ext-B-98_1 | 46.5 MB | **3.7 KB** |
+| TW-Kai-Plus-98_1 | 25.3 MB | **3.8 KB** |
+| **Total** | **108 MB** | **193 KB** |
+
+### Como Refazer o Subset
+
+```bash
+# 1. Extrair caracteres usados no projeto
+python -c "
+import glob; chars=set()
+for ext in ('*.astro','*.ts','*.css','*.md','*.json','*.html'):
+    for f in glob.glob(f'src/**/{ext}', recursive=True):
+        try:
+            with open(f, encoding='utf-8') as fh:
+                chars.update(c for c in fh.read() if 0x4E00<=ord(c)<=0x9FFF)
+        except: pass
+with open('chars-used.txt','w',encoding='utf-8') as f:
+    f.write(''.join(sorted(chars)))
+print(f'{len(chars)} caracteres extraídos')
+"
+
+# 2. Gerar WOFF2 subset para cada fonte
+pyftsubset public/fonts/TW-Kai-98_1.ttf \
+  --text-file=chars-used.txt \
+  --output-file=public/fonts/TW-Kai-98_1-subset.woff2 \
+  --flavor=woff2 \
+  --layout-features='*'
+
+pyftsubset public/fonts/TW-Kai-Ext-B-98_1.ttf \
+  --text-file=chars-used.txt \
+  --output-file=public/fonts/TW-Kai-Ext-B-98_1-subset.woff2 \
+  --flavor=woff2 \
+  --layout-features='*'
+
+pyftsubset public/fonts/TW-Kai-Plus-98_1.ttf \
+  --text-file=chars-used.txt \
+  --output-file=public/fonts/TW-Kai-Plus-98_1-subset.woff2 \
+  --flavor=woff2 \
+  --layout-features='*'
+
+# 3. Remover TTFs originais (não deployar)
+rm public/fonts/TW-Kai-98_1.ttf
+rm public/fonts/TW-Kai-Ext-B-98_1.ttf
+rm public/fonts/TW-Kai-Plus-98_1.ttf
+
+# 4. Atualizar referências em src/styles/global.css:
+#    src: url('/fonts/...-subset.woff2') format('woff2');
+```
+
+### Configuração no CSS
+
+```css
+@font-face {
+  font-family: 'TW-Kai';
+  src: url('/fonts/TW-Kai-98_1-subset.woff2') format('woff2');
+  font-display: swap;
+  unicode-range: U+4E00-9FFF, U+3400-4DBF, U+F900-FAFF;
 }
 ```
 
-### Como Adicionar Novo Caractere
-
-1. Adicionar ao objeto `dictionary` em `src/data/dictionary.ts`
-2. Usar o caractere como chave (ex: `'新': { ... }`)
-3. Preencher todos os campos obrigatórios
-4. Associar a um radical já existente para aparecer no grupo correto
-5. Escolher `fase` e `topic` apropriados
-6. O Hanzi Wheel e demais páginas consomem estes dados automaticamente
-7. Rodar `npm run build` para verificar
-
-### Tópicos Disponíveis
-
-`cultura`, `educacao`, `familia`, `descricao`, `social`, `corpo`, `natureza`, `tempo`, `direcao`, `numeros`, `negocios`, `gramatica`, `comida`, `objetos`, `emocao`, `acao`
-
-### Fases
-
-| Fase | Foco | Exemplos |
-|------|------|----------|
-| A | Fonética, tons, básico | 中, 你, 我, 好, 大, 小 |
-| B | Ideogramas, radicais | 商, 水, 火, 金, 山, 月 |
-| C | Gramática, sintaxe | 心, 语, 老, 师, 书 |
-| D | HSK, imersão, cultura | 爱, 家, 花, 乐, 安 |
-
-## Sistema de Lições
-
-`src/content/lessons/` contém lições em Markdown com frontmatter validado por Zod (`src/lib/schemas.ts`). Cada lição pertence a uma fase (A-D) e segue schema com campos como `title`, `description`, `phase`, `coverImage`, etc.
-
----
-
-## Comunidade — Engajamento Coletivo
-
-Sistema auto-contido (zero dependências externas) para alunos submeterem e visualizarem conteúdo da comunidade. Disponível em `/comunidade` e integrado nas páginas de blog e lições.
-
-## Páginas de Serviços (Business Pages)
-
-Novas páginas institucionais foram adicionadas para apresentar os serviços profissionais de tradução/interpretação e programas de imersão em mandarim para o público B2B e B2C:
-
-### Estrutura das Páginas de Serviços
-
-1. **Serviços Empresariais** (`src/pages/servicos-empresariais.astro`)
-   - Foco em serviços B2B: tradução técnica, interpretação para negócios e facilitação comercial
-   - Público-alvo: empresas de comércio exterior de São Paulo
-   - Inclui infográfico visual explicando os serviços e diferenciais
-
-2. **Imersão em Mandarim** (`src/pages/imersao-mandarim.astro`)
-   - Foco em programas de aprendizado de mandarim para profissionais e estudantes de carreira
-   - Público-alvo: profissionais ocupados, empreendedores e estudantes que precisam de mandarim para negócios ou carreira
-   - Inclui infográfico visual explicando o formato de imersão e módulos disponíveis
-
-3. **Sobre Mim** (`src/pages/sobre-mim.astro`)
-   - Página de autoridade com trajetória profissional e depoimentos
-   - Estabelece credibilidade como ponte entre Brasil e China
-
-### Sistema de Infográficos para Páginas de Serviços
-
-Cada página de serviço inclui um infográfico visual que comunica imediatamente o valor proposition:
-
-#### Localização das Imagens
-- Diretório: `public/images/services/`
-- Nomeação: `infografico-{nome-da-pagina}.png`
-- Exemplo: `infografico-servicos-empresariais.png`
-
-#### Implementação nas Páginas
-```astro
-<!-- No cabeçalho da página, após a descrição principal -->
-<div class="mt-6 max-w-3xl mx-auto">
-  <img src="/images/services/infografico-{slug}.png" 
-       alt="Descrição do infográfico" 
-       class="w-full rounded-xl border border-white/5 shadow-lg">
-</div>
-```
-
-#### Especificações Técnicas para Infográficos
-- **Formato**: PNG com fundo transparente quando necessário
-- **Largura**: Responsiva (w-full) dentro de container max-w-3xl mx-auto
-- **Estilo**: bordas arredondadas, borda suave e sombra para destaque visual
-- **Acessibilidade**: texto alt descritivo para leitores de tela
-
-#### Guia Rápido: Adicionar Infográfico a uma Nova Página de Serviço
-1. **Gerar imagem** com IA usando os prompts em `src/Resource/prompts/services/`
-2. **Salvar** em `public/images/services/infografico-{slug}.png`
-3. **Adicionar** o bloco de imagem no cabeçalho da página `.astro`, após a descrição principal
-4. **Verificar** responsividade em diferentes tamanhos de tela
-
-## Comunidade — Engajamento Coletivo
-
-## Páginas de Serviços (Business Pages)
-
-Novas páginas institucionais foram adicionadas para apresentar os serviços profissionais de tradução/interpretação e programas de imersão em mandarim para o público B2B e B2C:
-
-### Estrutura das Páginas de Serviços
-
-1. **Serviços Empresariais** (`src/pages/servicos-empresariais.astro`)
-   - Foco em serviços B2B: tradução técnica, interpretação para negócios e facilitação comercial
-   - Público-alvo: empresas de comércio exterior de São Paulo
-   - Inclui infográfico visual explicando os serviços e diferenciais
-
-2. **Imersão em Mandarim** (`src/pages/imersao-mandarim.astro`)
-   - Foco em programas de aprendizado de mandarim para profissionais e estudantes de carreira
-   - Público-alvo: profissionais ocupados, empreendedores e estudantes que precisam de mandarim para negócios ou carreira
-   - Inclui infográfico visual explicando o formato de imersão e módulos disponíveis
-
-3. **Sobre Mim** (`src/pages/sobre-mim.astro`)
-   - Página de autoridade com trajetória profissional e depoimentos
-   - Estabelece credibilidade como ponte entre Brasil e China
-
-### Sistema de Infográficos para Páginas de Serviços
-
-Cada página de serviço inclui um infográfico visual que comunica imediatamente o valor proposition:
-
-#### Localização das Imagens
-- Diretório: `public/images/services/`
-- Nomeação: `infografico-{nome-da-pagina}.png`
-- Exemplo: `infografico-servicos-empresariais.png`
-
-#### Implementação nas Páginas
-```astro
-<!-- No cabeçalho da página, após a descrição principal -->
-<div class="mt-6 max-w-3xl mx-auto">
-  <img src="/images/services/infografico-{slug}.png" 
-       alt="Descrição do infográfico" 
-       class="w-full rounded-xl border border-white/5 shadow-lg">
-</div>
-```
-
-#### Especificações Técnicas para Infográficos
-- **Formato**: PNG com fundo transparente quando necessário
-- **Largura**: Responsiva (w-full) dentro de container max-w-3xl mx-auto
-- **Estilo**: bordas arredondadas, borda suave e sombra para destaque visual
-- **Acessibilidade**: texto alt descritivo para leitores de tela
-
-#### Guia Rápido: Adicionar Infográfico a uma Nova Página de Serviço
-1. **Gerar imagem** com IA usando os prompts em `src/Resource/prompts/services/`
-2. **Salvar** em `public/images/services/infografico-{slug}.png`
-3. **Adicionar** o bloco de imagem no cabeçalho da página `.astro`, após a descrição principal
-4. **Verificar** responsividade em diferentes tamanhos de tela
-
-## Comunidade — Engajamento Coletivo
-
-### Fluxo de Dados
-
-1. **Seed data** em `src/data/comunidade-data.json` é carregada na primeira visita (5 registros de exemplo por categoria)
-2. **Submissões inline**: formulários na própria página salvam diretamente no `localStorage` do navegador
-3. **Merge automático**: o client-side mescla dados estáticos + localStorage e renderiza
-4. **Persistência**: os dados ficam apenas no navegador do usuário — sem backend, sem build script
-
-### Categorias
-
-| Categoria | Descrição | Formulário |
-|-----------|-----------|------------|
-| Situações | Pedidos de situações do dia a dia para praticar chinês | Inline na página `/comunidade#situacoes` |
-| Dificuldades | Caracteres que os alunos acham difíceis (registrado por clique em "Tive dificuldade" nas lições / HanziWheel) | Botão inline nos popups de caractere |
-| Macetes | Mnemônicos compartilhados | Inline na página `/comunidade#macetes` |
-| Comentários | Opiniões sobre posts e lições | Inline nas páginas de blog, lições, e `/comunidade#comentarios` |
-
-### Páginas com Formulários
-
-- `/comunidade` — 4 abas, cada uma com formulário inline próprio (Situações, Macetes, Comentários)
-- `/blog/[slug]` — formulário de comentário específico do post
-- `/licoes/[slug]` — formulário de comentário específico da lição
-
-### Arquivos Relevantes
-
-| Arquivo | Função |
-|---------|--------|
-| `src/pages/comunidade.astro` | Hub page com 4 abas + formulários inline |
-| `src/components/ComunidadeCard.astro` | CTA card reutilizável |
-| `src/lib/comunidade-storage.ts` | localStorage CRUD + tipos compartilhados |
-| `src/data/comunidade-data.json` | Seed data estático (5 registros por categoria) |
-| `tests/comunidade-storage.test.ts` | 71 testes unitários |
-
----
-
-## Sistema de Prática de Traços (笔画 / Strokes)
-
-Módulo interativo de caligrafia chinesa usando a biblioteca [Hanzi Writer](https://hanziwriter.org) (MIT License). Acessível via `/strokes` e pelo link "Traços" no menu principal.
-
-### Arquitetura
-
-| Arquivo | Função |
-|---------|--------|
-| `src/lib/hanzi-writer-manager.ts` | Wrapper que gerencia instância do HanziWriter, estado do caractere atual, e camadas progressivas (watch → practice → master) |
-| `src/components/StrokeWorkbench.astro` | Componente principal com canvas SVG, painel de controles, decomposição de traços, quiz e estatísticas |
-| `src/pages/strokes.astro` | Página de rota que importa o componente |
-| `tests/hanzi-writer-manager.test.ts` | 17 testes unitários (criação, métodos, camadas) |
-
-### Camadas Progressivas (Layer System)
-
-| Camada | UX | API HanziWriter |
-|--------|-----|-----------------|
-| **Assistir** (watch) | Input de caractere, play animação, loop, controle de velocidade, show/hide contorno e caractere | `animateCharacter()`, `loopCharacterAnimation()`, `pauseAnimation()` |
-| **Praticar** (practice) | Quiz com contorno visível, seletor de tolerância a erros, cores customizáveis (traço, radical, desenho) | `quiz()` com `showHintAfterMisses`, `updateColor()` |
-| **Dominar** (master) | Quiz sem contorno, estatísticas de erros/precisão/traços | `quiz()` sem outline + callbacks `onMistake`, `onCorrectStroke`, `onComplete` |
-
-### Decomposição de Traços (Fanning Strokes)
-
-Toggle "Desdobrar traços" na camada Assistir que carrega dados SVG brutos via `HanziWriter.loadCharacterData()` e renderiza cada traço cumulativo em painéis `80×80` independentes:
-
-- Cada painel mostra traços 1→N (acumulativo), último traço em destaque dourado
-- Clique em painel reproduz `animateStroke(i)` no canvas principal
-- Painéis são responsivos e utilizam `HanziWriter.getScalingTransform()`
-
-### Script Toggle (简体/繁體)
-
-Botão `简` / `繁` ao lado do input de caractere que alterna entre Chinês Simplificado e Tradicional. Usa `getTraditional()` e `getSimplified()` do módulo `src/data/simplified-to-traditional.ts`.
-
-### Dados de Conversão
-
-| Arquivo | Mudança |
-|---------|---------|
-| `src/data/simplified-to-traditional.ts` | Adicionado `traditionalToSimplified` (reverse map) + função `getSimplified()` |
-| `tests/simplified-to-traditional.test.ts` | 3 novos testes: reverse lookup, same-char undefined, round-trip |
-
-### Canvas Responsivo
-
-HanziWriter inicializado com `480×480` (vs 200×200 original). Container SVG com `max-width: 540px` e `max-width: 100%` via CSS para escalar em mobile.
-
----
-
-## Página de Licenças Open-Source
-
-`src/pages/licencas.astro` — página dedicada com ambas as licenças exigidas pela Hotmart:
-
-1. **MIT License**: Hanzi Writer (motor de animação e reconhecimento de traços)
-2. **Arphic Public License**: Dados vetoriais de traços (hanzi-writer-data-tw)
-
-Link adicionado no footer global (`Layout.astro`) → `Licenças`.
+> **Importante:** Após adicionar conteúdo com novos caracteres chineses, refaça o passo 1 e 2 para atualizar o subset.
 
 ---
 
 ## Fontes Web (Google Fonts)
 
-Substituição completa do sistema de fontes para estilo mais relaxado e amigável:
+| Uso | Fonte |
+|-----|-------|
+| Português (corpo + títulos) | **Nunito** (300–900) |
+| Chinês (UI/botões) | **ZCOOL QingKe HuangYou** |
+| Chinês (texto longo) | **Noto Sans SC** |
+| Chinês (caligrafia) | **TW-Kai** (subset, ver seção acima) |
 
-| Uso | Anterior | Novo | Licença |
-|-----|----------|------|---------|
-| Português (corpo + títulos) | Inter (sans) + Outfit (display) | **Nunito** (300–900) | OFL |
-| Chinês (UI/botões) | Noto Serif SC | **ZCOOL QingKe HuangYou** (手写风) | OFL |
-| Chinês (texto longo) | Noto Serif SC | **Noto Sans SC** | OFL |
+---
 
-### Arquivos Alterados
+## Sistema de Prática de Traços (Strokes)
 
-- `src/styles/global.css` — Google Fonts import + variáveis `--font-sans`, `--font-display`, `--font-zh`, `--font-zh-hand`
-- `src/styles/hanzi-wheel.css` — 4 `font-family` atualizados
-- `src/components/Welcome.astro` — hardcoded font-family
-- `src/components/StrokeWorkbench.astro` — 3 `font-family` de elementos chineses
-- `src/pages/licoes/[slug].astro` — 3x `font-serif-zh` → `font-zh`
-- `src/pages/comunidade.astro` — 2x `font-serif-zh` → `font-zh`
+### Arquitetura
+
+| Arquivo | Função |
+|---------|--------|
+| `src/lib/hanzi-writer-manager.ts` | Wrapper Hanzi Writer, estado do caractere, 3 camadas |
+| `src/components/StrokeWorkbench.astro` | Canvas SVG, controles, decomposição, quiz |
+| `src/pages/strokes.astro` | Rate page |
+
+### Camadas Progressivas
+
+1. **Assistir** (watch) — animação com controle de velocidade
+2. **Praticar** (practice) — quiz com contorno visível
+3. **Dominar** (master) — quiz sem contorno, estatísticas
+
+### Script Toggle
+
+Botão `简` / `繁` alterna entre Simplificado e Tradicional usando `src/data/simplified-to-traditional.ts`.
+
+---
+
+## Sistema de Comunidade
+
+Auto-contido (zero dependências externas). Alunos submetem conteúdo via formulários inline que salvam em `localStorage`.
+
+### Categorias
+
+| Categoria | Descrição |
+|-----------|-----------|
+| Situações | Pedidos de situações para praticar chinês |
+| Dificuldades | Caracteres difíceis (registrado por clique) |
+| Macetes | Mnemônicos compartilhados |
+| Comentários | Opiniões sobre posts e lições |
+
+### Arquivos
+
+| Arquivo | Função |
+|---------|--------|
+| `comunidade.astro` | Hub com 4 abas + formulários |
+| `ComunidadeCard.astro` | CTA card reutilizável |
+| `comunidade-storage.ts` | localStorage CRUD |
+| `comunidade-data.json` | Seed data (5 registros/categoria) |
+
+---
+
+## Páginas de Serviços (Business Pages)
+
+### Rotas
+
+| Página | Slug | Público |
+|--------|------|---------|
+| Serviços Empresariais | `/servicos-empresariais` | B2B (empresas de comércio exterior) |
+| Imersão em Mandarim | `/imersao-mandarim` | B2C (profissionais, estudantes) |
+| Sobre Mim | `/sobre-mim` | Autoridade, trajetória |
+| Manual de Caligrafia | `/manual` | Landing Page do ebook |
+
+### Infográficos
+
+Cada página de serviço tem infográfico em `public/images/services/infografico-{slug}.png`.
+Gerar com IA e adicionar no cabeçalho da página `.astro`.
+
+---
+
+## Landing Page do Manual de Caligrafia
+
+`src/pages/manual.astro` — página dedicada de vendas do ebook com:
+
+- **Hero:** Headline direta + capa do ebook + botão Hotmart
+- **Seção Autora:** Biografia + linha do tempo Taiwan→Paraguai→Chile→Brasil
+- **Prova Social:** Vídeo YouTube incorporado + 3 depoimentos
+- **3 Pilares:** Ordem dos Traços, Foco e Disciplina, Significados Culturais
+- **CTA Final:** Botão de garantia com selo Hotmart
+
+### Testes
+
+`tests/landing-page-manual.test.ts` — 8 testes (SEO, headline, capa, vídeo, depoimentos, CTA).
+
+---
+
+## Testes
+
+Runner: **Vitest** com ambiente jsdom.
+
+```bash
+npm test              # Rodar todos os testes
+npx vitest run        # Rodar uma vez (CI)
+npx vitest            # Modo watch
+```
+
+### Arquivos de Teste (19 suites, 154 testes)
+
+| Teste | O que cobre |
+|-------|-------------|
+| `pergaminho-virtual.test.ts` | Componente PergaminhoVirtual (12 testes) |
+| `homepage-banner.test.ts` | Banner do manual na homepage |
+| `strokes-page-banner.test.ts` | Banner na página de traços |
+| `landing-page-manual.test.ts` | Landing page do manual |
+| `nav-menu.test.ts` | Menu de navegação |
+| `state-manager.test.ts` | Máquina de estado do diagnóstico |
+| `search.test.ts` | Busca global Fuse.js |
+| `courses-data.test.ts` | Integridade dos dados de cursos |
+| `comunidade-storage.test.ts` | CRUD localStorage |
+| `hanzi-writer-manager.test.ts` | Wrapper do Hanzi Writer |
+| ... e mais 9 suites | |
+
+### Padrão TDD
+
+Sempre escrever testes **antes** da implementação:
+
+1. **RED** — testes falham (componente não existe)
+2. **GREEN** — implementar até passar
+3. **REFAKTOR** — rodar suite completa para garantir que nada quebrou
+
+---
+
+## Build & Deploy
+
+```bash
+npm run build     # Gera dist/ (22 páginas, ~3s)
+npm run preview   # Preview local do build
+```
+
+### Cloudflare Workers
+
+- Limite: **25 MB por arquivo estático**
+- Fontes TTF originais (108 MB total) **excedem** o limite
+- Usar **WOFF2 subset** (193 KB total) — ver seção "Fontes Web Chinesas (Subsetting)"
+
+---
+
+## Manutenção Futura
+
+### Adicionar Nova Lição
+
+1. Criar arquivo `.md` em `src/content/lessons/`
+2. Preencher frontmatter (validação Zod automática)
+3. Criar cover image em `public/images/lessons/{slug}.png`
+4. Adicionar caracteres novos ao `src/data/dictionary.ts` se necessário
+5. Rodar `npm test && npm run build`
+
+### Adicionar Novo Personagem ao Hanzi Wheel
+
+1. Adicionar entrada em `src/data/dictionary.ts`
+2. Associar a um radical existente
+3. O Wheel consome automaticamente
+
+### Atualizar Font Subset
+
+1. Rodar script de extração de caracteres (ver seção de subsetting)
+2. Regenerar WOFF2 com `pyftsubset`
+3. Verificar build
+
+### Este Guia
+
+Manter este arquivo (`src/Resource/project_guide.md`) atualizado com decisões técnicas, novos componentes e mudanças de arquitetura para garantir que o próximo desenvolvedor (humano ou IA) tenha contexto completo.
