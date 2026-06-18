@@ -1,0 +1,121 @@
+---
+// PergaminhoVirtual.astro — Plano 2: Híbrido de Conversão
+---
+
+<section class="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-black/30 to-black/50">
+  <!-- Background glow -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-gold/5 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-red/5 rounded-full blur-[120px]"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="parchment-scroll rounded-2xl p-8 sm:p-12 lg:p-16 shadow-2xl">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+
+        <!-- LEFT: Text Content (7 cols) -->
+        <div class="lg:col-span-7 space-y-8">
+
+          <!-- Seal / Stamp decorativo (carimbo vermelho 印章) -->
+          <div class="flex items-center gap-4">
+            <div
+              class="stamp-seal w-14 h-14 rounded-full bg-[#c62828] flex items-center justify-center shadow-lg -rotate-6 border-2 border-[#b71c1c]">
+              <span
+                class="text-white font-bold text-xs font-serif tracking-widest text-center leading-tight px-1 select-none"
+                style="writing-mode: vertical-rl;">書</span>
+            </div>
+            <span class="text-xs font-bold text-[#5d4037] uppercase tracking-widest">Manual Exclusivo</span>
+          </div>
+
+          <!-- Título -->
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-[#3e2723] leading-tight tracking-tight">
+            O Caminho do Foco e da Disciplina Através do Pincel
+          </h2>
+
+          <!-- Copy principal -->
+          <p class="text-base sm:text-lg text-[#4e342e] leading-relaxed font-sans">
+            Muito mais do que escrita: a caligrafia chinesa é uma meditação ativa para desacelerar a mente.
+            Descubra os segredos etimológicos e a ordem dos traços no nosso guia exclusivo.
+          </p>
+
+          <!-- Mini bullets de benefício -->
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="text-[#c62828] text-lg mt-0.5">✍️</span>
+              <span class="text-sm text-[#4e342e]"><strong>Ordem dos Traços:</strong> Aprenda a direção correta de cada pincelada</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-[#c62828] text-lg mt-0.5">🧘</span>
+              <span class="text-sm text-[#4e342e]"><strong>Meditação Ativa:</strong> Desacelere sua mente enquanto escreve</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-[#c62828] text-lg mt-0.5">🏮</span>
+              <span class="text-sm text-[#4e342e]"><strong>Significados Culturais:</strong> Etimologia por trás de cada caractere</span>
+            </div>
+          </div>
+
+          <!-- CTA Button (visual de carimbo vermelho/nanquim) -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
+            <a href="/manual"
+              class="stamp-btn inline-flex items-center gap-3 px-8 py-4 bg-[#c62828] text-[#fcf4dc] font-bold text-sm tracking-wider uppercase rounded-sm shadow-lg hover:bg-[#b71c1c] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0">
+              <span>🖊️</span>
+              Adquirir o Manual de Caligrafia Chinesa
+            </a>
+            <span class="text-xs text-[#5d4037] font-semibold">Garantia de 7 dias • Acesso imediato</span>
+          </div>
+
+          <!-- Micro Prova Social -->
+          <div class="flex items-center gap-4 pt-2 border-t-2 border-[#8d6e63]/20">
+            <div class="flex -space-x-2">
+              <span class="w-8 h-8 rounded-full bg-[#5d4037] flex items-center justify-center text-xs border-2 border-[#fcf4dc]">🎓</span>
+              <span class="w-8 h-8 rounded-full bg-[#5d4037] flex items-center justify-center text-xs border-2 border-[#fcf4dc]">✍️</span>
+              <span class="w-8 h-8 rounded-full bg-[#5d4037] flex items-center justify-center text-xs border-2 border-[#fcf4dc]">🧘</span>
+            </div>
+            <p class="text-xs text-[#5d4037]">
+              <strong>+45 mil</strong> pessoas já viram o método —
+              <span class="text-[#c62828] font-bold">4.9★</span> de satisfação
+            </p>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Photos (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col items-center gap-6">
+
+          <!-- Foto da Stefany Shen -->
+          <div class="relative group">
+            <div class="absolute -inset-2 bg-gradient-to-tr from-[#c62828] to-[#8d6e63] rounded-2xl blur-md opacity-30 group-hover:opacity-50 transition duration-500"></div>
+            <div
+              class="relative w-48 h-48 sm:w-56 sm:h-56 rounded-full overflow-hidden border-4 border-[#fcf4dc] shadow-xl transform group-hover:scale-[1.02] transition-transform duration-500">
+              <img src="/foto/foto_StefanyShen.png" alt="Stefany Shen - Professora de Caligrafia Chinesa"
+                class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <!-- Floating badge -->
+            <div class="absolute -bottom-2 -right-2 bg-[#fcf4dc] border-2 border-[#8d6e63] px-3 py-1 rounded-full shadow-lg">
+              <span class="text-xs font-bold text-[#5d4037]">👩‍🏫 Autora</span>
+            </div>
+          </div>
+
+          <!-- Capa do Ebook -->
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-brand-gold to-amber-400 rounded-lg blur-md opacity-30 group-hover:opacity-50 transition duration-500"></div>
+            <div
+              class="relative max-w-[180px] sm:max-w-[200px] rounded-lg overflow-hidden border-2 border-[#fcf4dc] shadow-lg transform group-hover:rotate-1 group-hover:scale-[1.03] transition-all duration-500">
+              <img src="/ebook/capa_ebook_numero.png" alt="Capa do Manual de Caligrafia Chinesa" class="w-full h-auto"
+                loading="lazy" />
+            </div>
+          </div>
+
+          <!-- Decorative element -->
+          <div class="flex items-center gap-2 text-[#8d6e63]">
+            <span class="w-12 h-px bg-[#8d6e63]/30"></span>
+            <span class="text-xs font-serif italic">Método Shen Ai</span>
+            <span class="w-12 h-px bg-[#8d6e63]/30"></span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

@@ -146,6 +146,34 @@
   bottom: -14px;
 }
 
+/* Stamp / Carimbo Chinês (印章) */
+.stamp-seal {
+  box-shadow: 0 2px 0 #7f0000, 0 4px 8px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.stamp-seal:hover {
+  transform: rotate(-3deg) scale(1.05);
+}
+
+.stamp-btn {
+  font-family: 'TW-Kai', 'Noto Sans SC', 'Nunito', serif;
+  box-shadow: 0 4px 0 #7f0000, 0 6px 12px rgba(0,0,0,0.3);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+}
+
+.stamp-btn:hover {
+  box-shadow: 0 2px 0 #7f0000, 0 8px 16px rgba(0,0,0,0.4);
+  transform: translateY(-2px);
+}
+
+.stamp-btn:active {
+  box-shadow: 0 1px 0 #7f0000;
+  transform: translateY(2px);
+}
+
 /* Path Specific Colorings */
 .path-A-glow {
   box-shadow: 0 0 15px rgba(239, 68, 68, 0.15);

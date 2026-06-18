@@ -19,6 +19,51 @@ import StrokeWorkbench from '../components/StrokeWorkbench.astro';
       </div>
 
       <StrokeWorkbench />
+
+      <!-- Bento-Grid style Feature Card for the Calligraphy Manual -->
+      <div class="max-w-4xl mx-auto mt-16">
+        <div class="glass-panel rounded-3xl p-8 border border-brand-gold/20 shadow-[0_0_30px_rgba(251,191,36,0.05)] hover:shadow-[0_0_35px_rgba(251,191,36,0.12)] hover:border-brand-gold/30 transition-all duration-500 overflow-hidden relative group">
+          <div class="absolute -right-16 -top-16 w-36 h-36 bg-brand-gold/5 rounded-full filter blur-xl group-hover:bg-brand-gold/10 transition-colors"></div>
+          
+          <div class="grid md:grid-cols-12 gap-8 items-center relative z-10">
+            
+            <!-- Book Cover Mockup (cols: 4) -->
+            <div class="md:col-span-4 flex justify-center">
+              <div class="relative max-w-[150px] aspect-[3/4] bg-dark-card rounded-xl border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden transform group-hover:scale-105 group-hover:rotate-2 transition-all duration-500">
+                <img 
+                  src="/ebook/capa_ebook_numero.png" 
+                  alt="Capa do Manual de Caligrafia Chinesa" 
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            <!-- Copy and CTA (cols: 8) -->
+            <div class="md:col-span-8 text-center md:text-left space-y-4">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-[10px] font-bold text-brand-gold tracking-widest uppercase font-sans">
+                📘 GUIA COMPLEMENTAR
+              </span>
+              <h3 class="text-2xl font-display font-black text-white leading-tight">
+                Domine a Arte dos Traços Tradicionais
+              </h3>
+              <p class="text-xs sm:text-sm text-gray-300 leading-relaxed font-sans font-light">
+                Sentiu dificuldade com a ordem dos traços? O nosso **Manual de Caligrafia Chinesa** simplifica toda a sequência geométrica, a postura física e os significados milenares de cada caractere de forma visual e prática.
+              </p>
+              
+              <div class="pt-2">
+                <a 
+                  href="/manual" 
+                  class="inline-flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg font-extrabold text-xs tracking-wider uppercase rounded-xl shadow-[0_4px_15px_rgba(251,191,36,0.2)] hover:shadow-[0_4px_25px_rgba(251,191,36,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 font-display"
+                >
+                  <span>GARANTIR MEU MANUAL 📜</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </Layout>
