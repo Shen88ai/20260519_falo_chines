@@ -62,9 +62,29 @@ describe('Landing Page do Manual de Caligrafia Chinesa - TDD', () => {
     expect(content).toContain('Significados Culturais');
   });
 
-  it('deve conter botões de CTA direcionados para a Hotmart', () => {
+  it('deve conter botões de CTA com nomes corretos', () => {
     const content = fs.readFileSync(filePath, 'utf-8');
-    // Deve conter botões de checkout (pelo menos um link ou botão contendo hotmart ou o CTA correto)
     expect(content).toContain('GARANTIR MEU MANUAL');
+  });
+
+  it('deve conter o modal de checkout com overlay', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('checkout-modal');
+    expect(content).toContain('modal-overlay');
+  });
+
+  it('deve conter a pergunta "Por que você quer aprender chinês?" no modal', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('Por que você quer aprender chinês');
+  });
+
+  it('deve conter o numero do WhatsApp 5511996990939 para envio da resposta', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('5511996990939');
+  });
+
+  it('deve conter o link de pagamento da Hotmart no JavaScript do modal', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('pay.hotmart.com');
   });
 });

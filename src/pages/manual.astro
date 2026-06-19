@@ -37,14 +37,12 @@ import Layout from '../layouts/Layout.astro';
 
           <!-- CTAs and Badges -->
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-            <a 
-              href="https://pay.hotmart.com/placeholder" 
-              target="_blank"
-              rel="noopener noreferrer"
-              class="px-8 py-5 text-center text-sm font-bold bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg rounded-xl shadow-[0_4px_25px_rgba(251,191,36,0.35)] hover:shadow-[0_4px_30px_rgba(251,191,36,0.5)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 tracking-wider uppercase font-display"
+            <button 
+              id="cta-hero"
+              class="px-8 py-5 text-center text-sm font-bold bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg rounded-xl shadow-[0_4px_25px_rgba(251,191,36,0.35)] hover:shadow-[0_4px_30px_rgba(251,191,36,0.5)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 tracking-wider uppercase font-display cursor-pointer"
             >
               GARANTIR MEU MANUAL COM DESCONTO
-            </a>
+            </button>
             
             <div class="flex items-center justify-center gap-2 text-xs text-gray-400">
               <span class="text-brand-jade text-lg">🛡️</span>
@@ -366,14 +364,12 @@ import Layout from '../layouts/Layout.astro';
       </p>
 
       <div class="pt-4 flex flex-col items-center gap-4">
-        <a 
-          href="https://pay.hotmart.com/placeholder" 
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-12 py-6 text-center text-base font-extrabold bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg rounded-xl shadow-[0_4px_30px_rgba(251,191,36,0.4)] hover:shadow-[0_4px_40px_rgba(251,191,36,0.6)] hover:-translate-y-1 active:translate-y-0 transition-all duration-300 tracking-wider uppercase font-display"
+        <button 
+          id="cta-final"
+          class="px-12 py-6 text-center text-base font-extrabold bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg rounded-xl shadow-[0_4px_30px_rgba(251,191,36,0.4)] hover:shadow-[0_4px_40px_rgba(251,191,36,0.6)] hover:-translate-y-1 active:translate-y-0 transition-all duration-300 tracking-wider uppercase font-display cursor-pointer"
         >
           GARANTIR MEU MANUAL DE CALIGRAFIA CHINESA
-        </a>
+        </button>
         
         <p class="text-xs text-gray-500 font-sans">
           Acesso imediato • E-book PDF de Alta Resolução • Pagamento Seguro Hotmart
@@ -382,4 +378,204 @@ import Layout from '../layouts/Layout.astro';
 
     </div>
   </section>
+
+  <!-- MODAL DE CHECKOUT -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-box">
+      <div class="modal-seal">書</div>
+      <h3>Antes de finalizar…</h3>
+      <p>Gostaríamos genuinamente de saber:<br /><strong>Por que você quer aprender chinês?</strong></p>
+      <textarea id="why-answer" placeholder="Ex: Quero entender melhor a cultura, fechar negócios com fornecedores chineses, viajar para a China…"></textarea>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="modal-cancel">Agora não</button>
+        <button class="btn-send" id="modal-send" disabled>Enviar e Finalizar 💬</button>
+      </div>
+      <p class="modal-whatsapp-note">🔒 Sua resposta será enviada pelo WhatsApp</p>
+    </div>
+  </div>
+
+  <style>
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      background: linear-gradient(180deg, #1a1d28, #141824);
+      border: 1px solid rgba(255,215,0,0.15);
+      border-radius: 16px;
+      padding: 36px 32px 28px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      text-align: center;
+      position: relative;
+      animation: modal-in 0.3s ease;
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-seal {
+      width: 48px; height: 48px;
+      background: #c62828;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      border: 2px solid #7f0000;
+      color: #fcf4dc;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: 'TW-Kai', 'Noto Sans SC', serif;
+    }
+    .modal-box h3 {
+      font-size: 20px;
+      color: #fff;
+      margin-bottom: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+    }
+    .modal-box p {
+      font-size: 14px;
+      color: #9ca3af;
+      margin-bottom: 20px;
+    }
+    .modal-box textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      background: rgba(255,255,255,0.04);
+      color: #e5e7eb;
+      resize: vertical;
+      min-height: 90px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal-box textarea:focus {
+      border-color: #fbbf24;
+    }
+    .modal-box textarea::placeholder {
+      color: #6b7280;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .modal-actions button {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-send {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #1a1d28;
+      flex: 1;
+    }
+    .btn-send:hover { opacity: 0.9; }
+    .btn-cancel {
+      background: rgba(255,255,255,0.06);
+      color: #9ca3af;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+    }
+    .btn-cancel:hover { background: rgba(255,255,255,0.1); }
+    .btn-send:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .modal-whatsapp-note {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 12px;
+    }
+  </style>
+
+  <script>
+    (function() {
+      const phone = '5511996990939';
+      const paymentUrl = 'https://pay.hotmart.com/placeholder';
+
+      const modal = document.getElementById('checkout-modal');
+      const textarea = document.getElementById('why-answer');
+      const sendBtn = document.getElementById('modal-send');
+      const cancelBtn = document.getElementById('modal-cancel');
+      const heroCta = document.getElementById('cta-hero');
+      const finalCta = document.getElementById('cta-final');
+
+      function openModal() {
+        modal.classList.add('active');
+        textarea.value = '';
+        sendBtn.disabled = true;
+        textarea.focus();
+      }
+
+      textarea.addEventListener('input', function() {
+        sendBtn.disabled = this.value.trim().length < 3;
+      });
+
+      function sendWhatsApp() {
+        const answer = textarea.value.trim();
+        if (answer.length < 3) return;
+
+        const msg = encodeURIComponent(
+          '📖 *Resposta do Modal - Manual de Caligrafia Chinesa*\n\n' +
+          '✍️ *Por que você quer aprender chinês?*\n' +
+          answer
+        );
+        const waUrl = 'https://wa.me/' + phone + '?text=' + msg;
+
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Enviando…';
+        window.open(waUrl, '_blank');
+
+        setTimeout(function() {
+          modal.classList.remove('active');
+          window.open(paymentUrl, '_blank');
+        }, 1200);
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        window.open(paymentUrl, '_blank');
+      }
+
+      heroCta.addEventListener('click', openModal);
+      finalCta.addEventListener('click', openModal);
+      sendBtn.addEventListener('click', sendWhatsApp);
+      cancelBtn.addEventListener('click', closeModal);
+
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+
+      textarea.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          if (!sendBtn.disabled) sendWhatsApp();
+        }
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
+    })();
+  </script>
 </Layout>

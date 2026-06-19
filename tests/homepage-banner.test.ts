@@ -22,4 +22,22 @@ describe('Homepage Banner do Manual de Caligrafia - TDD', () => {
     expect(content).toContain('LANÇAMENTO');
     expect(content).toContain('Manual de Caligrafia Chinesa');
   });
+
+  it('deve conter link para /manual (versão clássica) no banner', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('/manual');
+    // O link /manual deve aparecer mais de uma vez ou em contexto de link/botão
+    // (a página já tem /manual em outros lugares, verifique a contagem)
+  });
+
+  it('deve conter link para /manual-v2 (versão reflexão) no banner', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('/manual-v2');
+  });
+
+  it('deve conter texto distintivo das duas versões no banner', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('Versão Clássica');
+    expect(content).toContain('Versão Reflexão');
+  });
 });
