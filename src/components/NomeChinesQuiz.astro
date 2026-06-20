@@ -1,0 +1,216 @@
+---
+export interface Props {
+  phone?: string;
+}
+
+const { phone = '5511996990939' } = Astro.props as Props;
+---
+
+<div id="nome-chines-quiz" class="max-w-2xl mx-auto space-y-8">
+  <!-- Progress bar -->
+  <div class="flex items-center gap-2">
+    <div class="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
+      <div id="quiz-progress" class="h-full bg-gradient-to-r from-brand-gold to-amber-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+    </div>
+    <span id="quiz-step-label" class="text-xs text-gray-500 font-mono min-w-[4rem] text-right">1 / 6</span>
+  </div>
+
+  <!-- Step: Name -->
+  <div id="quiz-step-0" class="quiz-step space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Qual é o seu nome nativo?</h3>
+    <p class="text-sm text-gray-400">Digite seu nome abaixo</p>
+    <input
+      id="quiz-input-name"
+      type="text"
+      placeholder="Ex: Maria, João, Ana Clara..."
+      class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 text-lg focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all"
+    />
+    <button
+      class="quiz-next px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg font-bold text-sm transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
+      disabled
+    >
+      Próximo →
+    </button>
+  </div>
+
+  <!-- Step: Translation Type -->
+  <div id="quiz-step-1" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Como você gostaria de traduzir seu nome?</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="som">
+        <span class="text-2xl block mb-2">🎶</span>
+        Pelo som
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="significado">
+        <span class="text-2xl block mb-2">🌸</span>
+        Pelo significado
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="especial">
+        <span class="text-2xl block mb-2">💎</span>
+        Nome especial
+      </button>
+    </div>
+  </div>
+
+  <!-- Step: Motivation -->
+  <div id="quiz-step-2" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Por que você quer ter seu nome em chinês?</h3>
+    <div class="grid grid-cols-2 gap-3">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="tattoo">
+        <span class="text-2xl block mb-2">🖋️</span>
+        Para tatuagem
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="social">
+        <span class="text-2xl block mb-2">📱</span>
+        Redes sociais
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="curiosidade">
+        <span class="text-2xl block mb-2">🌏</span>
+        Curiosidade cultural
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="presente">
+        <span class="text-2xl block mb-2">🎁</span>
+        Para presentear
+      </button>
+    </div>
+  </div>
+
+  <!-- Step: Style -->
+  <div id="quiz-step-3" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Qual estilo você mais gostou?</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <button class="quiz-option px-3 py-4 rounded-xl bg-white/5 border border-white/10 hover:border-brand-red/50 hover:bg-brand-red/5 text-white text-sm font-bold transition-all text-center" data-value="ink">
+        <span class="text-lg block mb-1">🖌️</span>
+        <span>Tinta tradicional</span>
+      </button>
+      <button class="quiz-option px-3 py-4 rounded-xl bg-white/5 border border-white/10 hover:border-brand-blue/50 hover:bg-brand-blue/5 text-white text-sm font-bold transition-all text-center" data-value="futuristic">
+        <span class="text-lg block mb-1">💠</span>
+        <span>Design futurista</span>
+      </button>
+      <button class="quiz-option px-3 py-4 rounded-xl bg-white/5 border border-white/10 hover:border-brand-jade/50 hover:bg-brand-jade/5 text-white text-sm font-bold transition-all text-center" data-value="translucent">
+        <span class="text-lg block mb-1">🌊</span>
+        <span>Caligrafia translúcida</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Step: Dedication -->
+  <div id="quiz-step-4" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Gostaria de uma dedicatória personalizada?</h3>
+    <p class="text-sm text-gray-400">Ex: "Vitória = 勝利, símbolo do amor de uma mãe pela filha"</p>
+    <div class="grid grid-cols-2 gap-3">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="sim">
+        <span class="text-2xl block mb-2">💖</span>
+        Sim, quero!
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="nao">
+        <span class="text-2xl block mb-2">🙅‍♀️</span>
+        Não
+      </button>
+    </div>
+  </div>
+
+  <!-- Step: Final CTA -->
+  <div id="quiz-step-5" class="quiz-step hidden space-y-6 text-center">
+    <span class="text-5xl block">🀄</span>
+    <h3 class="text-2xl font-display font-bold text-white">Pronto!</h3>
+    <p class="text-gray-400">
+      Seu nome chinês será criado manualmente com carinho.<br />
+      Clique abaixo para encomendar e receber em até 48h.
+    </p>
+    <button
+      id="quiz-cta-final"
+      class="px-10 py-5 rounded-xl bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg font-black text-sm tracking-wider uppercase transition-all hover:shadow-[0_4px_30px_rgba(251,191,36,0.4)] hover:-translate-y-0.5"
+    >
+      ENCOMENDAR MEU NOME CHINÊS
+    </button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const FIELDS = ['name', 'translationType', 'motivation', 'style', 'dedication'];
+    const answers = { name: '', translationType: '', motivation: '', style: '', dedication: false };
+    const phone = '5511996990939';
+    let currentStep = 0;
+
+    const progress = document.getElementById('quiz-progress');
+    const stepLabel = document.getElementById('quiz-step-label');
+    const totalQuizSteps = 6;
+
+    function showStep(index) {
+      document.querySelectorAll('.quiz-step').forEach((el, i) => {
+        el.classList.toggle('hidden', i !== index);
+      });
+      currentStep = index;
+      const pct = ((index + 1) / totalQuizSteps) * 100;
+      if (progress) progress.style.width = pct + '%';
+      if (stepLabel) stepLabel.textContent = (index + 1) + ' / ' + totalQuizSteps;
+    }
+
+    function getStepForField(field) {
+      return FIELDS.indexOf(field);
+    }
+
+    function setAnswer(field, value) {
+      answers[field] = value;
+      const nextIdx = getStepForField(field) + 1;
+      if (nextIdx < totalQuizSteps) {
+        showStep(nextIdx);
+      } else {
+        showStep(totalQuizSteps - 1);
+      }
+    }
+
+    // Name input
+    const nameInput = document.getElementById('quiz-input-name');
+    const nameNext = document.querySelector('#quiz-step-0 .quiz-next');
+    if (nameInput && nameNext) {
+      nameInput.addEventListener('input', function() {
+        nameNext.disabled = this.value.trim().length < 1;
+      });
+      nameNext.addEventListener('click', function() {
+        if (nameInput.value.trim()) {
+          setAnswer('name', nameInput.value.trim());
+        }
+      });
+      nameInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !nameNext.disabled) {
+          nameNext.click();
+        }
+      });
+    }
+
+    // Option buttons
+    document.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const stepEl = this.closest('.quiz-step');
+        const stepIndex = Array.from(document.querySelectorAll('.quiz-step')).indexOf(stepEl);
+        const field = FIELDS[stepIndex];
+        const value = this.dataset.value;
+        if (field === 'dedication') {
+          setAnswer(field, value === 'sim');
+        } else {
+          setAnswer(field, value);
+        }
+      });
+    });
+
+    // Final CTA
+    const finalCta = document.getElementById('quiz-cta-final');
+    if (finalCta) {
+      finalCta.addEventListener('click', function() {
+        const msg = encodeURIComponent(
+          '🀄 *Pedido de Nome Chinês*\n\n' +
+          `👤 *Nome:* ${answers.name}\n` +
+          `🎯 *Tradução:* ${answers.translationType}\n` +
+          `💖 *Motivação:* ${answers.motivation}\n` +
+          `🎨 *Estilo:* ${answers.style}\n` +
+          `📝 *Dedicatória:* ${answers.dedication ? 'Sim 💖' : 'Não 🙅‍♀️'}`
+        );
+        const waUrl = 'https://wa.me/' + phone + '?text=' + msg;
+        window.open(waUrl, '_blank');
+      });
+    }
+  })();
+</script>

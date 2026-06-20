@@ -87,4 +87,9 @@ describe('Landing Page do Manual de Caligrafia Chinesa - TDD', () => {
     const content = fs.readFileSync(filePath, 'utf-8');
     expect(content).toContain('pay.hotmart.com');
   });
+
+  it('deve conter link para /nome-chines', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('/nome-chines');
+  });
 });

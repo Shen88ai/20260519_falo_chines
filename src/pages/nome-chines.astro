@@ -1,0 +1,501 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NomeChinesQuiz from '../components/NomeChinesQuiz.astro';
+const inkImage = '/images/nome-chines/ink.png';
+const futuristicImage = '/images/nome-chines/futuristic.png';
+const translucentImage = '/images/nome-chines/translucent.png';
+---
+
+<Layout
+  title="Nome Chinês Exclusivo 🀄 - Falo Chinês"
+  description="Descubra como seu nome se transforma em arte e significado na cultura chinesa. Receba em 3 estilos exclusivos: tinta tradicional, design futurista e caligrafia translúcida."
+>
+  <!-- Background decorative elements -->
+  <div class="absolute top-24 left-1/4 w-96 h-96 bg-brand-red/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+  <div class="absolute top-[800px] right-1/4 w-[450px] h-[450px] bg-brand-gold/5 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+
+  <!-- HERO SECTION -->
+  <section class="relative py-20 lg:py-28 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div class="lg:col-span-7 space-y-8 text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/25 text-brand-gold text-xs font-semibold tracking-wide uppercase">
+            <span>✨ Exclusivo & Personalizado</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+            <span>3 Estilos Únicos</span>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-[1.1] tracking-tight">
+            Descubra como seu nome vira arte na <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-yellow-200">cultura chinesa</span>
+          </h1>
+
+          <p class="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-2xl font-sans">
+            Seu nome traduzido em <strong class="text-brand-gold">3 estilos exclusivos</strong>: tinta tradicional, design futurista e caligrafia translúcida. Cada caractere é escolhido manualmente com base no significado e na sonoridade.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+            <a
+              href="#quiz-section"
+              class="px-8 py-5 text-center text-sm font-bold bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg rounded-xl shadow-[0_4px_25px_rgba(251,191,36,0.35)] hover:shadow-[0_4px_30px_rgba(251,191,36,0.5)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 tracking-wider uppercase font-display"
+            >
+              DESCOBRIR MEU NOME CHINÊS
+            </a>
+            <div class="flex items-center justify-center gap-2 text-xs text-gray-400">
+              <span class="text-brand-jade text-lg">🛡️</span>
+              <div class="text-left">
+                <p class="font-semibold text-gray-200">Criação Manual e Exclusiva</p>
+                <p>Entrega em até 48h via WhatsApp</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4 pt-4 border-t border-white/5 max-w-md">
+            <div class="flex -space-x-3">
+              <span class="w-9 h-9 rounded-full bg-brand-red flex items-center justify-center text-sm border-2 border-dark-bg">🀄</span>
+              <span class="w-9 h-9 rounded-full bg-brand-gold flex items-center justify-center text-sm border-2 border-dark-bg">✍️</span>
+              <span class="w-9 h-9 rounded-full bg-brand-jade flex items-center justify-center text-sm border-2 border-dark-bg">🎨</span>
+            </div>
+            <p class="text-xs sm:text-sm text-gray-400 font-sans">
+              <strong class="text-white">+45 pessoas</strong> já encomendaram seu nome chinês exclusivo.
+            </p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex justify-center items-center">
+          <div class="relative group">
+            <div class="absolute -inset-2 bg-gradient-to-tr from-brand-red to-brand-gold rounded-3xl blur-2xl opacity-30 group-hover:opacity-45 transition duration-500"></div>
+            <div class="relative max-w-[320px] sm:max-w-[360px] aspect-[3/4] bg-dark-card rounded-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden transition-transform duration-500 group-hover:scale-[1.02] group-hover:rotate-1">
+              <img
+                src={inkImage}
+                alt="Exemplo de nome chinês em caligrafia com tinta"
+                class="w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
+            <div class="absolute -bottom-6 -right-6 bg-dark-surface border border-white/10 p-4 rounded-2xl shadow-xl flex items-center gap-3">
+              <span class="text-3xl">🀄</span>
+              <div class="text-left">
+                <p class="text-[10px] text-brand-gold font-bold tracking-widest uppercase">Tinta Tradicional</p>
+                <p class="text-xs font-bold text-white">Caligrafia Chinesa Autêntica</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ SECTION -->
+  <section id="quiz-section" class="py-20 bg-black/30 border-y border-white/5 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-xs font-bold text-brand-gold tracking-widest uppercase mb-3 font-display">Descubra o Seu</h2>
+        <h3 class="text-3xl sm:text-4xl font-display font-black text-white">Responda e Encomende</h3>
+        <p class="mt-4 text-gray-400 font-sans">
+          Responda às perguntas abaixo para que eu entenda exatamente o que você deseja.
+        </p>
+      </div>
+      <NomeChinesQuiz />
+    </div>
+  </section>
+
+  <!-- 3 STYLES SHOWCASE -->
+  <section class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-bold text-brand-gold tracking-widest uppercase mb-3 font-display">Os 3 Estilos</h2>
+        <h3 class="text-3xl sm:text-4xl font-display font-black text-white">Você Recebe os 3 Estilos Exclusivos</h3>
+        <p class="mt-4 text-gray-400 font-sans">
+          Cada pedido inclui seu nome chinês nos 3 estilos + explicação do significado de cada caractere.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="group glass-panel rounded-3xl p-6 border border-white/5 transition-all duration-300 hover:-translate-y-2 hover:border-brand-red/30 text-center">
+          <div class="rounded-2xl overflow-hidden mb-5">
+            <img src={inkImage} alt="Estilo tinta tradicional" class="w-full object-contain bg-black/20 max-h-80" />
+          </div>
+          <span class="text-2xl mb-3 block">🖌️</span>
+          <h4 class="font-display font-bold text-xl text-white mb-3">Tinta Tradicional</h4>
+          <p class="text-gray-400 leading-relaxed font-sans text-sm">
+            Caligrafia clássica com pincel e tinta. Ideal para tatuagens e quadros decorativos.
+          </p>
+        </div>
+
+        <div class="group glass-panel rounded-3xl p-6 border border-white/5 transition-all duration-300 hover:-translate-y-2 hover:border-brand-blue/30 text-center">
+          <div class="rounded-2xl overflow-hidden mb-5">
+            <img src={futuristicImage} alt="Estilo design futurista" class="w-full object-contain bg-black/20 max-h-80" />
+          </div>
+          <span class="text-2xl mb-3 block">💠</span>
+          <h4 class="font-display font-bold text-xl text-white mb-3">Design Futurista</h4>
+          <p class="text-gray-400 leading-relaxed font-sans text-sm">
+            Visual moderno e digital. Perfeito para redes sociais e identidade visual.
+          </p>
+        </div>
+
+        <div class="group glass-panel rounded-3xl p-6 border border-white/5 transition-all duration-300 hover:-translate-y-2 hover:border-brand-jade/30 text-center">
+          <div class="rounded-2xl overflow-hidden mb-5">
+            <img src={translucentImage} alt="Estilo caligrafia translúcida" class="w-full object-contain bg-black/20 max-h-80" />
+          </div>
+          <span class="text-2xl mb-3 block">🌊</span>
+          <h4 class="font-display font-bold text-xl text-white mb-3">Caligrafia Translúcida</h4>
+          <p class="text-gray-400 leading-relaxed font-sans text-sm">
+            Efeito suave e elegante. Funciona como marca d'água ou sobreposição em designs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTHOR AUTHORITY -->
+  <section class="py-20 bg-black/30 border-y border-white/5 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-bold text-brand-gold tracking-widest uppercase mb-3 font-display">Quem Cria Seu Nome</h2>
+        <p class="text-3xl sm:text-4xl font-display font-black text-white">Shen Yung Ying</p>
+        <p class="mt-4 text-gray-400 font-sans">
+          Uma ponte viva entre a sabedoria do Oriente e a praticidade do Ocidente.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 space-y-6 text-left">
+          <h3 class="text-2xl font-display font-bold text-white">Especialista em Cultura Chinesa Aplicada a Nomes</h3>
+          <p class="text-gray-300 font-sans leading-relaxed">
+            Com mais de 15 anos de experiência como tradutora e intérprete, Shen Yung Ying viveu na pele o significado dos caracteres chineses. Cada nome é criado manualmente, caractere por caractere, considerando sonoridade, significado e contexto cultural.
+          </p>
+          <p class="text-gray-300 font-sans leading-relaxed">
+            Não é uma tradução automática — é uma jornada cultural. Cada nome recebe uma explicação detalhada do significado dos caracteres escolhidos.
+          </p>
+
+          <div class="pt-6">
+            <h4 class="text-xs font-bold text-brand-gold tracking-widest uppercase mb-4">Jornada Intercultural:</h4>
+            <div class="relative pl-6 border-l-2 border-brand-red/30 space-y-6">
+              <div class="relative">
+                <span class="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-brand-red border-4 border-dark-bg"></span>
+                <p class="text-sm font-bold text-white">Taiwan</p>
+                <p class="text-xs text-gray-400">Origem, onde a cultura chinesa corre nas veias.</p>
+              </div>
+              <div class="relative">
+                <span class="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-brand-gold border-4 border-dark-bg"></span>
+                <p class="text-sm font-bold text-white">Paraguai</p>
+                <p class="text-xs text-gray-400">Primeiro contato com a cultura sul-americana.</p>
+              </div>
+              <div class="relative">
+                <span class="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-brand-jade border-4 border-dark-bg"></span>
+                <p class="text-sm font-bold text-white">Chile</p>
+                <p class="text-xs text-gray-400">Formação acadêmica e atuação internacional.</p>
+              </div>
+              <div class="relative">
+                <span class="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-brand-blue border-4 border-dark-bg"></span>
+                <p class="text-sm font-bold text-white">Brasil</p>
+                <p class="text-xs text-gray-400">Residência atual. Dedicação a conectar brasileiros à cultura chinesa.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="glass-panel border border-white/5 rounded-3xl p-8 w-full max-w-[400px] text-center space-y-6 relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-36 h-36 bg-brand-red/10 rounded-full blur-xl pointer-events-none"></div>
+            <span class="text-6xl block">🀄</span>
+            <div class="space-y-2">
+              <span class="px-2.5 py-1 rounded bg-brand-jade/10 text-brand-jade text-[10px] font-bold uppercase tracking-wider">Cada Nome é Único</span>
+              <h4 class="font-display font-bold text-white text-lg">Criação Manual e Exclusiva</h4>
+              <p class="text-xs text-gray-400 font-sans px-4">
+                "Um nome chinês não é apenas tradução. É a materialização de um significado. Cada caractere é escolhido com cuidado para refletir a essência de quem você é."
+              </p>
+            </div>
+            <div class="pt-4 border-t border-white/5 flex justify-around text-center">
+              <div>
+                <p class="text-lg font-bold text-brand-gold">15+</p>
+                <p class="text-[9px] text-gray-400 uppercase tracking-wider">Anos de Exp.</p>
+              </div>
+              <div class="border-l border-white/5"></div>
+              <div>
+                <p class="text-lg font-bold text-brand-red">4</p>
+                <p class="text-[9px] text-gray-400 uppercase tracking-wider">Países Vividos</p>
+              </div>
+              <div class="border-l border-white/5"></div>
+              <div>
+                <p class="text-lg font-bold text-brand-jade">100%</p>
+                <p class="text-[9px] text-gray-400 uppercase tracking-wider">Manual</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-xs font-bold text-brand-gold tracking-widest uppercase mb-3 font-display">Quem Já Encomendou</h2>
+        <h3 class="text-3xl sm:text-4xl font-display font-black text-white">Depoimentos</h3>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="glass-panel border border-white/5 p-6 rounded-2xl text-left">
+          <p class="text-brand-gold text-lg mb-2">★★★★★</p>
+          <p class="text-xs text-gray-300 font-sans leading-relaxed">
+            "Fiz uma tatuagem com meu nome em chinês e o resultado ficou incrível! A Stefany explicou o significado de cada caractere e ainda me mandou nos 3 estilos. Super recomendo!"
+          </p>
+          <div class="mt-4 flex items-center gap-3">
+            <span class="text-lg">👩</span>
+            <div>
+              <p class="text-xs font-bold text-white">Juliana Costa</p>
+              <p class="text-[10px] text-gray-400">Cliente</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel border border-white/5 p-6 rounded-2xl text-left">
+          <p class="text-brand-gold text-lg mb-2">★★★★★</p>
+          <p class="text-xs text-gray-300 font-sans leading-relaxed">
+            "Presenteei minha mãe com o nome dela em chinês. Ela amou! A versão em caligrafia translúcida ficou linda emoldurada. O significado dos caracteres emocionou ela."
+          </p>
+          <div class="mt-4 flex items-center gap-3">
+            <span class="text-lg">👨</span>
+            <div>
+              <p class="text-xs font-bold text-white">Rafael Oliveira</p>
+              <p class="text-[10px] text-gray-400">Cliente</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel border border-white/5 p-6 rounded-2xl text-left">
+          <p class="text-brand-gold text-lg mb-2">★★★★★</p>
+          <p class="text-xs text-gray-300 font-sans leading-relaxed">
+            "Uso meu nome chinês como bio no Instagram e todo mundo pergunta onde fiz. O design futurista é moderno e chama muita atenção. Valeu cada centavo!"
+          </p>
+          <div class="mt-4 flex items-center gap-3">
+            <span class="text-lg">👩‍💻</span>
+            <div>
+              <p class="text-xs font-bold text-white">Larissa Mendes</p>
+              <p class="text-[10px] text-gray-400">Cliente</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-transparent to-black/50">
+    <div class="absolute -bottom-16 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-gold/5 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+      <span class="text-5xl block animate-pulse">🀄</span>
+      <h3 class="text-3xl sm:text-5xl font-display font-black text-white leading-tight">
+        Transforme Seu Nome em Arte!
+      </h3>
+      <p class="text-lg text-gray-300 font-sans max-w-2xl mx-auto">
+        Encomende agora seu nome chinês exclusivo e receba em 3 estilos + explicação do significado.
+      </p>
+      <div class="pt-4 flex flex-col items-center gap-4">
+        <a
+          href="#quiz-section"
+          class="px-12 py-6 text-center text-base font-extrabold bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg rounded-xl shadow-[0_4px_30px_rgba(251,191,36,0.4)] hover:shadow-[0_4px_40px_rgba(251,191,36,0.6)] hover:-translate-y-1 active:translate-y-0 transition-all duration-300 tracking-wider uppercase font-display"
+        >
+          ENCOMENDAR MEU NOME CHINÊS
+        </a>
+        <p class="text-xs text-gray-500 font-sans">
+          Criação manual • 3 estilos exclusivos • Explicação do significado • Entrega via WhatsApp
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-box">
+      <div class="modal-seal">名</div>
+      <h3>Antes de finalizar…</h3>
+      <p><strong>Para quem será esse nome chinês?</strong></p>
+      <textarea id="why-answer" placeholder="Ex: Para mim mesma, quero tatuar. / Para presentear minha mãe. / Para usar nas redes sociais…"></textarea>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="modal-cancel">Agora não</button>
+        <button class="btn-send" id="modal-send" disabled>Enviar e Finalizar 💬</button>
+      </div>
+      <p class="modal-whatsapp-note">🔒 Sua resposta será enviada pelo WhatsApp</p>
+    </div>
+  </div>
+
+  <style>
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      background: linear-gradient(180deg, #1a1d28, #141824);
+      border: 1px solid rgba(255,215,0,0.15);
+      border-radius: 16px;
+      padding: 36px 32px 28px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      text-align: center;
+      position: relative;
+      animation: modal-in 0.3s ease;
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-seal {
+      width: 48px; height: 48px;
+      background: #c62828;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      border: 2px solid #7f0000;
+      color: #fcf4dc;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: 'TW-Kai', 'Noto Sans SC', serif;
+    }
+    .modal-box h3 {
+      font-size: 20px;
+      color: #fff;
+      margin-bottom: 8px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+    }
+    .modal-box p {
+      font-size: 14px;
+      color: #9ca3af;
+      margin-bottom: 20px;
+    }
+    .modal-box textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      background: rgba(255,255,255,0.04);
+      color: #e5e7eb;
+      resize: vertical;
+      min-height: 90px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal-box textarea:focus {
+      border-color: #fbbf24;
+    }
+    .modal-box textarea::placeholder {
+      color: #6b7280;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .modal-actions button {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-send {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #1a1d28;
+      flex: 1;
+    }
+    .btn-send:hover { opacity: 0.9; }
+    .btn-cancel {
+      background: rgba(255,255,255,0.06);
+      color: #9ca3af;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+    }
+    .btn-cancel:hover { background: rgba(255,255,255,0.1); }
+    .btn-send:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .modal-whatsapp-note {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 12px;
+    }
+  </style>
+
+  <script>
+    (function() {
+      const phone = '5511996990939';
+
+      const modal = document.getElementById('checkout-modal');
+      const textarea = document.getElementById('why-answer');
+      const sendBtn = document.getElementById('modal-send');
+      const cancelBtn = document.getElementById('modal-cancel');
+      const heroCta = document.querySelector('#quiz-cta-final');
+      const finalCtas = document.querySelectorAll('a[href="#quiz-section"]');
+
+      function openModal() {
+        modal.classList.add('active');
+        textarea.value = '';
+        sendBtn.disabled = true;
+        textarea.focus();
+      }
+
+      textarea.addEventListener('input', function() {
+        sendBtn.disabled = this.value.trim().length < 3;
+      });
+
+      function sendWhatsApp() {
+        const answer = textarea.value.trim();
+        if (answer.length < 3) return;
+        const msg = encodeURIComponent(
+          '🀄 *Resposta do Modal - Nome Chinês*\n\n' +
+          '🎯 *Para quem será esse nome chinês?*\n' +
+          answer
+        );
+        const waUrl = 'https://wa.me/' + phone + '?text=' + msg;
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Enviando…';
+        window.open(waUrl, '_blank');
+        modal.classList.remove('active');
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+      }
+
+      if (heroCta) heroCta.addEventListener('click', openModal);
+      finalCtas.forEach(el => el.addEventListener('click', openModal));
+      sendBtn.addEventListener('click', sendWhatsApp);
+      cancelBtn.addEventListener('click', closeModal);
+
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+
+      textarea.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          if (!sendBtn.disabled) sendWhatsApp();
+        }
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
+    })();
+  </script>
+</Layout>

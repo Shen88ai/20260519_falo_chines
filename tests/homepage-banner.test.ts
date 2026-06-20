@@ -40,4 +40,14 @@ describe('Homepage Banner do Manual de Caligrafia - TDD', () => {
     expect(content).toContain('Versão Clássica');
     expect(content).toContain('Versão Reflexão');
   });
+
+  it('deve conter link para a página /nome-chines no banner', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('/nome-chines');
+  });
+
+  it('deve conter texto do serviço de nome chinês no banner', () => {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    expect(content).toContain('Nome Chinês');
+  });
 });
