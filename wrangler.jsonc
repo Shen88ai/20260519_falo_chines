@@ -1,0 +1,13 @@
+{
+	"compatibility_date": "2026-06-22",
+	"compatibility_flags": ["global_fetch_strictly_public"],
+	"name": "20260519_falo_chines",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"observability": {
+		"enabled": true
+	}
+}
