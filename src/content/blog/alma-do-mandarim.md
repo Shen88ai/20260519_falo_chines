@@ -175,3 +175,11 @@ E a conexão entre as pessoas é o que realmente importa.
 Espero que, um dia, nos encontremos na seção de comentários e conversemos como velhos amigos.
 
 **Espero por você.** 🖊️
+
+---
+
+### 🇨🇳 Quer levar seus negócios com a China a sério?
+
+Assim como no aprendizado do mandarim, negociar com chineses exige mais do que palavras — exige **compreensão cultural, paciência estratégica e confiança genuína**. Se você quer fechar contratos sem dor de cabeça, minha consultoria personalizada pode te ajudar.
+
+👉 **[Fale comigo no WhatsApp](/consultoria-negociacao-chineses)** e vamos preparar sua negociação juntos.

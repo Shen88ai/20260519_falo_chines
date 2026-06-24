@@ -1,0 +1,381 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const phone = '5511996990939';
+
+function consultoriaUrl(produto: string): string {
+  const msg = `Olá! Quero garantir minha vaga na Consultoria: ${produto}.`;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+}
+
+const whatsappDefault = `https://wa.me/${phone}?text=${encodeURIComponent('Olá! Gostaria de saber mais sobre a Consultoria em Negociação com Chineses.')}`;
+---
+
+<Layout title="Consultoria em Negociação com Chineses | Falo Chinês" description="Consultoria personalizada para negociar com chineses sem perder dinheiro, tempo ou oportunidades. Método exclusivo com especialista em negociação.">
+  <!-- ===== FIXED WHATSAPP CTA (topo + flutuante) ===== -->
+  <a href={whatsappDefault} target="_blank" rel="noopener" class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 p-3 sm:p-3.5 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:shadow-[0_4px_25px_rgba(37,211,102,0.6)] hover:-translate-y-1 active:translate-y-0 transition-all duration-300 group select-none" aria-label="Fale comigo no WhatsApp">
+    <span class="absolute -inset-0.5 rounded-full bg-[#25D366] opacity-35 group-hover:opacity-50 animate-ping pointer-events-none"></span>
+    <svg class="w-6 h-6 sm:w-6.5 sm:h-6.5 relative z-10" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.455 5.704 1.456h.006c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-out font-display font-extrabold text-[11px] sm:text-xs tracking-wider uppercase whitespace-nowrap relative z-10">Fale comigo no WhatsApp</span>
+  </a>
+
+  <!-- ===== 1. HEADLINE ===== -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-red/10 via-transparent to-brand-gold/10 pointer-events-none"></div>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36 relative z-10">
+      <div class="max-w-3xl">
+        <p class="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-brand-red/20 text-brand-red border border-brand-red/30 mb-6">Consultoria Personalizada</p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-tight tracking-tight">
+          Negociar com chineses não é só sobre preço.<br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-brand-gold">É sobre cultura, confiança e estratégia.</span><br/>
+          Se você não souber disso, pode perder muito dinheiro.
+        </h1>
+        <p class="mt-6 text-xl sm:text-2xl text-gray-300 leading-relaxed font-display">
+          Eu vou te mostrar como evitar erros caros e fechar negócios internacionais com segurança.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <a href={whatsappDefault} target="_blank" rel="noopener" class="inline-block px-8 py-4 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold rounded-full text-center hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300 transform hover:-translate-y-0.5">
+            📲 Falar no WhatsApp agora
+          </a>
+          <a href="#oferta" class="inline-block px-8 py-4 border border-white/20 text-white font-bold rounded-full text-center hover:bg-white/5 transition-all duration-300">
+            Ver planos disponíveis
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. SEÇÃO DE DOR ===== -->
+  <section class="py-20 bg-black/20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl sm:text-4xl font-display font-black text-white mb-4">O que está te impedindo de fechar contratos com chineses?</h2>
+        <p class="text-lg text-gray-400 mb-10">Se você já tentou negociar com fornecedores chineses, provavelmente já sentiu na pele:</p>
+        <div class="space-y-5">
+          <div class="flex items-start gap-4 glass-panel rounded-2xl p-5 border border-white/5">
+            <span class="text-2xl flex-shrink-0 mt-0.5">❌</span>
+            <div>
+              <p class="text-lg font-bold text-white">Perder oportunidades por não entender o silêncio</p>
+              <p class="text-gray-400 text-sm mt-1">Na cultura chinesa, o silêncio é estratégico. Se você não sabe interpretá-lo, pode perder negócios valiosos.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 glass-panel rounded-2xl p-5 border border-white/5">
+            <span class="text-2xl flex-shrink-0 mt-0.5">❌</span>
+            <div>
+              <p class="text-lg font-bold text-white">Frustração por não respeitar hierarquia</p>
+              <p class="text-gray-400 text-sm mt-1">Reuniões com chineses seguem uma hierarquia rígida. Um passo em falso pode destruir a confiança construída.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 glass-panel rounded-2xl p-5 border border-white/5">
+            <span class="text-2xl flex-shrink-0 mt-0.5">❌</span>
+            <div>
+              <p class="text-lg font-bold text-white">Prejuízo por não construir confiança</p>
+              <p class="text-gray-400 text-sm mt-1">Guanxi (relacionamento) vem antes do contrato. Sem confiança, você paga mais caro ou simplesmente não fecha o negócio.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. SEÇÃO DE TRANSFORMAÇÃO ===== -->
+  <section class="py-20 border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl sm:text-4xl font-display font-black text-white mb-6">Imagine se fosse diferente…</h2>
+          <p class="text-lg text-gray-300 leading-relaxed mb-6">
+            Você entra numa reunião sabendo interpretar cada gesto, cada palavra, e como construir confiança. O que antes era insegurança vira clareza. O que antes era medo vira resultado.
+          </p>
+          <p class="text-lg text-gray-300 leading-relaxed">
+            Não se trata apenas de falar inglês ou mandarim. Trata-se de entender a lógica por trás de cada decisão, cada pausa, cada movimento.
+          </p>
+        </div>
+        <div class="relative">
+          <img src="/Consultoria/consultoria_china03.png" alt="Consultoria em negociação com chineses" class="w-full rounded-2xl border border-white/10 shadow-2xl" loading="lazy" />
+          <div class="absolute -bottom-4 -right-4 w-full h-full rounded-2xl border border-brand-gold/20 -z-10"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. SEÇÃO DE AUTORIDADE ===== -->
+  <section class="py-20 bg-black/20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl sm:text-4xl font-display font-black text-white text-center mb-4">Quem vai te ajudar</h2>
+      <p class="text-gray-400 text-center mb-12 max-w-xl mx-auto">Sua ponte para negociações seguras com a China</p>
+      <div class="glass-panel rounded-3xl p-8 sm:p-10 border border-white/5 max-w-3xl mx-auto">
+        <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start">
+          <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-2 border-brand-gold/30 flex-shrink-0 bg-gradient-to-br from-brand-red/20 to-brand-gold/20 flex items-center justify-center">
+            <img src="/Consultoria/consultoria_china02.png" alt="Especialista em negociação com chineses" class="w-full h-full object-cover" loading="lazy" />
+          </div>
+          <div>
+            <h3 class="text-2xl font-display font-bold text-white mb-3">Sua especialista em negociação com chineses</h3>
+            <p class="text-gray-300 leading-relaxed mb-4">
+              Sou especialista em negociação com chineses e já ajudei empreendedores e empresas a fechar acordos de alto valor sem dor de cabeça. Minha missão é te preparar para negociar com segurança e confiança.
+            </p>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              Com experiência prática em mediação cultural, interpretação de negócios e facilitação comercial Brasil-China, entendo os desafios reais que você enfrenta — e sei exatamente como preparar você para superá-los.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== [MELHORIA 1] MINI-QUIZ DE DIAGNÓSTICO RÁPIDO ===== -->
+  <section id="diagnostico-rapido" class="py-20 border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl sm:text-4xl font-display font-black text-white text-center mb-4">Diagnóstico Rápido</h2>
+      <p class="text-gray-400 text-center mb-10">Descubra em 30 segundos qual é o seu nível de preparação para negociar com chineses</p>
+
+      <div id="quiz-container">
+        <div id="pergunta-1" class="pergunta ativa">
+          <p class="text-xl font-bold text-white mb-6">1. Como você reage quando o fornecedor chinês fica em silêncio durante a negociação?</p>
+          <div class="space-y-3">
+            <label class="block glass-panel rounded-xl p-4 border border-white/5 cursor-pointer hover:border-brand-gold/30 transition-colors">
+              <input type="radio" name="q1" value="a" class="accent-brand-gold" /> <span class="text-gray-300 ml-2">Fico desconfortável e tento quebrar o silêncio com uma proposta melhor</span>
+            </label>
+            <label class="block glass-panel rounded-xl p-4 border border-white/5 cursor-pointer hover:border-brand-gold/30 transition-colors">
+              <input type="radio" name="q1" value="b" class="accent-brand-gold" /> <span class="text-gray-300 ml-2">Espero pacientemente — sei que ele está avaliando minha posição</span>
+            </label>
+            <label class="block glass-panel rounded-xl p-4 border border-white/5 cursor-pointer hover:border-brand-gold/30 transition-colors">
+              <input type="radio" name="q1" value="c" class="accent-brand-gold" /> <span class="text-gray-300 ml-2">Mudo de assunto para aliviar a tensão</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="pergunta-2" class="pergunta" style="display:none">
+          <p class="text-xl font-bold text-white mb-6">2. Qual a primeira coisa que você faz antes de uma reunião com executivos chineses?</p>
+          <div class="space-y-3">
+            <label class="block glass-panel rounded-xl p-4 border border-white/5 cursor-pointer hover:border-brand-gold/30 transition-colors">
+              <input type="radio" name="q2" value="a" class="accent-brand-gold" /> <span class="text-gray-300 ml-2">Preparo minha apresentação de preços e condições</span>
+            </label>
+            <label class="block glass-panel rounded-xl p-4 border border-white/5 cursor-pointer hover:border-brand-gold/30 transition-colors">
+              <input type="radio" name="q2" value="b" class="accent-brand-gold" /> <span class="text-gray-300 ml-2">Estudo quem são as pessoas, seus cargos e a hierarquia envolvida</span>
+            </label>
+            <label class="block glass-panel rounded-xl p-4 border border-white/5 cursor-pointer hover:border-brand-gold/30 transition-colors">
+              <input type="radio" name="q2" value="c" class="accent-brand-gold" /> <span class="text-gray-300 ml-2">Levo brindes e presentes para todos</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="pergunta-3" class="pergunta" style="display:none">
+          <p class="text-xl font-bold text-white mb-6">3. Qual a maior dificuldade que você enfrenta ao negociar com chineses?</p>
+          <div class="space-y-3">
+            <label class="block glass-panel rounded-xl p-4 border border-white/5 cursor-pointer hover:border-brand-gold/30 transition-colors">
+              <input type="radio" name="q3" value="a" class="accent-brand-gold" /> <span class="text-gray-300 ml-2">Diferença cultural e comunicação indireta</span>
+            </label>
+            <label class="block glass-panel rounded-xl p-4 border border-white/5 cursor-pointer hover:border-brand-gold/30 transition-colors">
+              <input type="radio" name="q3" value="b" class="accent-brand-gold" /> <span class="text-gray-300 ml-2">Falta de confiança e relacionamento (guanxi)</span>
+            </label>
+            <label class="block glass-panel rounded-xl p-4 border border-white/5 cursor-pointer hover:border-brand-gold/30 transition-colors">
+              <input type="radio" name="q3" value="c" class="accent-brand-gold" /> <span class="text-gray-300 ml-2">Barreira do idioma e tradução de documentos</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="mt-8 flex justify-between items-center">
+          <button id="btn-voltar" class="px-6 py-3 border border-white/20 text-gray-300 font-bold rounded-full hover:bg-white/5 transition-colors" style="display:none">Voltar</button>
+          <button id="btn-avancar" class="px-8 py-3 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-bold rounded-full hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300 ml-auto">Avançar</button>
+        </div>
+
+        <!-- Resultado -->
+        <div id="resultado-diagnostico" class="mt-10 glass-panel rounded-2xl p-8 border border-brand-gold/20 text-center" style="display:none">
+          <p class="text-3xl mb-4">🎯</p>
+          <h3 class="text-2xl font-bold text-white mb-3">Pronto para o próximo nível</h3>
+          <p class="text-gray-300 mb-6">Seu diagnóstico mostra que você está no caminho certo, mas precisa de orientação especializada para evitar erros que custam caro.</p>
+          <a href="#oferta" class="inline-block px-8 py-4 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold rounded-full">Ver planos de consultoria</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. SOLUÇÃO (OFERTA) ===== -->
+  <section id="oferta" class="py-20 bg-black/20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl sm:text-4xl font-display font-black text-white text-center mb-4">Escolha o formato ideal para você</h2>
+      <p class="text-gray-400 text-center mb-12 max-w-xl mx-auto">Atendimento 100% online e personalizado para sua realidade</p>
+
+      <!-- [MELHORIA 2] INDICADOR DE ESCASSEZ -->
+      <div class="mb-12 max-w-lg mx-auto text-center">
+        <div id="vagas-restantes" class="glass-panel rounded-2xl p-5 border border-brand-red/20">
+          <p class="text-brand-red font-bold text-lg flex items-center justify-center gap-2">
+            <span class="animate-pulse">⏳</span> Vagas limitadas este mês
+          </p>
+          <div class="mt-3 w-full bg-white/10 rounded-full h-3 overflow-hidden">
+            <div class="escassez h-full rounded-full bg-gradient-to-r from-brand-red to-brand-gold transition-all duration-1000" style="width:25%"></div>
+          </div>
+          <p class="text-gray-400 text-sm mt-2">Restam <span class="text-white font-bold">3 vagas</span> disponíveis para atendimento personalizado</p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Diagnóstico Inicial -->
+        <div class="glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2 hover:border-brand-gold/30 flex flex-col">
+          <div class="mb-6">
+            <div class="w-16 h-16 flex items-center justify-center bg-brand-blue/10 rounded-full text-brand-blue text-3xl mb-4">🔍</div>
+            <h3 class="text-2xl font-display font-bold text-white">Diagnóstico Inicial</h3>
+            <p class="text-gray-400 text-sm mt-2">Para quem quer dar o primeiro passo</p>
+          </div>
+          <div class="text-4xl font-display font-black text-white mb-6">R$ 247</div>
+          <ul class="space-y-3 text-gray-300 mb-8 flex-grow">
+            <li class="flex items-start gap-2">✔ <span>Sessão de 45 minutos</span></li>
+            <li class="flex items-start gap-2">✔ <span>Análise rápida do seu cenário</span></li>
+            <li class="flex items-start gap-2">✔ <span>Recomendações práticas</span></li>
+          </ul>
+          <a href={consultoriaUrl('Diagnóstico Inicial - R$247')} target="_blank" rel="noopener" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-bold rounded-full hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300">
+            Quero garantir minha vaga
+          </a>
+        </div>
+
+        <!-- Consultoria Avulsa (Destaque) -->
+        <div class="glass-panel rounded-3xl p-8 border-2 border-brand-gold/40 transition-all duration-300 hover:-translate-y-2 flex flex-col relative">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg text-xs font-black uppercase tracking-wider rounded-full">Mais popular</div>
+          <div class="mb-6">
+            <div class="w-16 h-16 flex items-center justify-center bg-brand-gold/10 rounded-full text-brand-gold text-3xl mb-4">🎯</div>
+            <h3 class="text-2xl font-display font-bold text-white">Consultoria Avulsa</h3>
+            <p class="text-gray-400 text-sm mt-2">Para um caso específico</p>
+          </div>
+          <div class="text-4xl font-display font-black text-white mb-6">R$ 670</div>
+          <ul class="space-y-3 text-gray-300 mb-8 flex-grow">
+            <li class="flex items-start gap-2">✔ <span>Sessão de 90 minutos</span></li>
+            <li class="flex items-start gap-2">✔ <span>Orientação prática para caso específico</span></li>
+            <li class="flex items-start gap-2">✔ <span>Plano de ação imediato</span></li>
+          </ul>
+          <a href={consultoriaUrl('Consultoria Avulsa - R$670')} target="_blank" rel="noopener" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-bold rounded-full hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300">
+            Quero garantir minha vaga
+          </a>
+        </div>
+
+        <!-- Plano Mensal -->
+        <div class="glass-panel rounded-3xl p-8 border border-white/5 transition-all duration-300 hover:-translate-y-2 hover:border-brand-gold/30 flex flex-col">
+          <div class="mb-6">
+            <div class="w-16 h-16 flex items-center justify-center bg-brand-purple/10 rounded-full text-brand-purple text-3xl mb-4">🚀</div>
+            <h3 class="text-2xl font-display font-bold text-white">Plano Mensal</h3>
+            <p class="text-gray-400 text-sm mt-2">Acompanhamento contínuo</p>
+          </div>
+          <div class="text-4xl font-display font-black text-white mb-6">R$ 2.470</div>
+          <ul class="space-y-3 text-gray-300 mb-8 flex-grow">
+            <li class="flex items-start gap-2">✔ <span>4 reuniões online (1 por semana)</span></li>
+            <li class="flex items-start gap-2">✔ <span>Suporte direto via WhatsApp</span></li>
+            <li class="flex items-start gap-2">✔ <span>Acompanhamento contínuo</span></li>
+          </ul>
+          <a href={consultoriaUrl('Plano Mensal - R$2.470')} target="_blank" rel="noopener" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-bold rounded-full hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300">
+            Quero garantir minha vaga
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. DEPOIMENTOS (MELHORIA 3: formato Antes → Depois) ===== -->
+  <section class="py-20 border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl sm:text-4xl font-display font-black text-white text-center mb-4">Veja quem já transformou suas negociações</h2>
+      <p class="text-gray-400 text-center mb-12 max-w-xl mx-auto">Resultados reais de clientes que passaram pela consultoria</p>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass-panel rounded-2xl p-6 border border-white/5">
+          <div class="flex items-center gap-1 text-brand-gold mb-3">★★★★★</div>
+          <p class="text-gray-300 leading-relaxed text-sm mb-4">
+            <span class="text-brand-red font-bold">Antes:</span> Perdia oportunidades por não entender o silêncio nas reuniões.<br/>
+            <span class="text-brand-gold font-bold">Depois:</span> Fechei contrato de R$ 50k com fornecedor chinês em 2 semanas.
+          </p>
+          <p class="text-xs text-gray-500 font-bold">— Ricardo M., Importador</p>
+        </div>
+        <div class="glass-panel rounded-2xl p-6 border border-white/5">
+          <div class="flex items-center gap-1 text-brand-gold mb-3">★★★★★</div>
+          <p class="text-gray-300 leading-relaxed text-sm mb-4">
+            <span class="text-brand-red font-bold">Antes:</span> Frustração por não conseguir avançar nas negociações.<br/>
+            <span class="text-brand-gold font-bold">Depois:</span> Consegui reduzir 15% no custo do fornecedor aplicando as técnicas de guanxi.
+          </p>
+          <p class="text-xs text-gray-500 font-bold">— Ana L., Diretora de Suprimentos</p>
+        </div>
+        <div class="glass-panel rounded-2xl p-6 border border-white/5">
+          <div class="flex items-center gap-1 text-brand-gold mb-3">★★★★★</div>
+          <p class="text-gray-300 leading-relaxed text-sm mb-4">
+            <span class="text-brand-red font-bold">Antes:</span> Medo de cometer gafes culturais em reuniões.<br/>
+            <span class="text-brand-gold font-bold">Depois:</span> Com a consultoria, consegui fechar meu primeiro contrato com fornecedor chinês sem dor de cabeça.
+          </p>
+          <p class="text-xs text-gray-500 font-bold">— Carlos T., Empreendedor</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. DIRECIONAMENTO (FECHAMENTO) ===== -->
+  <section class="py-20 bg-black/40 border-t border-white/5">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-display font-black text-white mb-4">Agenda limitada</h2>
+      <p class="text-lg text-gray-300 leading-relaxed mb-8 max-w-2xl mx-auto">
+        Minha agenda é restrita e só consigo atender alguns clientes por mês. Clique no botão abaixo e fale comigo no WhatsApp. Vamos juntos preparar sua negociação para dar certo.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href={whatsappDefault} target="_blank" rel="noopener" class="inline-block px-10 py-5 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold rounded-full text-lg hover:shadow-[0_0_30px_rgba(251,191,36,0.5)] transition-all duration-300 transform hover:-translate-y-1">
+          📲 Falar no WhatsApp agora
+        </a>
+      </div>
+      <p class="text-gray-500 text-sm mt-6">Resposta em até 2 horas em horário comercial</p>
+    </div>
+  </section>
+
+  <style>
+    .pergunta { animation: fade-in 0.4s ease-out forwards; }
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+
+  <script>
+    let currentQuestion = 1;
+    const totalQuestions = 3;
+
+    const perguntaAtual = (n) => document.getElementById(`pergunta-${n}`);
+    const btnAvancar = document.getElementById('btn-avancar');
+    const btnVoltar = document.getElementById('btn-voltar');
+    const resultado = document.getElementById('resultado-diagnostico');
+
+    function mostrarPergunta(n) {
+      for (let i = 1; i <= totalQuestions; i++) {
+        const el = perguntaAtual(i);
+        if (el) el.style.display = i === n ? 'block' : 'none';
+      }
+      btnVoltar.style.display = n === 1 ? 'none' : 'inline-block';
+      if (n === totalQuestions) {
+        btnAvancar.textContent = 'Ver resultado';
+      } else {
+        btnAvancar.textContent = 'Avançar';
+      }
+    }
+
+    btnAvancar.addEventListener('click', () => {
+      const radios = document.querySelectorAll(`#pergunta-${currentQuestion} input[type="radio"]`);
+      const selected = Array.from(radios).some(r => r.checked);
+
+      if (!selected) {
+        btnAvancar.classList.add('animate-pulse');
+        setTimeout(() => btnAvancar.classList.remove('animate-pulse'), 500);
+        return;
+      }
+
+      if (currentQuestion < totalQuestions) {
+        currentQuestion++;
+        mostrarPergunta(currentQuestion);
+      } else {
+        document.getElementById('quiz-container').querySelectorAll('.pergunta').forEach(el => el.style.display = 'none');
+        btnAvancar.style.display = 'none';
+        btnVoltar.style.display = 'none';
+        resultado.style.display = 'block';
+      }
+    });
+
+    btnVoltar.addEventListener('click', () => {
+      if (currentQuestion > 1) {
+        currentQuestion--;
+        mostrarPergunta(currentQuestion);
+      }
+    });
+  </script>
+</Layout>

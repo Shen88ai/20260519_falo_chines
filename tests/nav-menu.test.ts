@@ -57,12 +57,13 @@ describe('nav-menu categories content', () => {
     expect(labels).toContain('Comunidade');
   });
 
-  it('Serviços category contains Serviços Empresariais, Imersão Mandarim', () => {
+  it('Serviços category contains Serviços Empresariais, Imersão Mandarim, Consultoria', () => {
     const servicos = NAV_CATEGORIES.find(c => c.id === 'servicos')!;
     expect(servicos).toBeDefined();
     const labels = servicos.items.map(i => i.label);
     expect(labels).toContain('Serviços Empresariais');
     expect(labels).toContain('Imersão Mandarim');
+    expect(labels).toContain('Consultoria Negociação');
   });
 
   it('Sobre category contains Sobre Mim, Licenças', () => {
@@ -77,7 +78,7 @@ describe('nav-menu categories content', () => {
     const validPaths = [
       '/licoes', '/licoes/', '/strokes', '/glossario',
       '/blog', '/galeria', '/comunidade',
-      '/servicos-empresariais', '/imersao-mandarim',
+      '/servicos-empresariais', '/imersao-mandarim', '/consultoria-negociacao-chineses',
       '/sobre-mim', '/licencas',
     ];
     for (const item of getFlatNavItems()) {

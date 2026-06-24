@@ -110,3 +110,11 @@ E aí, conseguiu pegar a ideia?
 Conta nos comentários: qual foi a parte que mais te surpreendeu sobre os nomes chineses? E se você já tem um nome chinês, compartilha com a gente a história por trás dele!
 
 Até a próxima lição. 🖊️
+
+---
+
+### 🇨🇳 Quer negociar com chineses sem perder dinheiro?
+
+Sabia que entender a cultura dos nomes é apenas o começo? Na hora de fechar negócios, cada gesto, palavra e silêncio tem um significado. Se você quer **evitar erros caros** e negociar com segurança, tenho uma consultoria personalizada para você.
+
+👉 **[Fale comigo no WhatsApp](/consultoria-negociacao-chineses)** e descubra como posso te preparar.
