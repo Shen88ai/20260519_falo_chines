@@ -61,6 +61,19 @@ const {
   title = "Falo Chinês 🧭 - Sua Bússola para o Mandarim", 
   description = "Aprenda chinês de forma inteligente. Bússola Hanzi 3D, glossário integrado etimológico e análise de tom em tempo real." 
 } = Astro.props;
+
+const ga4Id = import.meta.env.PUBLIC_GA4_ID;
+const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
+
+const GA4_SCRIPT = ga4Id
+  ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${ga4Id}"></script>` +
+    `<script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${ga4Id}');</script>`
+  : '';
+
+const PIXEL_SCRIPT = pixelId
+  ? `<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${pixelId}');fbq('track','PageView');</script>` +
+    `<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1"/></noscript>`
+  : '';
 ---
 
 <!doctype html>
@@ -82,7 +95,11 @@ const {
     <!-- Fonts Preload -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    {GA4_SCRIPT && <Fragment set:html={GA4_SCRIPT} />}
+    {PIXEL_SCRIPT && <Fragment set:html={PIXEL_SCRIPT} />}
   </head>
+  <body class="flex flex-col min-h-screen bg-dark-bg text-gray-100 overflow-x-hidden selection:bg-brand-gold selection:text-dark-bg">
   <body class="flex flex-col min-h-screen bg-dark-bg text-gray-100 overflow-x-hidden selection:bg-brand-gold selection:text-dark-bg">
     <!-- Top glowing accent line -->
     <div class="h-[3px] w-full bg-gradient-to-r from-brand-red via-brand-gold to-brand-jade"></div>
@@ -111,10 +128,10 @@ const {
 
           <!-- Diagnostic CTA -->
           <a 
-            href="/#nivelamento" 
+            href="/diagnostico-china" 
             class="px-5 py-2.5 rounded-full text-xs font-bold bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg hover:shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
           >
-            Descobrir Rota 📜
+            Diagnóstico Grátis 🎯
           </a>
         </div>
       </div>
@@ -142,6 +159,7 @@ const {
           <a href="/galeria" class="hover:text-brand-gold transition-colors">Galeria</a>
           <a href="/#nivelamento" class="hover:text-brand-gold transition-colors">Diagnóstico</a>
           <a href="/glossario" class="hover:text-brand-gold transition-colors">Glossário</a>
+          <a href="/diagnostico-china" class="hover:text-brand-gold transition-colors">Diagnóstico China</a>
           <a href="/consultoria-negociacao-chineses" class="hover:text-brand-gold transition-colors">Consultoria</a>
           <a href="/licencas" class="hover:text-brand-gold transition-colors">Licenças</a>
           <a href="https://www.linkedin.com/in/stefany-shen-0470b839" target="_blank" rel="noopener noreferrer" class="hover:text-brand-gold transition-colors">LinkedIn ↗</a>

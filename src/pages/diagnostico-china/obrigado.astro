@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const phone = '5511996990939';
+const checklistUrl = `https://wa.me/${phone}?text=${encodeURIComponent('Olá! Vim do Diagnóstico China e quero receber o Checklist "7 Erros ao Negociar com China" 📋')}`;
+---
+
+<Layout title="Obrigado! | Falo Chinês - Diagnóstico China" description="Obrigado por solicitar seu diagnóstico! Em breve você receberá o Checklist 7 Erros e sua recomendação personalizada no WhatsApp.">
+  <section class="relative overflow-hidden min-h-[80vh] flex items-center">
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-red/10 via-transparent to-brand-gold/10 pointer-events-none"></div>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 w-full">
+      <div class="text-center">
+        <!-- Checkmark animation -->
+        <div class="w-24 h-24 mx-auto mb-8 rounded-full bg-gradient-to-br from-brand-jade to-green-400 flex items-center justify-center shadow-[0_0_40px_rgba(52,211,153,0.3)]">
+          <svg class="w-12 h-12 text-dark-bg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl font-display font-black text-white leading-tight mb-4">
+          Pedido enviado com sucesso! 🎉
+        </h1>
+
+        <p class="text-xl text-gray-300 leading-relaxed mb-8 max-w-xl mx-auto">
+          Em instantes você receberá o <strong class="text-brand-gold">Checklist "7 Erros ao Negociar com China"</strong> e seu diagnóstico personalizado pelo WhatsApp.
+        </p>
+
+        <!-- Expectativas -->
+        <div class="glass-panel rounded-3xl p-8 border border-white/5 mb-8 text-left">
+          <h2 class="text-xl font-display font-bold text-white mb-5 text-center">⏳ O que acontece agora?</h2>
+          <div class="space-y-4">
+            <div class="flex items-start gap-4">
+              <span class="text-2xl flex-shrink-0">📋</span>
+              <div>
+                <p class="text-white font-bold">Você receberá o checklist</p>
+                <p class="text-gray-400 text-sm">"7 Erros ao Negociar com China" em PDF — direto no seu WhatsApp.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="text-2xl flex-shrink-0">🎯</span>
+              <div>
+                <p class="text-white font-bold">Diagnóstico personalizado</p>
+                <p class="text-gray-400 text-sm">A Consultoria Shen analisará suas respostas e enviará uma recomendação sob medida.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="text-2xl flex-shrink-0">⏰</span>
+              <div>
+                <p class="text-white font-bold">Resposta em até 2 horas</p>
+                <p class="text-gray-400 text-sm">Em horário comercial (seg-sex, 9h-18h). Fora desse horário, responderemos no início do próximo período.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA secundário -->
+        <p class="text-gray-500 text-sm mb-4">
+          Não recebeu a mensagem? Baixe agora ou fale conosco:
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href="/pdf/Checklist  7 Erros ao Negociar com a China.pdf"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 px-8 py-4 border border-white/20 text-white font-bold rounded-full hover:bg-white/5 transition-all duration-300"
+          >
+            📥 Baixar PDF agora
+          </a>
+          <a
+            href={checklistUrl}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold rounded-full hover:shadow-[0_0_30px_rgba(251,191,36,0.5)] transition-all duration-300 transform hover:-translate-y-1"
+          >
+            📲 Falar no WhatsApp
+          </a>
+        </div>
+
+        <div class="mt-12">
+          <a href="/" class="text-gray-400 hover:text-brand-gold transition-colors text-sm">
+            ← Voltar para o Falo Chinês
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UTM Tracking Script -->
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const utmSource = params.get('utm_source') || 'direct';
+      const utmMedium = params.get('utm_medium') || 'none';
+      const utmCampaign = params.get('utm_campaign') || 'none';
+
+      if (typeof window.dataLayer !== 'undefined' && window.gtag) {
+        window.gtag('event', 'conversion', {
+          send_to: 'AW-CONVERSION_ID',
+          event_category: 'lead',
+          event_label: 'diagnostico_obrigado',
+          utm_source: utmSource,
+          utm_medium: utmMedium,
+          utm_campaign: utmCampaign,
+        });
+      }
+
+      if (typeof window.fbq !== 'undefined') {
+        window.fbq('track', 'Lead', {
+          content_name: 'diagnostico_china_obrigado',
+          source: utmSource,
+          medium: utmMedium,
+          campaign: utmCampaign,
+        });
+      }
+    })();
+  </script>
+</Layout>

@@ -1,0 +1,298 @@
+---
+export interface Props {
+  phone?: string;
+}
+
+const { phone = '5511996990939' } = Astro.props as Props;
+---
+
+<div id="diagnostico-china-quiz" class="max-w-2xl mx-auto space-y-8">
+  <div class="flex items-center gap-2">
+    <div class="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
+      <div id="quiz-progress" class="h-full bg-gradient-to-r from-brand-gold to-amber-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+    </div>
+    <span id="quiz-step-label" class="text-xs text-gray-500 font-mono min-w-[4rem] text-right">1 / 8</span>
+  </div>
+
+  <!-- Step 0: Negociação -->
+  <div id="quiz-step-0" class="quiz-step space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Você já iniciou negociações com fornecedores chineses?</h3>
+    <div class="grid grid-cols-1 gap-3">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="sim-contato">
+        <span class="text-lg block mb-1">🤝</span>
+        Sim, já estou em contato
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="pesquisando">
+        <span class="text-lg block mb-1">🔍</span>
+        Ainda estou pesquisando
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="nao-comecei">
+        <span class="text-lg block mb-1">🚀</span>
+        Não, mas quero começar
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 1: Objetivo -->
+  <div id="quiz-step-1" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Seu objetivo principal é:</h3>
+    <div class="grid grid-cols-1 gap-3">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="importar">
+        <span class="text-lg block mb-1">📦</span>
+        Importar da China
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="fornecedor-local">
+        <span class="text-lg block mb-1">📍</span>
+        Fornecedor local em São Paulo
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="incerto">
+        <span class="text-lg block mb-1">🤔</span>
+        Ainda não tenho certeza
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 2: Porte -->
+  <div id="quiz-step-2" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Qual o tamanho do seu negócio?</h3>
+    <div class="grid grid-cols-2 gap-3">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="mei">
+        <span class="text-lg block mb-1">👤</span>
+        MEI
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="pequena">
+        <span class="text-lg block mb-1">🏪</span>
+        Pequena empresa
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="media">
+        <span class="text-lg block mb-1">🏢</span>
+        Média empresa
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="grande">
+        <span class="text-lg block mb-1">🏭</span>
+        Grande empresa
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 3: Produtos -->
+  <div id="quiz-step-3" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Quais produtos você pretende negociar?</h3>
+    <p class="text-sm text-gray-400">Descreva os produtos ou segmento</p>
+    <input
+      id="quiz-input-produtos"
+      type="text"
+      placeholder="Ex: Eletrônicos, roupas, maquinário..."
+      class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 text-lg focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all"
+    />
+    <button
+      class="quiz-next px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg font-bold text-sm transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
+      disabled
+    >
+      Próximo →
+    </button>
+  </div>
+
+  <!-- Step 4: Maior Desafio -->
+  <div id="quiz-step-4" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Qual seu maior desafio hoje?</h3>
+    <div class="grid grid-cols-1 gap-3">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="cultura">
+        <span class="text-lg block mb-1">🌏</span>
+        Entender a cultura chinesa
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="fornecedores">
+        <span class="text-lg block mb-1">🔎</span>
+        Encontrar fornecedores confiáveis
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="precos">
+        <span class="text-lg block mb-1">💰</span>
+        Negociar preços e contratos
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="logistica">
+        <span class="text-lg block mb-1">🚚</span>
+        Logística e importação
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 5: Prazo -->
+  <div id="quiz-step-5" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Em quanto tempo pretende fechar negócio?</h3>
+    <div class="grid grid-cols-1 gap-3">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="imediato">
+        <span class="text-lg block mb-1">⚡</span>
+        Imediato (próximos 30 dias)
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="medio">
+        <span class="text-lg block mb-1">📅</span>
+        Médio prazo (3-6 meses)
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="longo">
+        <span class="text-lg block mb-1">🎯</span>
+        Longo prazo (mais de 6 meses)
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 6: Experiência -->
+  <div id="quiz-step-6" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Você já tem experiência em negociações internacionais?</h3>
+    <div class="grid grid-cols-2 gap-3">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="sim">
+        <span class="text-2xl block mb-2">✅</span>
+        Sim
+      </button>
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="nao">
+        <span class="text-2xl block mb-2">🆕</span>
+        Não
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 7: Resultado -->
+  <div id="quiz-step-7" class="quiz-step hidden space-y-6 text-center">
+    <span class="text-5xl block">🎯</span>
+    <h3 class="text-2xl font-display font-bold text-white">Diagnóstico concluído!</h3>
+    <p class="text-gray-400">
+      Você vai receber 2 materiais gratuitos no WhatsApp:
+    </p>
+    <div class="flex flex-col gap-3 max-w-sm mx-auto">
+      <div class="flex items-center gap-3 glass-panel rounded-xl px-4 py-3 border border-brand-gold/20">
+        <span class="text-xl">📋</span>
+        <span class="text-sm text-gray-200 font-bold text-left">Checklist "7 Erros ao Negociar com China"</span>
+      </div>
+      <div class="flex items-center gap-3 glass-panel rounded-xl px-4 py-3 border border-brand-gold/20">
+        <span class="text-xl">🎯</span>
+        <span class="text-sm text-gray-200 font-bold text-left">Diagnóstico personalizado + recomendação</span>
+      </div>
+    </div>
+    <p id="recomendacao-texto" class="text-brand-gold font-bold text-lg"></p>
+    <button
+      id="quiz-cta-final"
+      class="px-10 py-5 rounded-xl bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg font-black text-sm tracking-wider uppercase transition-all hover:shadow-[0_4px_30px_rgba(251,191,36,0.4)] hover:-translate-y-0.5"
+    >
+      📲 RECEBER CHECKLIST + DIAGNÓSTICO
+    </button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const FIELDS = ['negociacao', 'objetivo', 'porte', 'produtos', 'maiorDesafio', 'prazo', 'experiencia'];
+    const answers = { negociacao: '', objetivo: '', porte: '', produtos: '', maiorDesafio: '', prazo: '', experiencia: '' };
+    const phone = '5511996990939';
+    let currentStep = 0;
+
+    const progress = document.getElementById('quiz-progress');
+    const stepLabel = document.getElementById('quiz-step-label');
+    const totalQuizSteps = 8;
+
+    function showStep(index) {
+      document.querySelectorAll('.quiz-step').forEach((el, i) => {
+        el.classList.toggle('hidden', i !== index);
+      });
+      currentStep = index;
+      const pct = ((index + 1) / totalQuizSteps) * 100;
+      if (progress) progress.style.width = pct + '%';
+      if (stepLabel) stepLabel.textContent = (index + 1) + ' / ' + totalQuizSteps;
+    }
+
+    function getStepForField(field) {
+      return FIELDS.indexOf(field);
+    }
+
+    function getRecomendacaoLabel(a) {
+      if (a.experiencia === 'sim') return '💎 Recomendado: Consultoria Avulsa 90 min';
+      if (a.prazo === 'longo') return '🔍 Recomendado: Diagnóstico Inicial';
+      return '🚀 Recomendado: Plano Mensal';
+    }
+
+    function track(eventName, data) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, { event_category: 'engagement', ...data });
+      }
+      if (typeof fbq !== 'undefined') {
+        fbq('trackCustom', eventName, data);
+      }
+    }
+
+    function setAnswer(field, value) {
+      answers[field] = value;
+      const nextIdx = getStepForField(field) + 1;
+      if (nextIdx < totalQuizSteps) {
+        showStep(nextIdx);
+      } else {
+        showStep(totalQuizSteps - 1);
+        const recEl = document.getElementById('recomendacao-texto');
+        if (recEl) recEl.textContent = getRecomendacaoLabel(answers);
+        track('quiz_completed', { event_label: 'diagnostico_china_7_perguntas' });
+      }
+    }
+
+    // Produtos input
+    const produtosInput = document.getElementById('quiz-input-produtos');
+    const produtosNext = document.querySelector('#quiz-step-3 .quiz-next');
+    if (produtosInput && produtosNext) {
+      produtosInput.addEventListener('input', function() {
+        produtosNext.disabled = this.value.trim().length < 1;
+      });
+      produtosNext.addEventListener('click', function() {
+        if (produtosInput.value.trim()) {
+          setAnswer('produtos', produtosInput.value.trim());
+        }
+      });
+      produtosInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !produtosNext.disabled) {
+          produtosNext.click();
+        }
+      });
+    }
+
+    // Option buttons
+    document.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const stepEl = this.closest('.quiz-step');
+        const stepIndex = Array.from(document.querySelectorAll('.quiz-step')).indexOf(stepEl);
+        const field = FIELDS[stepIndex];
+        const value = this.dataset.value;
+        setAnswer(field, value);
+      });
+    });
+
+    // Final CTA
+    const finalCta = document.getElementById('quiz-cta-final');
+    if (finalCta) {
+      finalCta.addEventListener('click', function() {
+        const recomendacoes = {
+          'diagnostico-inicial': 'Diagnóstico Inicial (30 min)',
+          'consultoria-avulsa-45': 'Consultoria Avulsa 45 min',
+          'consultoria-avulsa-90': 'Consultoria Avulsa 90 min',
+          'plano-mensal': 'Plano Mensal (4 sessões)',
+        };
+        function recomendar(a) {
+          if (a.experiencia === 'sim') return 'consultoria-avulsa-90';
+          if (a.prazo === 'longo') return 'diagnostico-inicial';
+          return 'plano-mensal';
+        }
+        const rec = recomendar(answers);
+        const recLabel = recomendacoes[rec] || 'Plano Mensal';
+        const msg = encodeURIComponent(
+          '🇨🇳 *Diagnóstico China*\n\n' +
+          '📥 *Checklist solicitado:* 7 Erros ao Negociar com China\n\n' +
+          `📋 *Negociações:* ${answers.negociacao}\n` +
+          `🎯 *Objetivo:* ${answers.objetivo}\n` +
+          `🏢 *Porte:* ${answers.porte}\n` +
+          `📦 *Produtos:* ${answers.produtos}\n` +
+          `💪 *Maior Desafio:* ${answers.maiorDesafio}\n` +
+          `⏱ *Prazo:* ${answers.prazo}\n` +
+          `🌐 *Experiência:* ${answers.experiencia}\n` +
+          `\n🔹 *Recomendação:* ${recLabel}`
+        );
+        const waUrl = 'https://wa.me/' + phone + '?text=' + msg;
+        window.open(waUrl, '_blank');
+        track('quiz_whatsapp_click', { event_label: 'diagnostico_china_resultado' });
+      });
+    }
+  })();
+</script>

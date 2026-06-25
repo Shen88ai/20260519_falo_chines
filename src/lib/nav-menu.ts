@@ -40,6 +40,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
       { label: 'Serviços Empresariais', href: '/servicos-empresariais', description: 'Soluções corporativas' },
       { label: 'Imersão Mandarim', href: '/imersao-mandarim', description: 'Programa intensivo' },
       { label: 'Consultoria Negociação', href: '/consultoria-negociacao-chineses', description: 'Negocie com chineses' },
+      { label: 'Diagnóstico China', href: '/diagnostico-china', description: 'Quiz gratuito de 7 perguntas' },
     ],
   },
   {

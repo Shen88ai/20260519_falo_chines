@@ -1,0 +1,428 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DiagnosticoChinaQuiz from '../components/DiagnosticoChinaQuiz.astro';
+
+const phone = '5511996990939';
+
+function waUrl(msg: string): string {
+  return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+}
+
+const whatsappDefault = waUrl('Olá! Quero meu diagnóstico gratuito com a Consultoria Shen.');
+---
+
+<Layout title="Diagnóstico China | Falo Chinês - Descubra a fase do seu negócio com a China" description="Diagnóstico gratuito de 30 minutos via WhatsApp para entender a saúde atual do seu negócio com a China. Descubra em que fase você está e qual serviço é ideal para você.">
+  <!-- Fixed WhatsApp CTA -->
+  <a href={whatsappDefault} target="_blank" rel="noopener" class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 p-3 sm:p-3.5 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:shadow-[0_4px_25px_rgba(37,211,102,0.6)] hover:-translate-y-1 active:translate-y-0 transition-all duration-300 group select-none" aria-label="Fale comigo no WhatsApp">
+    <span class="absolute -inset-0.5 rounded-full bg-[#25D366] opacity-35 group-hover:opacity-50 animate-ping pointer-events-none"></span>
+    <svg class="w-6 h-6 sm:w-6.5 sm:h-6.5 relative z-10" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.455 5.704 1.456h.006c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-out font-display font-extrabold text-[11px] sm:text-xs tracking-wider uppercase whitespace-nowrap relative z-10">Fale comigo no WhatsApp</span>
+  </a>
+
+  <!-- ===== HERO ===== -->
+  <section class="relative overflow-hidden border-b border-white/5">
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-red/10 via-transparent to-brand-gold/10 pointer-events-none"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent"></div>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36 relative z-10">
+      <div class="max-w-3xl">
+        <!-- Escassez tag -->
+        <p class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-brand-red/20 text-brand-red border border-brand-red/30 mb-6">
+          <span class="animate-pulse">⏳</span>
+          <span>Restam <strong id="hero-vagas-count" class="text-white">20</strong> vagas gratuitas este mês</span>
+        </p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white leading-tight tracking-tight">
+          Descubra em que fase está<br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-brand-gold">seu negócio com a China</span>
+        </h1>
+        <p class="mt-6 text-xl sm:text-2xl text-gray-300 leading-relaxed font-display">
+          Responda 7 perguntas rápidas e receba <strong class="text-brand-gold">2 materiais gratuitos:</strong>
+        </p>
+        <div class="mt-4 flex flex-col sm:flex-row gap-3">
+          <a href="/pdf/Checklist  7 Erros ao Negociar com a China.pdf" target="_blank" rel="noopener" class="flex items-center gap-2 glass-panel rounded-xl px-4 py-3 border border-brand-gold/20 hover:border-brand-gold/60 transition-all group">
+            <span class="text-xl">📋</span>
+            <span class="text-sm text-gray-200 font-bold group-hover:text-brand-gold transition-colors">Checklist "7 Erros ao Negociar com China" <span class="text-xs text-brand-gold ml-1">↗</span></span>
+          </a>
+          <div class="flex items-center gap-2 glass-panel rounded-xl px-4 py-3 border border-brand-gold/20">
+            <span class="text-xl">🎯</span>
+            <span class="text-sm text-gray-200 font-bold">Diagnóstico personalizado</span>
+          </div>
+        </div>
+        <p class="mt-3 text-sm text-gray-500">
+          <span class="line-through">R$ 247</span>
+          <span class="text-brand-gold font-black ml-1" style="text-shadow: 0 0 20px rgba(251,191,36,0.3);">GRÁTIS hoje</span>
+          — por conta da Consultoria Shen
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <a href="#quiz" class="inline-block px-8 py-4 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold rounded-full text-center hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300 transform hover:-translate-y-0.5">
+            📝 Quero meu checklist + diagnóstico
+          </a>
+          <a href="#precos" class="inline-block px-8 py-4 border border-white/20 text-white font-bold rounded-full text-center hover:bg-white/5 transition-all duration-300">
+            Ver planos
+          </a>
+        </div>
+        <div class="mt-10 flex items-center gap-4 text-xs text-gray-500 justify-center sm:justify-start">
+          <span class="flex items-center gap-1.5 text-gray-400">⭐ Avaliação <strong class="text-white">4.9</strong>/5</span>
+          <span class="w-px h-3 bg-white/10"></span>
+          <span class="flex items-center gap-1.5 text-gray-400">📊 +<strong class="text-white">50</strong> empresas diagnosticadas</span>
+          <span class="w-px h-3 bg-white/10"></span>
+          <span class="flex items-center gap-1.5 text-gray-400">⏱ Resposta em até <strong class="text-white">2h</strong></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LEAD MAGNET / CHECKLIST ===== -->
+  <section class="py-16 bg-gradient-to-b from-black/30 to-black/10 border-b border-white/5 animate-fade-in">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass-panel rounded-3xl p-8 sm:p-10 border-2 border-brand-gold/30 relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-48 h-48 bg-brand-gold/10 rounded-full filter blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-48 h-48 bg-brand-red/10 rounded-full filter blur-3xl pointer-events-none"></div>
+        <div class="flex flex-col lg:flex-row items-center gap-8 relative z-10">
+          <div class="flex-shrink-0">
+            <div class="w-28 h-28 rounded-2xl bg-gradient-to-br from-brand-red/20 to-brand-gold/20 border-2 border-brand-gold/30 flex items-center justify-center text-5xl">
+              📋
+            </div>
+          </div>
+          <div class="flex-1 text-center lg:text-left">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-xs font-bold text-brand-gold tracking-widest uppercase mb-3">
+              🎁 MATERIAL EXCLUSIVO
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-display font-black text-white leading-tight mb-2">
+              Checklist: 7 Erros ao Negociar com a China
+            </h2>
+            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+              Um guia prático que revela os erros mais comuns que custam tempo e dinheiro para empreendedores brasileiros ao negociar com fornecedores chineses — e como evitá-los.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2 justify-center lg:justify-start">
+              <span class="px-3 py-1 text-xs bg-white/5 rounded-full border border-white/10 text-gray-400">📄 Formato PDF</span>
+              <span class="px-3 py-1 text-xs bg-white/5 rounded-full border border-white/10 text-gray-400">⚡ Leitura de 5 min</span>
+              <span class="px-3 py-1 text-xs bg-white/5 rounded-full border border-white/10 text-gray-400">🇨🇳 Baseado em casos reais</span>
+            </div>
+            <a
+              href="/pdf/Checklist  7 Erros ao Negociar com a China.pdf"
+              target="_blank"
+              rel="noopener"
+              class="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg font-bold rounded-full text-sm hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              📥 Baixar PDF grátis
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== O QUE É ===== -->
+  <section class="py-20 bg-black/20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl sm:text-4xl font-display font-black text-white mb-4">O que é o Diagnóstico Inicial?</h2>
+        <p class="text-gray-400 mb-10">Uma sessão de 30 minutos via WhatsApp para entender a saúde atual do seu negócio com a China.</p>
+        <div class="space-y-5">
+          <div class="flex items-start gap-4 glass-panel rounded-2xl p-5 border border-white/5">
+            <span class="text-2xl flex-shrink-0 mt-0.5">🔍</span>
+            <div>
+              <p class="text-lg font-bold text-white">Descobrir em que fase você está</p>
+              <p class="text-gray-400 text-sm mt-1">Já iniciou negociações? Ainda está pesquisando? Vamos entender seu momento atual.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 glass-panel rounded-2xl p-5 border border-white/5">
+            <span class="text-2xl flex-shrink-0 mt-0.5">🎯</span>
+            <div>
+              <p class="text-lg font-bold text-white">Definir seu objetivo</p>
+              <p class="text-gray-400 text-sm mt-1">Importar da China ou fornecedor local? Cada caminho exige uma estratégia diferente.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 glass-panel rounded-2xl p-5 border border-white/5">
+            <span class="text-2xl flex-shrink-0 mt-0.5">📊</span>
+            <div>
+              <p class="text-lg font-bold text-white">Avaliar porte e produtos</p>
+              <p class="text-gray-400 text-sm mt-1">Tamanho do negócio, produtos negociados e desafios atuais para uma recomendação precisa.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Escassez + Preço -->
+        <div class="mt-10 glass-panel rounded-2xl p-6 border border-brand-red/20 text-center">
+          <p class="text-2xl mb-2">🎁</p>
+          <p class="text-lg font-bold text-white">Valor original: <span class="line-through text-gray-400">R$ 247</span></p>
+          <p class="text-3xl font-black text-brand-gold">GRÁTIS</p>
+          <p class="text-gray-400 text-sm mt-1">Por conta da Consultoria Shen</p>
+          <div class="mt-4 flex items-center justify-center gap-2 text-sm">
+            <span class="text-brand-red font-bold animate-pulse">⏳</span>
+            <span class="text-gray-300">Primeiras <strong id="hero-vagas-count-2" class="text-white">20</strong> vagas do mês — restam <strong id="hero-vagas-restantes-2" class="text-brand-gold">0</strong></span>
+          </div>
+          <div class="mt-3 w-full max-w-xs mx-auto bg-white/10 rounded-full h-2.5 overflow-hidden">
+            <div id="hero-vagas-bar-2" class="h-full rounded-full bg-gradient-to-r from-brand-red to-brand-gold transition-all duration-1000" style="width:100%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section id="quiz" class="py-20 border-t border-white/5 animate-fade-in">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl sm:text-4xl font-display font-black text-white mb-2">Preencha e receba:</h2>
+        <div class="flex flex-wrap justify-center gap-3 mt-4">
+          <span class="px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/25 text-sm font-bold text-brand-gold">📋 Checklist "7 Erros"</span>
+          <span class="px-4 py-2 rounded-full bg-brand-red/10 border border-brand-red/25 text-sm font-bold text-brand-red">🎯 Diagnóstico personalizado</span>
+          <span class="px-4 py-2 rounded-full bg-brand-blue/10 border border-brand-blue/25 text-sm font-bold text-brand-blue">💎 Recomendação de plano</span>
+        </div>
+      </div>
+      <DiagnosticoChinaQuiz />
+    </div>
+  </section>
+
+  <!-- ===== COMO FUNCIONA ===== -->
+  <section class="py-20 bg-black/20 border-t border-white/5 animate-fade-in">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl sm:text-4xl font-display font-black text-white text-center mb-12">Como funciona</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="glass-panel rounded-2xl p-6 border border-white/5 text-center">
+          <span class="text-4xl block mb-4">📝</span>
+          <h3 class="text-xl font-bold text-white mb-2">1. Responda o quiz</h3>
+          <p class="text-gray-400 text-sm">7 perguntas rápidas sobre seu negócio com a China. Leva menos de 2 minutos.</p>
+        </div>
+        <div class="glass-panel rounded-2xl p-6 border border-white/5 text-center">
+          <span class="text-4xl block mb-4">📲</span>
+          <h3 class="text-xl font-bold text-white mb-2">2. Receba no WhatsApp</h3>
+          <p class="text-gray-400 text-sm">Checklist "7 Erros" + diagnóstico completo com recomendação personalizada enviado diretamente para você.</p>
+        </div>
+        <div class="glass-panel rounded-2xl p-6 border border-white/5 text-center">
+          <span class="text-4xl block mb-4">📅</span>
+          <h3 class="text-xl font-bold text-white mb-2">3. Agende sua sessão</h3>
+          <p class="text-gray-400 text-sm">Se quiser, agende sua consultoria de 30 minutos com a Consultoria Shen — gratuito!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUEM É A CONSULTORIA SHEN ===== -->
+  <section class="py-20 border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl sm:text-4xl font-display font-black text-white text-center mb-4">Consultoria Shen</h2>
+      <p class="text-gray-400 text-center mb-12 max-w-xl mx-auto">Sua ponte para negócios seguros com a China</p>
+      <div class="glass-panel rounded-3xl p-8 sm:p-10 border border-white/5 max-w-3xl mx-auto">
+        <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start">
+          <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-2 border-brand-gold/30 flex-shrink-0 bg-gradient-to-br from-brand-red/20 to-brand-gold/20 flex items-center justify-center">
+            <img src="/Consultoria/consultoria_china02.png" alt="Consultoria Shen" class="w-full h-full object-cover" loading="lazy" />
+          </div>
+          <div>
+            <h3 class="text-2xl font-display font-bold text-white mb-3">Especialista em negociação com chineses</h3>
+            <p class="text-gray-300 leading-relaxed mb-4">
+              Com experiência prática em mediação cultural e facilitação comercial Brasil-China, a Consultoria Shen já ajudou empreendedores e empresas a fechar acordos de alto valor sem dor de cabeça.
+            </p>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              A missão é te preparar para negociar com segurança e confiança, seja importando da China ou encontrando fornecedores locais em São Paulo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PREÇOS ===== -->
+  <section id="precos" class="py-20 bg-black/20 border-t border-white/5 animate-fade-in">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl sm:text-4xl font-display font-black text-white text-center mb-4">Escolha o formato ideal para você</h2>
+      <p class="text-gray-400 text-center mb-12 max-w-xl mx-auto">Atendimento 100% online e personalizado para sua realidade</p>
+
+      <div class="grid md:grid-cols-4 gap-6">
+        <!-- Diagnóstico Inicial -->
+        <div class="glass-panel rounded-3xl p-6 border border-white/5 transition-all duration-300 hover:-translate-y-2 hover:border-brand-gold/30 flex flex-col" style="animation: fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0;">
+          <div class="mb-4">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-blue/10 rounded-full text-brand-blue text-2xl mb-3">🔍</div>
+            <h3 class="text-xl font-display font-bold text-white">Diagnóstico Inicial</h3>
+            <p class="text-gray-400 text-xs mt-1">30 min • via WhatsApp</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-sm text-gray-500 line-through">R$ 247</p>
+            <div class="text-3xl font-display font-black text-brand-gold">Grátis</div>
+            <p class="text-xs text-gray-500">Primeiras 20 vagas do mês</p>
+          </div>
+          <ul class="space-y-2 text-gray-300 mb-6 flex-grow text-sm">
+            <li class="flex items-start gap-2">✔ <span>Análise do cenário atual</span></li>
+            <li class="flex items-start gap-2">✔ <span>Checklist "7 Erros" incluso</span></li>
+            <li class="flex items-start gap-2">✔ <span>Recomendação personalizada</span></li>
+          </ul>
+          <a href="#quiz" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-bold rounded-full text-sm hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300">
+            Quero meu diagnóstico grátis
+          </a>
+        </div>
+
+        <!-- Consultoria Avulsa 45 min -->
+        <div class="glass-panel rounded-3xl p-6 border border-white/5 transition-all duration-300 hover:-translate-y-2 hover:border-brand-gold/30 flex flex-col" style="animation: fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0;">
+          <div class="mb-4">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-purple/10 rounded-full text-brand-purple text-2xl mb-3">🎯</div>
+            <h3 class="text-xl font-display font-bold text-white">Consultoria Avulsa</h3>
+            <p class="text-gray-400 text-xs mt-1">45 min • online</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-sm text-gray-500 line-through">R$ 480</p>
+            <div class="text-3xl font-display font-black text-white">R$ 370</div>
+            <p class="text-xs text-gray-500">economia de R$ 110</p>
+          </div>
+          <ul class="space-y-2 text-gray-300 mb-6 flex-grow text-sm">
+            <li class="flex items-start gap-2">✔ <span>Sessão objetiva e direta</span></li>
+            <li class="flex items-start gap-2">✔ <span>Orientação para caso pontual</span></li>
+            <li class="flex items-start gap-2">✔ <span>Plano de ação resumido</span></li>
+          </ul>
+          <a href={waUrl('Quero contratar a Consultoria Avulsa de 45 min - R$ 370')} target="_blank" rel="noopener" class="block w-full text-center px-4 py-3 border border-white/20 text-white font-bold rounded-full text-sm hover:bg-white/5 transition-all duration-300">
+            Contratar
+          </a>
+        </div>
+
+        <!-- Consultoria Avulsa 90 min (Destaque) -->
+        <div class="glass-panel rounded-3xl p-6 border-2 border-brand-gold/40 transition-all duration-300 hover:-translate-y-2 flex flex-col relative" style="animation: fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0;">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg text-xs font-black uppercase tracking-wider rounded-full whitespace-nowrap">Mais completo</div>
+          <div class="mb-4">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-gold/10 rounded-full text-brand-gold text-2xl mb-3">💎</div>
+            <h3 class="text-xl font-display font-bold text-white">Consultoria Avulsa</h3>
+            <p class="text-gray-400 text-xs mt-1">90 min • online</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-sm text-gray-500 line-through">R$ 980</p>
+            <div class="text-3xl font-display font-black text-white">R$ 670</div>
+            <p class="text-xs text-gray-500">economia de R$ 310</p>
+          </div>
+          <ul class="space-y-2 text-gray-300 mb-6 flex-grow text-sm">
+            <li class="flex items-start gap-2">✔ <span>Análise aprofundada</span></li>
+            <li class="flex items-start gap-2">✔ <span>Estratégia de negociação</span></li>
+            <li class="flex items-start gap-2">✔ <span>Plano de ação completo</span></li>
+          </ul>
+          <a href={waUrl('Quero contratar a Consultoria Avulsa de 90 min - R$ 670')} target="_blank" rel="noopener" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-bold rounded-full text-sm hover:shadow-[0_0_25px_rgba(251,191,36,0.4)] transition-all duration-300">
+            Contratar
+          </a>
+        </div>
+
+        <!-- Plano Mensal -->
+        <div class="glass-panel rounded-3xl p-6 border border-white/5 transition-all duration-300 hover:-translate-y-2 hover:border-brand-gold/30 flex flex-col" style="animation: fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; opacity: 0;">
+          <div class="mb-4">
+            <div class="w-14 h-14 flex items-center justify-center bg-brand-jade/10 rounded-full text-brand-jade text-2xl mb-3">🚀</div>
+            <h3 class="text-xl font-display font-bold text-white">Plano Mensal</h3>
+            <p class="text-gray-400 text-xs mt-1">4 sessões de 90 min + acompanhamento</p>
+          </div>
+          <div class="mb-4">
+            <p class="text-sm text-gray-500 line-through">R$ 3.680</p>
+            <div class="text-3xl font-display font-black text-white">R$ 2.470</div>
+            <p class="text-xs text-gray-500">economia de R$ 1.210</p>
+          </div>
+          <ul class="space-y-2 text-gray-300 mb-6 flex-grow text-sm">
+            <li class="flex items-start gap-2">✔ <span>4 sessões de 90 min</span></li>
+            <li class="flex items-start gap-2">✔ <span>Suporte WhatsApp contínuo</span></li>
+            <li class="flex items-start gap-2">✔ <span>Acompanhamento mensal</span></li>
+          </ul>
+          <a href={waUrl('Quero contratar o Plano Mensal - R$ 2.470')} target="_blank" rel="noopener" class="block w-full text-center px-4 py-3 border border-white/20 text-white font-bold rounded-full text-sm hover:bg-white/5 transition-all duration-300">
+            Contratar
+          </a>
+        </div>
+      </div>
+
+      <!-- Escassez -->
+      <div class="mt-12 max-w-lg mx-auto text-center">
+        <div class="glass-panel rounded-2xl p-5 border border-brand-red/20">
+          <p class="text-brand-red font-bold text-lg flex items-center justify-center gap-2">
+            <span class="animate-pulse">⏳</span> Vagas limitadas este mês
+          </p>
+          <div class="mt-3 w-full bg-white/10 rounded-full h-3 overflow-hidden">
+            <div id="vagas-bar" class="h-full rounded-full bg-gradient-to-r from-brand-red to-brand-gold transition-all duration-1000" style="width:100%"></div>
+          </div>
+          <p class="text-gray-400 text-sm mt-2">Restam <strong id="vagas-restantes" class="text-white font-bold">20</strong> vagas gratuitas de <strong class="text-white font-bold">20</strong> este mês</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA FINAL ===== -->
+  <section class="py-20 bg-black/40 border-t border-white/5 animate-fade-in">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-display font-black text-white mb-4">Pronto para descobrir sua fase?</h2>
+      <p class="text-lg text-gray-300 leading-relaxed mb-4 max-w-2xl mx-auto">
+        Responda o quiz e receba o Checklist "7 Erros ao Negociar com China" + seu diagnóstico personalizado.
+      </p>
+      <p class="text-sm text-gray-500 mb-8">
+        ⏳ Vagas gratuitas limitadas — <strong id="cta-vagas-count" class="text-brand-gold">20</strong> restantes este mês
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#quiz" class="inline-block px-10 py-5 bg-gradient-to-r from-brand-red to-brand-gold text-dark-bg font-extrabold rounded-full text-lg hover:shadow-[0_0_30px_rgba(251,191,36,0.5)] transition-all duration-300 transform hover:-translate-y-1">
+          📝 Quero meu checklist + diagnóstico
+        </a>
+      </div>
+      <p class="text-gray-500 text-sm mt-6">Resposta em até 2 horas em horário comercial</p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  (function() {
+    const TOTAL_VAGAS = 20;
+    const today = new Date();
+    const day = today.getDate();
+    const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+    const vagasUsadas = Math.min(Math.max(Math.round((day / daysInMonth) * TOTAL_VAGAS), 1), TOTAL_VAGAS);
+    const vagasRestantes = TOTAL_VAGAS - vagasUsadas;
+    const pct = (vagasRestantes / TOTAL_VAGAS) * 100;
+
+    function atualizarVagas() {
+      const ids = [
+        { count: 'hero-vagas-count', bar: null },
+        { count: 'hero-vagas-count-2', rest: 'hero-vagas-restantes-2', bar: 'hero-vagas-bar-2' },
+        { count: 'cta-vagas-count', bar: null },
+        { count: 'vagas-restantes', bar: 'vagas-bar', total: true },
+      ];
+      ids.forEach(({ count, rest, bar, total }) => {
+        const el = document.getElementById(count);
+        if (el) el.textContent = String(vagasRestantes);
+        if (rest) {
+          const r = document.getElementById(rest);
+          if (r) r.textContent = String(vagasRestantes);
+        }
+        if (bar) {
+          const b = document.getElementById(bar);
+          if (b) b.style.width = pct + '%';
+        }
+        if (total) {
+          const totalVagas = document.getElementById('vagas-total');
+          if (totalVagas) totalVagas.textContent = String(TOTAL_VAGAS);
+        }
+      });
+    }
+
+    function track(eventName, data) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, { event_category: 'engagement', ...data });
+      }
+      if (typeof fbq !== 'undefined') {
+        fbq('trackCustom', eventName, data);
+      }
+    }
+
+    function trackCTA(label) {
+      track('cta_click', { event_label: label, page: 'diagnostico-china' });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      atualizarVagas();
+
+      // Track CTA clicks
+      document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp"]').forEach(el => {
+        el.addEventListener('click', function() {
+          trackCTA('whatsapp_' + (this.textContent.trim().slice(0, 30)));
+        });
+      });
+      document.querySelectorAll('a[href="#quiz"]').forEach(el => {
+        el.addEventListener('click', function() {
+          trackCTA('go_to_quiz');
+        });
+      });
+      document.querySelectorAll('a[href="#precos"]').forEach(el => {
+        el.addEventListener('click', function() {
+          trackCTA('go_to_pricing');
+        });
+      });
+    });
+    if (document.readyState === 'complete') atualizarVagas();
+  })();
+</script>
