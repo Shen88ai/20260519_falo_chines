@@ -55,8 +55,13 @@ src/
 ├── styles/
 │   ├── global.css              # Estilos globais + classes customizadas
 │   └── hanzi-wheel.css         # Estilos da roda 3D
-└── Resource/
-    └── project_guide.md        # Este guia
+├── Resource/
+│   ├── project_guide.md        # Este guia
+│   └── Check_list/
+│       └── Ckeck_list_7_errors.md  # Conteúdo do checklist diagnóstico China
+├── public/
+│   └── pdf/
+│       └── Checklist  7 Erros ao Negociar com a China.pdf  # PDF do checklist
 ```
 
 ---
@@ -346,21 +351,59 @@ Auto-contido (zero dependências externas). Alunos submetem conteúdo via formul
 
 ---
 
-## Páginas de Serviços (Business Pages)
+## Landing Page Diagnóstico China
 
-### Rotas
+`src/pages/diagnostico-china.astro` — ferramenta de diagnóstico para empreendedores brasileiros que negociam (ou querem negociar) com a China.
 
-| Página | Slug | Público |
-|--------|------|---------|
-| Serviços Empresariais | `/servicos-empresariais` | B2B (empresas de comércio exterior) |
-| Imersão em Mandarim | `/imersao-mandarim` | B2C (profissionais, estudantes) |
-| Sobre Mim | `/sobre-mim` | Autoridade, trajetória |
-| Manual de Caligrafia | `/manual` | Landing Page do ebook |
+### Estrutura da Página
 
-### Infográficos
+| Seção | Descrição |
+|-------|-----------|
+| **Hero** | Escassez (vagas restantes dinâmicas), headline, checklist + diagnóstico como materiais gratuitos, social proof (4.9★, +50 empresas, resposta 2h) |
+| **Lead Magnet** | "Checklist 7 Erros ao Negociar com a China" — card com botão de download PDF |
+| **O que é o Diagnóstico** | Sessão de 30 min via WhatsApp com 3 bullets (fase, objetivo, porte) |
+| **Quiz Interativo** | 7 perguntas com progress bar + resultado com envio WhatsApp |
+| **Como Funciona** | 3 passos: Responda → Receba → Agende |
+| **Consultoria Shen** | Seção de autoridade (foto + bio + cases) |
+| **Planos de Preços** | 4 cards: Diagnóstico Inicial (grátis), Consultoria 45min, Consultoria 90min (destaque), Plano Mensal |
+| **Escassez** | Contador dinâmico JS: `20 - dia_do_mês`, barra de progresso, múltiplos elementos na página |
+| **CTA Final** | "Pronto para descobrir sua fase?" + link para o quiz |
 
-Cada página de serviço tem infográfico em `public/images/services/infografico-{slug}.png`.
-Gerar com IA e adicionar no cabeçalho da página `.astro`.
+### Quiz — `src/components/DiagnosticoChinaQuiz.astro`
+
+| Item | Detalhe |
+|------|---------|
+| Steps | 8 (7 perguntas + resultado) |
+| Campos | `negociacao`, `objetivo`, `porte`, `produtos`, `maiorDesafio`, `prazo`, `experiencia` |
+| Input | Options buttons + campo texto para "produtos" |
+| Resultado | Mostra checklist + diagnóstico + botão WhatsApp com texto formatado |
+| Tracking | `quiz_completed` + `quiz_whatsapp_click` (GA4 + Meta Pixel) |
+
+### State Management — `src/lib/diagnostico-china-quiz.ts`
+
+Função `calcularRecomendacao(respostas)` retorna:
+- `'diagnostico-inicial'` — se experiência "sim" ou prazo "longo"
+- `'consultoria-avulsa-90'` — se experiência "sim"
+- `'plano-mensal'` — fallback
+
+### Pós-WhatsApp — `src/pages/diagnostico-china/obrigado.astro`
+
+Página de confirmação com:
+- Checkmark animado
+- Explicação do que esperar (checklist PDF, diagnóstico, resposta em 2h)
+- Botões: "Baixar PDF agora" + "Falar no WhatsApp" (fallback)
+- UTM tracking via GA4 + Meta Pixel
+
+### Checklist PDF — `public/pdf/Checklist  7 Erros ao Negociar com a China.pdf`
+
+Conteúdo markdown em `src/Resource/Check_list/Ckeck_list_7_errors.md` (7 erros com pesquisa, checklist de prevenção + tabela resumo). PDF na pasta `public/pdf/` servido em `/pdf/Checklist  7 Erros ao Negociar com a China.pdf`.
+
+### Testes
+
+| Arquivo | Testes |
+|---------|--------|
+| `tests/diagnostico-china.test.ts` | 16 testes (SEO, hero, quiz, preços, escassez, lead magnet, CTA, cores) |
+| `tests/diagnostico-china-quiz.test.ts` | 7 testes (state management, recomendações, WhatsApp) |
 
 ---
 
@@ -390,21 +433,23 @@ npx vitest run        # Rodar uma vez (CI)
 npx vitest            # Modo watch
 ```
 
-### Arquivos de Teste (19 suites, 154 testes)
+### Arquivos de Teste (25 suites, 225 testes)
 
-| Teste | O que cobre |
-|-------|-------------|
-| `pergaminho-virtual.test.ts` | Componente PergaminhoVirtual (12 testes) |
-| `homepage-banner.test.ts` | Banner do manual na homepage |
-| `strokes-page-banner.test.ts` | Banner na página de traços |
-| `landing-page-manual.test.ts` | Landing page do manual |
-| `nav-menu.test.ts` | Menu de navegação |
-| `state-manager.test.ts` | Máquina de estado do diagnóstico |
-| `search.test.ts` | Busca global Fuse.js |
-| `courses-data.test.ts` | Integridade dos dados de cursos |
-| `comunidade-storage.test.ts` | CRUD localStorage |
-| `hanzi-writer-manager.test.ts` | Wrapper do Hanzi Writer |
-| ... e mais 9 suites | |
+| Teste | Testes | O que cobre |
+|-------|--------|-------------|
+| `pergaminho-virtual.test.ts` | 12 | Componente PergaminhoVirtual |
+| `homepage-banner.test.ts` | 6 | Banner do manual na homepage |
+| `strokes-page-banner.test.ts` | 6 | Banner na página de traços |
+| `landing-page-manual.test.ts` | 8 | Landing page do manual |
+| `diagnostico-china.test.ts` | 16 | Landing page Diagnóstico China |
+| `diagnostico-china-quiz.test.ts` | 7 | State management do quiz |
+| `nav-menu.test.ts` | 8 | Menu de navegação |
+| `state-manager.test.ts` | 14 | Máquina de estado do diagnóstico |
+| `search.test.ts` | 12 | Busca global Fuse.js |
+| `courses-data.test.ts` | 12 | Integridade dos dados de cursos |
+| `comunidade-storage.test.ts` | 8 | CRUD localStorage |
+| `hanzi-writer-manager.test.ts` | 10 | Wrapper do Hanzi Writer |
+| ... e mais 13 suites | restantes | Demais componentes |
 
 ### Padrão TDD
 
@@ -416,10 +461,43 @@ Sempre escrever testes **antes** da implementação:
 
 ---
 
+## Analytics (GA4 + Meta Pixel)
+
+Rastreadores configurados no `src/layouts/Layout.astro` com ativação condicional via env vars:
+
+| Variável | Serviço | Efeito |
+|----------|---------|--------|
+| `PUBLIC_GA4_ID` | Google Analytics 4 | Ativa GA4 (gtag.js) |
+| `PUBLIC_META_PIXEL_ID` | Meta Pixel (Facebook) | Ativa Pixel + PageView |
+
+### Eventos de Conversão
+
+**Landing Page Diagnóstico China** (`diagnostico-china.astro`):
+- `cta_click` — cliques em links WhatsApp, #quiz, #precos
+- `quiz_completed` — usuário finaliza as 7 perguntas (disparado pelo componente quiz)
+- `quiz_whatsapp_click` — clique no botão de resultado do quiz
+
+**Página Obrigado** (`obrigado.astro`):
+- GA4 event `conversion` (lead)
+- Meta Pixel `Lead`
+
+### Configuração
+
+```bash
+# Para ativar em produção, setar as env vars no deploy:
+# Cloudflare Pages: Settings → Environment Variables
+PUBLIC_GA4_ID=G-XXXXXXXXXX
+PUBLIC_META_PIXEL_ID=1234567890
+```
+
+Sem as env vars, nenhum script de tracking é carregado (dev sem rastreio).
+
+---
+
 ## Build & Deploy
 
 ```bash
-npm run build     # Gera dist/ (22 páginas, ~3s)
+npm run build     # Gera dist/ (28 páginas, ~3.5s)
 npm run preview   # Preview local do build
 ```
 

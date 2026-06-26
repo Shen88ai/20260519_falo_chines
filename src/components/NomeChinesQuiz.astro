@@ -12,7 +12,7 @@ const { phone = '5511996990939' } = Astro.props as Props;
     <div class="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
       <div id="quiz-progress" class="h-full bg-gradient-to-r from-brand-gold to-amber-400 rounded-full transition-all duration-500" style="width: 0%"></div>
     </div>
-    <span id="quiz-step-label" class="text-xs text-gray-500 font-mono min-w-[4rem] text-right">1 / 6</span>
+    <span id="quiz-step-label" class="text-xs text-gray-500 font-mono min-w-[4rem] text-right">1 / 7</span>
   </div>
 
   <!-- Step: Name -->
@@ -33,8 +33,28 @@ const { phone = '5511996990939' } = Astro.props as Props;
     </button>
   </div>
 
-  <!-- Step: Translation Type -->
+  <!-- Step: Surname -->
   <div id="quiz-step-1" class="quiz-step hidden space-y-4">
+    <h3 class="text-xl font-display font-bold text-white">Qual é o seu sobrenome?</h3>
+    <p class="text-sm text-gray-400">
+      Na cultura chinesa, o sobrenome vem primeiro. Vou adaptar seu sobrenome brasileiro para um equivalente chinês e criar um nome elegante e autêntico.
+    </p>
+    <input
+      id="quiz-input-surname"
+      type="text"
+      placeholder="Ex: Silva, Oliveira, Pereira..."
+      class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 text-lg focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all"
+    />
+    <button
+      class="quiz-next px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg font-bold text-sm transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
+      disabled
+    >
+      Próximo →
+    </button>
+  </div>
+
+  <!-- Step: Translation Type -->
+  <div id="quiz-step-2" class="quiz-step hidden space-y-4">
     <h3 class="text-xl font-display font-bold text-white">Como você gostaria de traduzir seu nome?</h3>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
       <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="som">
@@ -45,15 +65,32 @@ const { phone = '5511996990939' } = Astro.props as Props;
         <span class="text-2xl block mb-2">🌸</span>
         Pelo significado
       </button>
-      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="especial">
+      <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="especial" id="quiz-option-especial">
         <span class="text-2xl block mb-2">💎</span>
         Nome especial
+      </button>
+    </div>
+    <!-- Special name description (hidden until "Nome especial" is clicked) -->
+    <div id="quiz-especial-description" class="hidden space-y-4 pt-2 border-t border-white/10">
+      <p class="text-sm text-brand-gold font-semibold">Escreva o valor que gostaria transmitir e com quem você se identifica:</p>
+      <textarea
+        id="quiz-input-especial"
+        rows="3"
+        placeholder="Ex: Força e coragem, me identifico com minha avó que sempre foi minha inspiração..."
+        class="w-full px-5 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 text-base focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all resize-none"
+      ></textarea>
+      <button
+        id="quiz-especial-next"
+        class="px-8 py-3 rounded-xl bg-gradient-to-r from-brand-gold to-amber-400 text-dark-bg font-bold text-sm transition-all hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed"
+        disabled
+      >
+        Próximo →
       </button>
     </div>
   </div>
 
   <!-- Step: Motivation -->
-  <div id="quiz-step-2" class="quiz-step hidden space-y-4">
+  <div id="quiz-step-3" class="quiz-step hidden space-y-4">
     <h3 class="text-xl font-display font-bold text-white">Por que você quer ter seu nome em chinês?</h3>
     <div class="grid grid-cols-2 gap-3">
       <button class="quiz-option px-4 py-5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-gold/50 hover:bg-brand-gold/5 text-white text-sm font-bold transition-all text-center" data-value="tattoo">
@@ -76,7 +113,7 @@ const { phone = '5511996990939' } = Astro.props as Props;
   </div>
 
   <!-- Step: Style -->
-  <div id="quiz-step-3" class="quiz-step hidden space-y-4">
+  <div id="quiz-step-4" class="quiz-step hidden space-y-4">
     <h3 class="text-xl font-display font-bold text-white">Qual estilo você mais gostou?</h3>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
       <button class="quiz-option px-3 py-4 rounded-xl bg-white/5 border border-white/10 hover:border-brand-red/50 hover:bg-brand-red/5 text-white text-sm font-bold transition-all text-center" data-value="ink">
@@ -95,7 +132,7 @@ const { phone = '5511996990939' } = Astro.props as Props;
   </div>
 
   <!-- Step: Dedication -->
-  <div id="quiz-step-4" class="quiz-step hidden space-y-4">
+  <div id="quiz-step-5" class="quiz-step hidden space-y-4">
     <h3 class="text-xl font-display font-bold text-white">Gostaria de uma dedicatória personalizada?</h3>
     <p class="text-sm text-gray-400">Ex: "Vitória = 勝利, símbolo do amor de uma mãe pela filha"</p>
     <div class="grid grid-cols-2 gap-3">
@@ -111,11 +148,11 @@ const { phone = '5511996990939' } = Astro.props as Props;
   </div>
 
   <!-- Step: Final CTA -->
-  <div id="quiz-step-5" class="quiz-step hidden space-y-6 text-center">
+  <div id="quiz-step-6" class="quiz-step hidden space-y-6 text-center">
     <span class="text-5xl block">🀄</span>
     <h3 class="text-2xl font-display font-bold text-white">Pronto!</h3>
     <p class="text-gray-400">
-      Seu nome chinês será criado manualmente com carinho.<br />
+      Seu nome chinês completo será criado manualmente com carinho.<br />
       Clique abaixo para encomendar e receber em até 48h.
     </p>
     <button
@@ -129,14 +166,14 @@ const { phone = '5511996990939' } = Astro.props as Props;
 
 <script>
   (function() {
-    const FIELDS = ['name', 'translationType', 'motivation', 'style', 'dedication'];
-    const answers = { name: '', translationType: '', motivation: '', style: '', dedication: false };
+    const FIELDS = ['name', 'surname', 'translationType', 'motivation', 'style', 'dedication'];
+    const answers = { name: '', surname: '', translationType: '', specialNameDescription: '', motivation: '', style: '', dedication: false };
     const phone = '5511996990939';
     let currentStep = 0;
 
     const progress = document.getElementById('quiz-progress');
     const stepLabel = document.getElementById('quiz-step-label');
-    const totalQuizSteps = 6;
+    const totalQuizSteps = 7;
 
     function showStep(index) {
       document.querySelectorAll('.quiz-step').forEach((el, i) => {
@@ -181,9 +218,64 @@ const { phone = '5511996990939' } = Astro.props as Props;
       });
     }
 
-    // Option buttons
+    // Surname input
+    const surnameInput = document.getElementById('quiz-input-surname');
+    const surnameNext = document.querySelector('#quiz-step-1 .quiz-next');
+    if (surnameInput && surnameNext) {
+      surnameInput.addEventListener('input', function() {
+        surnameNext.disabled = this.value.trim().length < 1;
+      });
+      surnameNext.addEventListener('click', function() {
+        if (surnameInput.value.trim()) {
+          setAnswer('surname', surnameInput.value.trim());
+        }
+      });
+      surnameInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !surnameNext.disabled) {
+          surnameNext.click();
+        }
+      });
+    }
+
+    // Special name: reveal textarea when "Nome especial" clicked
+    const especialOption = document.getElementById('quiz-option-especial');
+    const especialDesc = document.getElementById('quiz-especial-description');
+    const especialInput = document.getElementById('quiz-input-especial');
+    const especialNext = document.getElementById('quiz-especial-next');
+
+    if (especialOption && especialDesc && especialInput && especialNext) {
+      especialOption.addEventListener('click', function() {
+        if (especialDesc.classList.contains('hidden')) {
+          especialDesc.classList.remove('hidden');
+          especialOption.classList.add('border-brand-gold', 'bg-brand-gold/10');
+          especialInput.focus();
+        }
+      });
+
+      especialInput.addEventListener('input', function() {
+        especialNext.disabled = this.value.trim().length < 3;
+      });
+
+      especialNext.addEventListener('click', function() {
+        const desc = especialInput.value.trim();
+        if (desc.length >= 3) {
+          answers.specialNameDescription = desc;
+          setAnswer('translationType', 'especial');
+        }
+      });
+
+      especialInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey && !especialNext.disabled) {
+          e.preventDefault();
+          especialNext.click();
+        }
+      });
+    }
+
+    // Option buttons (skip "Nome especial" which is handled above)
     document.querySelectorAll('.quiz-option').forEach(btn => {
       btn.addEventListener('click', function() {
+        if (this.id === 'quiz-option-especial') return;
         const stepEl = this.closest('.quiz-step');
         const stepIndex = Array.from(document.querySelectorAll('.quiz-step')).indexOf(stepEl);
         const field = FIELDS[stepIndex];
@@ -200,10 +292,15 @@ const { phone = '5511996990939' } = Astro.props as Props;
     const finalCta = document.getElementById('quiz-cta-final');
     if (finalCta) {
       finalCta.addEventListener('click', function() {
+        let desc = '';
+        if (answers.translationType === 'especial' && answers.specialNameDescription) {
+          desc = `\n💬 *Descrição:* ${answers.specialNameDescription}`;
+        }
         const msg = encodeURIComponent(
-          '🀄 *Pedido de Nome Chinês*\n\n' +
+          '🀄 *Pedido de Nome Chinês Completo*\n\n' +
           `👤 *Nome:* ${answers.name}\n` +
-          `🎯 *Tradução:* ${answers.translationType}\n` +
+          `🏮 *Sobrenome:* ${answers.surname}\n` +
+          `🎯 *Tradução:* ${answers.translationType}${desc}\n` +
           `💖 *Motivação:* ${answers.motivation}\n` +
           `🎨 *Estilo:* ${answers.style}\n` +
           `📝 *Dedicatória:* ${answers.dedication ? 'Sim 💖' : 'Não 🙅‍♀️'}`

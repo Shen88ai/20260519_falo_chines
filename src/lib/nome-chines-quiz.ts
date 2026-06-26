@@ -1,8 +1,10 @@
-export type AnswerField = 'name' | 'translationType' | 'motivation' | 'style' | 'dedication';
+export type AnswerField = 'name' | 'surname' | 'translationType' | 'specialNameDescription' | 'motivation' | 'style' | 'dedication';
 
 export type Answers = {
   name: string;
+  surname: string;
   translationType: string;
+  specialNameDescription: string;
   motivation: string;
   style: string;
   dedication: boolean;
@@ -17,7 +19,7 @@ export interface QuizState {
   toWhatsAppText(): string;
 }
 
-const FIELDS: AnswerField[] = ['name', 'translationType', 'motivation', 'style', 'dedication'];
+const FIELDS: AnswerField[] = ['name', 'surname', 'translationType', 'motivation', 'style', 'dedication'];
 
 function findFirstEmpty(a: Answers): number {
   for (let i = 0; i < FIELDS.length; i++) {
@@ -28,7 +30,7 @@ function findFirstEmpty(a: Answers): number {
 }
 
 export function createQuiz(): QuizState {
-  const empty: Answers = { name: '', translationType: '', motivation: '', style: '', dedication: false };
+  const empty: Answers = { name: '', surname: '', translationType: '', specialNameDescription: '', motivation: '', style: '', dedication: false };
 
   function build(answers: Answers): QuizState {
     const step = findFirstEmpty(answers);
@@ -41,15 +43,22 @@ export function createQuiz(): QuizState {
         return build(next);
       },
       isComplete() {
-        return answers.name !== '' && answers.translationType !== '' &&
-          answers.motivation !== '' && answers.style !== '' &&
-          answers.dedication !== false;
+        if (answers.name === '' || answers.surname === '' || answers.translationType === '' ||
+          answers.motivation === '' || answers.style === '' ||
+          answers.dedication === false) return false;
+        if (answers.translationType === 'especial' && answers.specialNameDescription === '') return false;
+        return true;
       },
       toWhatsAppText() {
+        let desc = '';
+        if (answers.translationType === 'especial' && answers.specialNameDescription) {
+          desc = `\n💬 *Descrição:* ${answers.specialNameDescription}`;
+        }
         return (
-          '🀄 *Pedido de Nome Chinês*\n\n' +
+          '🀄 *Pedido de Nome Chinês Completo*\n\n' +
           `👤 *Nome:* ${answers.name}\n` +
-          `🎯 *Tradução:* ${answers.translationType}\n` +
+          `🏮 *Sobrenome:* ${answers.surname}\n` +
+          `🎯 *Tradução:* ${answers.translationType}${desc}\n` +
           `💖 *Motivação:* ${answers.motivation}\n` +
           `🎨 *Estilo:* ${answers.style}\n` +
           `📝 *Dedicatória:* ${answers.dedication ? 'Sim 💖' : 'Não 🙅‍♀️'}`
